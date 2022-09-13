@@ -8,7 +8,7 @@ const PORT = 8080 || process.env.PORT
 
 
 connectionDB()
-// @middlewar
+// @middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
