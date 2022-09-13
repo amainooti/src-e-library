@@ -1,5 +1,6 @@
 const { User } = require("../Model/userModel");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken")
 
 const registerUser = async (req, res) => {
     // check if the text fields are empty
@@ -32,7 +33,8 @@ const registerUser = async (req, res) => {
                 email,
                 department,
                 level,
-                password
+                password,
+                token: generateToken(user._id)
             })
         } catch (error) {
             console.log(error.message)
@@ -59,6 +61,7 @@ const loginUser = async (req, res) => {
             _id: user.id,
             name: user.name,
             email: user.email,
+            token: generateToken(user._id)
         })
     } else {
         res.status(400).json({message: "incorrect email or password"})
@@ -67,10 +70,21 @@ const loginUser = async (req, res) => {
 
 
 const getUser = async (req, res) => {
-    res.status(200).json({message: "user"})
+    const { _id, name, email } = await User.findById(req.user.id)
+    res.status(200).json({
+        id: _id,
+        name,
+        email
+    })
+
 }
 
 
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: "60d"
+    })
+}
 
 module.exports = {
     registerUser,
