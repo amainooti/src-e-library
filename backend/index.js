@@ -17,7 +17,7 @@ app.use(cors());
 // @custom middleware
 
 app.use("/api/users", require("./routes/userRoute"));
-app.use("/api/upload", require("./routes/uploadRoute"));
+app.use("/api", require("./routes/documentRoute"));
 
 app.listen(PORT, () => {
   console.log(`server is running on http://localhost:${PORT}`.bold);

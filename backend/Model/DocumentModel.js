@@ -4,6 +4,12 @@ const DocumentSchema = mongoose.Schema(
   {
     title: {
       type: String,
+      unique: true,
+      required: true,
+    },
+    urlPath: {
+      type: String,
+      required: true,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -11,6 +17,9 @@ const DocumentSchema = mongoose.Schema(
     },
     author: {
       type: String,
+    },
+    metadata: {
+      type: Object,
     },
   },
   {

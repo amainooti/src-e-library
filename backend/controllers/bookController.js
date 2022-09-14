@@ -1,32 +1,28 @@
-const exif = require("exiftool");
-const fs = require("fs");
-const { uploadFile } = require("../utils/helper");
+const { addMetadata } = require("../utils/helper");
 const Document = require("../Model/DocumentModel");
 
 const uploadBook = async (req, res) => {
   try {
-    let dataexif = { title: "", author: "" };
-    const document = req.file;
-
-    fs.readFile(document.path, function (err, data) {
-      if (err) {
-        console.log(err);
-        throw err;
-      } else {
-        exif.metadata(data, function (err, metadata) {
-          if (err) {
-            throw err;
-          } else {
-            dataexif.author = metadata.author ? metadata.author : "";
-            // dataexif.title = metadata.
-          }
-        });
-      }
+    const documentSent = req.file;
+    const { title, author } = req.body;
+    const newTitle = !title ? documentSent.originalname : title;
+    console.log(title);
+    let document = await Document.findOne({ title: newTitle });
+    if (document) {
+      return res.status(401).json({ error: "Document already exist!" });
+    }
+    console.log(newTitle);
+    document = await Document.create({
+      title: newTitle,
+      author: author,
+      urlPath: documentSent.path,
     });
-    dataexif.title = document.originalname;
-    // await Document.create({ title: document.orginalname });
-    res.status(200).json(dataexif);
+
+    // addMetadata(documentSent.path, newTitle);
+
+    res.status(200).json(document);
   } catch (err) {
+    console.log(err);
     res.status(401).json({ error: "An error occured" });
   }
 };
@@ -40,12 +36,38 @@ const downloadBook = async (req, res) => {
   }
 };
 
-const getRecentBooks = async (req, res) => {
+const getDocument = async (req, res) => {
   try {
-    res.status(200).json("Recent Books");
+    const qnew = req.query.new;
+    let documents;
+    if (qnew) {
+      console.log("new");
+      documents = await Document.find().sort({ createdAt: -1 }).limit(6);
+    } else {
+      documents = await Document.find().sort({ createdAt: -1 });
+    }
+    res.status(200).json(documents);
   } catch (err) {
+    console.log(err);
     res.status(401).json("Error occured");
   }
 };
 
-module.exports = { uploadBook, downloadBook, getRecentBooks };
+const searchDocument = async (req, res) => {
+  try {
+    const documentSearch = req.params.bookSearch;
+    const listDocuments = await Document.find({
+      title: { $regex: new RegExp(documentSearch.toLowerCase(), "i") },
+    }).limit(5);
+    res.status(200).json(listDocuments);
+  } catch (err) {
+    res.status(401).json({ error: "An error occured" });
+  }
+};
+
+module.exports = {
+  uploadBook,
+  downloadBook,
+  getDocument,
+  searchDocument,
+};
