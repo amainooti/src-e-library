@@ -27,10 +27,9 @@ export default function Home() {
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
-          height: "100vh",
         }}
       >
-        <Main alignItems="center">
+        <Main>
           <Box mb={3}>
             <SearchBar />
           </Box>

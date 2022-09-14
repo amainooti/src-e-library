@@ -1,4 +1,3 @@
-// import * as React from "react";
 import * as React from "react";
 import PropTypes from "prop-types";
 import ProfileMenu from "../Common/ProfileMenu";
@@ -128,7 +127,7 @@ export default function Header(props) {
     <React.Fragment>
       <CssBaseline />
       <ElevationScroll {...props}>
-        <AppBar sx={{ background: "transparent", boxShadow: "none" }}>
+        <AppBar>
           <Toolbar>
             <Link href="/">
               <a>

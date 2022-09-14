@@ -12,10 +12,12 @@ function MyApp({ Component, pageProps }) {
         color="#fff"
       />
       <Component {...pageProps} />
-      <div class="ocean">
-        <div class="wave"></div>
-        <div class="wave"></div>
-        <div class="wave"></div>
+      <div className="background-items">
+        <div className="ocean">
+          <div className="wave"></div>
+          <div className="wave"></div>
+          <div className="wave"></div>
+        </div>
       </div>
     </>
   );
