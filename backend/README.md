@@ -11,5 +11,5 @@ $ curl -X POST  -F "documentFile=@/path/to/file" "http://localhost:8080/api/uplo
 - Response
 
 ```json
-
+{ "success": "Upload working" }
 ```
