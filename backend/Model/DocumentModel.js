@@ -5,6 +5,13 @@ const DocumentSchema = mongoose.Schema(
     title: {
       type: String,
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    author: {
+      type: String,
+    },
   },
   {
     timestamps: true,
