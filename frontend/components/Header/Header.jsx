@@ -1,7 +1,6 @@
 // import * as React from "react";
 import * as React from "react";
 import PropTypes from "prop-types";
-import { styled, alpha } from "@mui/material/styles";
 import ProfileMenu from "../Common/ProfileMenu";
 
 import {
@@ -10,64 +9,16 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  InputBase,
-  Badge,
   MenuItem,
   Menu,
   Avatar,
   useScrollTrigger,
   CssBaseline,
-  Container,
 } from "@mui/material";
 import Link from "next/link";
 
-import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
-
-// import PropTypes from "prop-types";
-
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  maxWidth: "600px",
-
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  flex: 1,
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
+import SearchBar from "../Common/Search";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -192,15 +143,7 @@ export default function Header(props) {
               </a>
             </Link>
             <Box sx={{ flexGrow: { lg: 1, xs: 0 } }} />
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase
-                placeholder="Search…"
-                inputProps={{ "aria-label": "search" }}
-              />
-            </Search>
+            <SearchBar />
             <Box sx={{ flexGrow: { lg: 1 } }} />
 
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
