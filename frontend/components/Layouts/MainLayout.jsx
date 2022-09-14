@@ -79,9 +79,6 @@ const MainLayout = ({ children }) => {
     <>
       <Header />
       {children}
-      <div class="ocean">
-        <div class="wave"></div>
-      </div>
       <Footer />
     </>
   );

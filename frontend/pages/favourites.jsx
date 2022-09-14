@@ -3,13 +3,7 @@ import React from "react";
 import MainLayout from "../components/Layouts/MainLayout";
 
 const LikedBooks = () => {
-  return (
-    <MainLayout>
-      <Container>
-        <Box sx={{ my: 2 }}></Box>
-      </Container>
-    </MainLayout>
-  );
+  return <MainLayout></MainLayout>;
 };
 
 export default LikedBooks;

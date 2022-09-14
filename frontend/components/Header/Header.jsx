@@ -2,6 +2,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { styled, alpha } from "@mui/material/styles";
+import ProfileMenu from "../Common/ProfileMenu";
+
 import {
   AppBar,
   Box,
@@ -17,6 +19,7 @@ import {
   CssBaseline,
   Container,
 } from "@mui/material";
+import Link from "next/link";
 
 import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
@@ -92,6 +95,8 @@ ElevationScroll.propTypes = {
 };
 
 export default function Header(props) {
+  const [showProfile, setShowProfile] = React.useState(false);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -174,14 +179,18 @@ export default function Header(props) {
       <ElevationScroll {...props}>
         <AppBar sx={{ background: "transparent", boxShadow: "none" }}>
           <Toolbar>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ display: { sm: "block" } }}
-            >
-              LOGO
-            </Typography>
+            <Link href="/">
+              <a>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ display: { sm: "block" } }}
+                >
+                  LOGO
+                </Typography>
+              </a>
+            </Link>
             <Box sx={{ flexGrow: { lg: 1, xs: 0 } }} />
             <Search>
               <SearchIconWrapper>
@@ -193,6 +202,7 @@ export default function Header(props) {
               />
             </Search>
             <Box sx={{ flexGrow: { lg: 1 } }} />
+
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <IconButton
                 size="large"
@@ -200,7 +210,7 @@ export default function Header(props) {
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
+                onClick={() => setShowProfile((prev) => !prev)}
                 color="inherit"
               >
                 <Avatar />
@@ -212,12 +222,13 @@ export default function Header(props) {
                 aria-label="show more"
                 aria-controls={mobileMenuId}
                 aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
+                onClick={() => setShowProfile((prev) => !prev)}
                 color="inherit"
               >
                 <MoreIcon />
               </IconButton>
             </Box>
+            {showProfile && <ProfileMenu />}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
