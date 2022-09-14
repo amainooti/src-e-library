@@ -54,10 +54,10 @@ export default function Home() {
             </Box>
 
             <Grid container spacing={{ xs: 3 }}>
-              {Array(4)
+              {Array(6)
                 .fill()
                 .map((_, index) => (
-                  <Grid Item item lg={3} md={4} sm={6} xs={12} key={index}>
+                  <Grid Item item lg={2} md={2} sm={2} xs={6} key={index}>
                     <BookCard />
                   </Grid>
                 ))}

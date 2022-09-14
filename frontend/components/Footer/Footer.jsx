@@ -3,7 +3,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <Box align="center" mb={2}>
+    <Box align="center" p={5} mb={3}>
       <Typography>
         &copy; {new Date().getFullYear()} ABUAD SRC. All Rights Reserved.
       </Typography>
