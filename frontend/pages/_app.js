@@ -14,6 +14,8 @@ function MyApp({ Component, pageProps }) {
       <Component {...pageProps} />
       <div class="ocean">
         <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
       </div>
     </>
   );
