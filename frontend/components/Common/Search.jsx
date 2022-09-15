@@ -1,6 +1,7 @@
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
+import { useRouter } from "next/router";
 import axios from "axios";
 import { axiosInstance } from "../../pages/api/axiosInstance";
 
@@ -60,7 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const searchResults = async (str) => {
   try {
     let result = str.replace(/,/g, "");
-    let { data } = await axiosInstance.get(`/api/books/search/${result}`);
+    let { data } = await axiosInstance.get(`/api/document/search/${result}`);
     return data;
   } catch (error) {
     console.log(error);
@@ -69,6 +70,7 @@ const searchResults = async (str) => {
 
 function SearchBar({ size }) {
   const theme = useTheme();
+  const router = useRouter();
   const [resultOptions, setResultOptions] = useState([]);
 
   // const [searchResults, setSearchResults] = useState([]);
@@ -80,7 +82,8 @@ function SearchBar({ size }) {
     const searchData = data.get("search");
     console.log(resultOptions);
     const result = resultOptions.filter((item) => item.title === searchData);
-
+    console.log(result);
+    console.log(searchData);
     if (result.length > 0) {
       router.push(`/book/${result[0]._id}`);
     } else {
@@ -122,7 +125,7 @@ function SearchBar({ size }) {
                 srcSet="/assets/book.jpg"
                 alt=""
               />
-              {option.first_name} {option.last_name}
+              {option}
             </Box>
           )}
           renderInput={(params) => {
@@ -131,6 +134,7 @@ function SearchBar({ size }) {
               <StyledInputBase
                 {...params.InputProps}
                 {...rest}
+                name="search"
                 onChange={(e) => onChangeQuery(e)}
                 placeholder="Searching for..."
                 // inputProps={{ "aria-label": "search" }}

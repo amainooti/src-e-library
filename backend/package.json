@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/amainooti/src-e-library#readme",
   "dependencies": {
+    "@pdftron/pdfnet-node": "^9.3.0",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cors": "^2.8.5",

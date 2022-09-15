@@ -4,12 +4,18 @@ const DocumentSchema = mongoose.Schema(
   {
     title: {
       type: String,
-      unique: true,
       required: true,
+      unique: false,
     },
     urlPath: {
       type: String,
       required: true,
+    },
+    description: {
+      type: String,
+    },
+    noOfPages: {
+      type: Number,
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,

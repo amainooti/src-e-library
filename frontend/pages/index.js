@@ -10,10 +10,23 @@ import React, { useState } from "react";
 import LoginForm from "../components/AuthForms/LoginForm";
 import { useRecoilState } from "recoil";
 import { openModal } from "../atoms/loginAtom";
+import { axiosInstance } from "./api/axiosInstance";
 
 export default function Home() {
-  const [modal, setModal] = useRecoilState(openModal);
-
+  const [documents, setDocuments] = React.useState([]);
+  React.useEffect(() => {
+    const getDocuments = async () => {
+      await axiosInstance
+        .get("/api/document")
+        .then((res) => {
+          setDocuments(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    getDocuments();
+  }, []);
   return (
     <IndexLayout>
       <Container
@@ -121,7 +134,7 @@ export default function Home() {
             {Array(12)
               .fill()
               .map((_, index) => (
-                <Grid item lg={2} md={2} sm={2} xs={6} key={index}>
+                <Grid item lg={2} md={3} sm={4} xs={6} key={index}>
                   <BookCard />
                 </Grid>
               ))}
