@@ -1,103 +1,196 @@
-import React from "react";
-import { useTheme } from "@mui/material/styles";
+import Footer from "../Footer/Footer";
+import * as React from "react";
+import PropTypes from "prop-types";
+import ProfileMenu from "../Common/ProfileMenu";
 
 import {
+  AppBar,
   Box,
   Toolbar,
-  List,
-  Typography,
-  Divider,
   IconButton,
-  Drawer,
-  AppBar,
-  styled,
-  InputBase,
-  Stack,
-  alpha,
-  Tooltip,
-  Button,
+  Typography,
+  MenuItem,
+  Menu,
   Avatar,
-  Paper,
-  ClickAwayListener,
-  Container,
+  useScrollTrigger,
+  CssBaseline,
 } from "@mui/material";
+import Link from "next/link";
 
-import { Search, FavoriteBorderRounded } from "@mui/icons-material";
+import MoreIcon from "@mui/icons-material/MoreVert";
 
-const SecondaryButton = (props) => {
-  return (
-    <Button
-      variant={props.variant}
-      size={props.size}
-      disableElevation
-      onClick={props.onClick}
-      sx={{
-        color: props.textColor ? props.textColor : "#00a889",
-        fontWeight: "bold",
-        background: "rgb(0,0,0,5%)",
-        borderRadius: "1rem",
-        textTransform: "none",
-        fontFamily: "'Josefin Sans', sans-serif",
-      }}
-      fullWidth={props.fullWidth}
-    >
-      {props.children}
-    </Button>
-  );
+function ElevationScroll(props) {
+  const { children, window } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+    target: window ? window() : undefined,
+  });
+
+  return React.cloneElement(children, {
+    elevation: trigger ? 4 : 0,
+  });
+}
+
+ElevationScroll.propTypes = {
+  children: PropTypes.element.isRequired,
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
 };
 
-const CustomButton = (props) => {
-  return (
-    <Button
-      variant={props.variant}
-      size={props.size}
-      sx={{
-        borderRadius: "1rem",
-        textTransform: "none",
-        fontFamily: "'Josefin Sans', sans-serif",
-        width: props.width,
+function Header(props) {
+  const [showProfile, setShowProfile] = React.useState(false);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
       }}
-      fullWidth={props.fullWidth}
-      disabled={props.disabled}
-      color={props.color}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
     >
-      {props.children}
-    </Button>
+      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+    </Menu>
   );
-};
+
+  const mobileMenuId = "primary-search-account-menu-mobile";
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <Avatar />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  );
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <ElevationScroll {...props}>
+        <AppBar
+          sx={{
+            background: "transparent",
+          }}
+        >
+          <Toolbar
+            sx={{
+              justifyContent: "space-between",
+            }}
+          >
+            <Link href="/">
+              <a>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ display: { sm: "block" } }}
+                >
+                  LOGO
+                </Typography>
+              </a>
+            </Link>
+
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={() => setShowProfile((prev) => !prev)}
+                color="inherit"
+              >
+                <Avatar />
+              </IconButton>
+            </Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={() => setShowProfile((prev) => !prev)}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+            {showProfile && <ProfileMenu />}
+          </Toolbar>
+        </AppBar>
+      </ElevationScroll>
+      <Toolbar />
+    </React.Fragment>
+  );
+}
 
 const IndexLayout = ({ children }) => {
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-  const [showProfile, setShowProfile] = React.useState(false);
   return (
-    <div>
-      <Box p={2} mb={3} justifyContent="space-between" display="flex">
-        <Typography>LOGO</Typography>
-
-        <Stack spacing={2} direction="row">
-          <Tooltip title="Profile" arrow>
-            <>
-              <SecondaryButton
-                textColor="inherit"
-                onClick={() => setShowProfile((prev) => !prev)}
-              >
-                <Typography mr={1}>Hi, User</Typography>
-                <Avatar
-                  sx={{
-                    marginRight: "5px",
-                  }}
-                />
-              </SecondaryButton>
-            </>
-          </Tooltip>
-        </Stack>
-      </Box>
-      <Container maxWidth="xl">
-        {showProfile && <Profile />}
-        <Box>{children}</Box>
-      </Container>
-    </div>
+    <>
+      <Header />
+      {children}
+      <Footer />
+    </>
   );
 };
 
