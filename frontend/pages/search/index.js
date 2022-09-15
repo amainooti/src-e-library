@@ -17,7 +17,7 @@ const Search = () => {
           {Array(24)
             .fill()
             .map((_, index) => (
-              <Grid item xs={24}>
+              <Grid item xs={24} key={index}>
                 <HorizontalBookCard />
               </Grid>
             ))}
