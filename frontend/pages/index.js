@@ -13,6 +13,8 @@ import { openModal } from "../atoms/loginAtom";
 import { axiosInstance } from "./api/axiosInstance";
 
 export default function Home() {
+  const [modal, setModal] = useRecoilState(openModal);
+
   const [documents, setDocuments] = React.useState([]);
   React.useEffect(() => {
     const getDocuments = async () => {

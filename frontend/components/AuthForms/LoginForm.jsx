@@ -47,7 +47,7 @@ const LoginForm = ({ setMobileOpen }) => {
     <>
       <Paper
         sx={{
-          width: { sm: "60%" },
+          // width: { sm: "60%" },
           padding: { md: "2rem 3rem", xs: "2rem 1rem" },
           //   minHeight: { sm: "100%", xs: "100vh" },
           margin: "auto",
@@ -172,6 +172,38 @@ const LoginForm = ({ setMobileOpen }) => {
             </form>
           )}
         </Formik>
+        <Box display="flex" justifyContent="center" alignItems="center" my={2}>
+          <Box color="GrayText">Don&apos;t have an account? </Box>
+          <Link href="/register">
+            <Typography
+              variant="h7"
+              sx={{
+                ml: "8px !important",
+                borderBottom: "1px solid",
+                fontWeight: "600",
+                cursor: "pointer",
+              }}
+            >
+              SignUp
+            </Typography>
+          </Link>
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Box color="GrayText">Forgot Your Password?</Box>
+          <Link href="/forgotpassword">
+            <Typography
+              variant="h7"
+              sx={{
+                ml: "8px !important",
+                cursor: "pointer",
+                borderBottom: "1px solid",
+                fontWeight: "600",
+              }}
+            >
+              Reset It
+            </Typography>
+          </Link>
+        </Box>
       </Paper>
     </>
   );
