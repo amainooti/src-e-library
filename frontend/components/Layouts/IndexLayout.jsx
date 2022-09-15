@@ -17,6 +17,9 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 
+import { useRecoilState, useRecoilValue } from "recoil";
+import { openModal, loginState } from "../../atoms/loginAtom";
+
 import MoreIcon from "@mui/icons-material/MoreVert";
 
 function ElevationScroll(props) {
@@ -45,6 +48,10 @@ ElevationScroll.propTypes = {
 };
 
 function Header(props) {
+  const [modal, setModal] = useRecoilState(openModal);
+
+  const isLoggedIn = useRecoilValue(loginState);
+  console.log(isLoggedIn);
   const [showProfile, setShowProfile] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -151,17 +158,31 @@ function Header(props) {
             </Link>
 
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => setShowProfile((prev) => !prev)}
-                color="inherit"
-              >
-                <Avatar />
-              </IconButton>
+              {!isLoggedIn ? (
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => setModal((prev) => !prev)}
+                  color="inherit"
+                >
+                  <Avatar />
+                </IconButton>
+              ) : (
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  // aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => setShowProfile((prev) => !prev)}
+                  color="inherit"
+                >
+                  <Avatar />
+                </IconButton>
+              )}
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
               <IconButton

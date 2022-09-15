@@ -18,6 +18,8 @@ import Link from "next/link";
 
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchBar from "../Common/Search";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { openModal, loginState, openProfile } from "../../atoms/loginAtom";
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -45,31 +47,27 @@ ElevationScroll.propTypes = {
 };
 
 export default function Header(props) {
-  const [showProfile, setShowProfile] = React.useState(false);
+  const [showProfile, setShowProfile] = useRecoilState(openProfile);
+  const [modal, setModal] = useRecoilState(openModal);
 
+  const isLoggedIn = useRecoilValue(loginState);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
-
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -123,6 +121,7 @@ export default function Header(props) {
       </MenuItem>
     </Menu>
   );
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -146,17 +145,31 @@ export default function Header(props) {
             <Box sx={{ flexGrow: { lg: 1 } }} />
 
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={() => setShowProfile((prev) => !prev)}
-                color="inherit"
-              >
-                <Avatar />
-              </IconButton>
+              {!isLoggedIn ? (
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => setModal((prev) => !prev)}
+                  color="inherit"
+                >
+                  <Avatar />
+                </IconButton>
+              ) : (
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={() => setShowProfile((prev) => !prev)}
+                  color="inherit"
+                >
+                  <Avatar />
+                </IconButton>
+              )}
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
               <IconButton
