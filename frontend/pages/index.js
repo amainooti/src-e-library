@@ -56,7 +56,7 @@ export default function Home() {
               {Array(6)
                 .fill()
                 .map((_, index) => (
-                  <Grid Item item lg={2} md={2} sm={2} xs={6} key={index}>
+                  <Grid item lg={2} md={2} sm={2} xs={6} key={index}>
                     <BookCard />
                   </Grid>
                 ))}

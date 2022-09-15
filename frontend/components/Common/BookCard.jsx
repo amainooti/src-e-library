@@ -66,7 +66,7 @@ const BookImage = ({ image, bookId, width }) => {
           alt="Book Cover Image"
           width={width || 400}
           height={width || 400}
-          responsive
+          responsive="true"
         />
       </BookLink>
     </div>

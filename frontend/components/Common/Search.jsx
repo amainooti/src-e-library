@@ -3,17 +3,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 
 import {
-  AppBar,
+  TextField,
+  Autocomplete,
   Box,
-  Toolbar,
-  IconButton,
-  Typography,
-  MenuItem,
-  Menu,
-  Avatar,
-  useScrollTrigger,
   InputBase,
+  Stack,
+  useTheme,
 } from "@mui/material";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -57,21 +55,94 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const SearchBar = () => {
+const searchResults = async (str) => {
+  try {
+    let result = str.replace(/,/g, "");
+    let { data } = await axiosInstance.get(`/api/books/search/${result}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+function SearchBar({ size }) {
+  const theme = useTheme();
+  const [resultOptions, setResultOptions] = useState([]);
+
+  // const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    console.log("Submitting Data");
+    const searchData = data.get("search");
+    console.log(resultOptions);
+    const result = resultOptions.filter((item) => item.title === searchData);
+
+    if (result.length > 0) {
+      router.push(`/book/${result[0]._id}`);
+    } else {
+      console.log("Sorry book does not exist");
+    }
+  };
+
+  const onChangeQuery = async (e) => {
+    if (e.target.value) {
+      let data = await searchResults(e.target.value);
+      setResultOptions(data);
+    }
+  };
+
   return (
     <Search>
-      <SearchIconWrapper>
-        <SearchIcon />
-      </SearchIconWrapper>
-      <StyledInputBase
-        placeholder="Search…"
-        inputProps={{ "aria-label": "search" }}
-        sx={{
-          width: "100%",
-        }}
-      />
+      <form onSubmit={handleSearch}>
+        <SearchIconWrapper>
+          <SearchIcon />
+        </SearchIconWrapper>
+        <Autocomplete
+          freeSolo
+          size={size || "small"}
+          id="book-search-bar"
+          disableClearable
+          options={resultOptions ? resultOptions.map((obj) => obj.title) : []}
+          renderOption={(props, option) => (
+            <Box
+              key={option.id}
+              component="li"
+              sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+              {...props}
+            >
+              <img
+                loading="lazy"
+                width="40"
+                height="40"
+                src="/assets/book.jpg"
+                srcSet="/assets/book.jpg"
+                alt=""
+              />
+              {option.first_name} {option.last_name}
+            </Box>
+          )}
+          renderInput={(params) => {
+            const { InputLabelProps, InputProps, ...rest } = params;
+            return (
+              <StyledInputBase
+                {...params.InputProps}
+                {...rest}
+                onChange={(e) => onChangeQuery(e)}
+                placeholder="Searching for..."
+                // inputProps={{ "aria-label": "search" }}
+                sx={{
+                  width: "100%",
+                }}
+              />
+            );
+          }}
+          noOptionsText={"empty array"}
+        />
+      </form>
     </Search>
   );
-};
+}
 
 export default SearchBar;
