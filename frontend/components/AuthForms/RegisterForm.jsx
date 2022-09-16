@@ -15,6 +15,8 @@ import {
   FormHelperText,
   CircularProgress,
   Snackbar,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { Formik } from "formik";
 import Link from "next/link";
@@ -50,6 +52,13 @@ const RegisterForm = () => {
           margin: "auto",
         }}
       >
+        <Snackbar
+          open={errorMessage ? true : false}
+          onClose={() => {
+            setErrorMessage();
+          }}
+          message={errorMessage}
+        />
         <Formik
           initialValues={{
             email: "",
@@ -57,6 +66,9 @@ const RegisterForm = () => {
             lastname: "",
             password: "",
             confirmPassword: "",
+            department: "",
+            college: "",
+            level: "",
             checked: false,
           }}
           validationSchema={Yup.object().shape({
@@ -110,7 +122,6 @@ const RegisterForm = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     size="small"
-                    color="secondary"
                   />
                   {touched.firstname && errors.firstname && (
                     <FormHelperText error id="helper-text-firstname-signup">
@@ -129,7 +140,6 @@ const RegisterForm = () => {
                     value={values.lastname}
                     onChange={handleChange}
                     size="small"
-                    color="secondary"
                   />
                   {touched.lastname && errors.lastname && (
                     <FormHelperText error id="helper-text-lastname-signup">
@@ -148,7 +158,6 @@ const RegisterForm = () => {
                     value={values.email}
                     onChange={handleChange}
                     size="small"
-                    color="secondary"
                   />
                   {touched.email && errors.email && (
                     <FormHelperText error id="helper-text-email-signup">
@@ -167,7 +176,6 @@ const RegisterForm = () => {
                     value={values.password}
                     onChange={handleChange}
                     size="small"
-                    color="secondary"
                   />
                   {touched.password && errors.password && (
                     <FormHelperText error id="helper-text-password-signup">
@@ -186,7 +194,6 @@ const RegisterForm = () => {
                     value={values.confirmPassword}
                     onChange={handleChange}
                     size="small"
-                    color="secondary"
                   />
                   {touched.confirmPassword && errors.confirmPassword && (
                     <FormHelperText
@@ -198,6 +205,77 @@ const RegisterForm = () => {
                   )}
                 </FormControl>
               </InputContainer>
+              <InputContainer>
+                <small>College</small>
+                <FormControl fullWidth>
+                  <Select
+                    id="demo-simple-select=college"
+                    value={values.college}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    size="small"
+                  >
+                    <MenuItem value="Engineering">
+                      College of Engineering
+                    </MenuItem>
+                    <MenuItem value="Sciences">College of Sciences</MenuItem>
+                    <MenuItem value="Medicine and Health Sciences">
+                      College of Medicine and Health Sciences
+                    </MenuItem>
+                    <MenuItem value="Law">College of Law</MenuItem>
+                    <MenuItem value="Pharmacy">College of Pharmacy</MenuItem>
+                    <MenuItem value="Social and Management Sciences">
+                      College of Social &amp; Management Sciences
+                    </MenuItem>
+                  </Select>
+                  {touched.college && errors.college && (
+                    <FormHelperText error id="helper-text-college">
+                      {errors.college}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </InputContainer>
+              <InputContainer>
+                <small>Department</small>
+                <FormControl fullWidth>
+                  <OutlinedInput
+                    type="text"
+                    name="department"
+                    value={values.department}
+                    onChange={handleChange}
+                    size="small"
+                  />
+                  {touched.department && errors.department && (
+                    <FormHelperText error id="helper-text-department-signup">
+                      {errors.department}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </InputContainer>
+              <InputContainer>
+                <small>Level</small>
+                <FormControl fullWidth>
+                  <Select
+                    id="demo-simple-select-level"
+                    value={values.level}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    size="small"
+                  >
+                    <MenuItem value="100 lvl">100 lvl</MenuItem>
+                    <MenuItem value="200 lvl">200 lvl</MenuItem>
+                    <MenuItem value="300 lvl">300 lvl</MenuItem>
+                    <MenuItem value="400 lvl">400 lvl</MenuItem>
+                    <MenuItem value="500 lvl">500 lvl</MenuItem>
+                    <MenuItem value="600 lvl">600 lvl</MenuItem>
+                  </Select>
+                  {touched.level && errors.level && (
+                    <FormHelperText error id="helper-text-level">
+                      {errors.level}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </InputContainer>
               <FormControl>
                 <FormControlLabel
                   value="end"
@@ -205,7 +283,6 @@ const RegisterForm = () => {
                     <Checkbox
                       checked={values.checked}
                       onChange={() => setFieldValue("checked", !values.checked)}
-                      color="secondary"
                       required
                     />
                   }
@@ -237,7 +314,6 @@ const RegisterForm = () => {
 
               <Button
                 variant="contained"
-                color="secondary"
                 type="submit"
                 disabled={isSubmitting || !values.checked}
                 fullWidth
@@ -290,13 +366,6 @@ const RegisterForm = () => {
           </Box>
         </Stack>
       </Paper>
-      <Snackbar
-        open={errorMessage ? true : false}
-        onClose={() => {
-          setErrorMessage();
-        }}
-        message={errorMessage}
-      />
     </>
   );
 };

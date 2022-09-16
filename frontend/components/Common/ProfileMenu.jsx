@@ -38,9 +38,7 @@ const Profile = () => {
       </Box>
       <Button
         variant="contained"
-        color="secondary"
         sx={{
-          borderRadius: "1rem",
           textTransform: "none",
           fontFamily: "'Josefin Sans', sans-serif",
         }}
