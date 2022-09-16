@@ -96,7 +96,7 @@ export default function Home() {
             <UpdateIcon />
             <h2
               style={{
-                marginBottom: "0px",
+                marginBottom: "10px",
                 marginTop: "0px",
                 fontSize: "25px",
                 fontWeight: "700",

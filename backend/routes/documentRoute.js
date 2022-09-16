@@ -8,7 +8,7 @@ const {
 } = require("../controllers/bookController");
 const { uploadFile } = require("../utils/helper");
 
-router.post("/upload", uploadFile.single("documentFile"), uploadBook);
+router.post("/upload", uploadFile.single("document"), uploadBook);
 router.get("/document/:documentId", downloadBook);
 router.get("/document", getDocument);
 router.get("/document/search/:documentSearch", searchDocument);

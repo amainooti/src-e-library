@@ -63,7 +63,11 @@ const BookImage = ({ image, bookId, width }) => {
     >
       <BookLink href={`/book/${bookId}`}>
         <Image
-          src={image || "/assets/book.jpg"}
+          src={
+            bookId
+              ? `http://127.0.0.1:8080/api/document/thumbnail/${bookId}`
+              : "/assets/book.jpg"
+          }
           alt="Book Cover Image"
           width={width || 400}
           height={width || 400}
@@ -93,7 +97,7 @@ export const BookCard = (props) => {
       }}
       elevation={over ? 1 : 0}
     >
-      <BookImage image={props?.image} productId={props?._id} />
+      <BookImage image={props?.image} bookId={props?._id} />
       <CardActions
         sx={{
           justifyContent: "space-evenly",
@@ -133,7 +137,7 @@ export const HorizontalBookCard = (props) => {
     >
       <Box display="flex">
         <Box>
-          <BookImage image={props?.image} productId={props?._id} width={150} />
+          <BookImage image={props?.image} bookId={props?._id} width={150} />
         </Box>
         <Box p={3}>
           <Link href={`/book/${props._id}`}>
