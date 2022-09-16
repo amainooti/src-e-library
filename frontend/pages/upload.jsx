@@ -46,9 +46,7 @@ function pdfDetails(pdfBlob) {
     var reader = new FileReader();
     reader.onload = function () {
       var raw = reader.result;
-
       var Pages = raw.match(/\Type[\s]*\/Page[^s]/g).length;
-
       var regex = /<xmp.*?:(.*?)>(.*?)</g;
       var meta = [
         {
@@ -87,12 +85,10 @@ function formatSizeUnits(bytes) {
 }
 
 export default function Upload() {
-  // drag state
   const [dragActive, setDragActive] = React.useState(false);
-  // ref
+
   const inputRef = React.useRef(null);
 
-  // handle drag events
   const handleDrag = function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -103,7 +99,6 @@ export default function Upload() {
     }
   };
 
-  // triggers when file is dropped
   const handleDrop = function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -113,15 +108,13 @@ export default function Upload() {
     }
   };
 
-  // triggers when file is selected with click
-  const handleChange = function (e) {
+  const handleChangeFile = function (e) {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
       handleFile(e.target.files);
     }
   };
 
-  // triggers the input when the button is clicked
   const onButtonClick = () => {
     inputRef.current.click();
   };
@@ -175,7 +168,7 @@ export default function Upload() {
             }) => (
               <form noValidate onSubmit={handleSubmit}>
                 <Box display="flex" gap={5}>
-                  <form
+                  <div
                     id="form-file-upload"
                     onDragEnter={handleDrag}
                     onSubmit={(e) => e.preventDefault()}
@@ -186,7 +179,7 @@ export default function Upload() {
                       id="input-file-upload"
                       accept=".pdf"
                       multiple={true}
-                      onChange={handleChange}
+                      onChange={handleChangeFile}
                     />
                     <label
                       id="label-file-upload"
@@ -212,9 +205,12 @@ export default function Upload() {
                         onDrop={handleDrop}
                       ></div>
                     )}
-                  </form>
-
-                  <Box>
+                  </div>
+                  <Box
+                    sx={{
+                      width: "100%",
+                    }}
+                  >
                     <Image
                       src={"/assets/book.jpg"}
                       alt="Book Cover Image"
