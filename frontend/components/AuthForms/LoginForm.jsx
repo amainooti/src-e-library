@@ -109,7 +109,6 @@ const LoginForm = ({ setMobileOpen }) => {
                     onBlur={handleBlur}
                     placeholder="example@gmail.com"
                     size="small"
-                    color="secondary"
                     startAdornment={
                       <InputAdornment position="start">
                         <EmailTwoToneIcon />
@@ -134,7 +133,6 @@ const LoginForm = ({ setMobileOpen }) => {
                     value={values.password}
                     onBlur={handleBlur}
                     size="small"
-                    color="secondary"
                     startAdornment={
                       <InputAdornment position="start">
                         <LockTwoToneIcon />
@@ -162,7 +160,6 @@ const LoginForm = ({ setMobileOpen }) => {
 
               <Button
                 variant="contained"
-                color="secondary"
                 type="submit"
                 fullWidth
                 disabled={isSubmitting}

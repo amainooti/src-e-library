@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import UploadIcon from "@mui/icons-material/Upload";
-import MainLayout from "../components/Layouts/MainLayout";
+import MainLayout from "../../components/Layouts/MainLayout";
 import {
   FormControl,
   OutlinedInput,
@@ -16,9 +16,12 @@ import {
   Container,
   InputAdornment,
   Grid,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
-import axiosInstance from "./api/axiosInstance";
+
 import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -123,6 +126,9 @@ export default function Upload() {
     inputRef.current.click();
   };
 
+  const [value, setValue] = React.useState([]);
+  const [inputValue, setInputValue] = React.useState("");
+
   return (
     <MainLayout>
       <Container maxWidth="md">
@@ -159,6 +165,10 @@ export default function Upload() {
               author: Yup.string().required("An Author Name is required!"),
               pageCount: Yup.number().required("Page Count is required!"),
               bookDesc: Yup.string().required("Description is required!"),
+              tags: Yup.array()
+                .min(1, "You can't leave this blank.")
+                .required("You can't leave this blank.")
+                .nullable(),
             })}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               const formData = new FormData();
@@ -179,7 +189,6 @@ export default function Upload() {
           >
             {({
               values,
-              setFieldValue,
               handleSubmit,
               handleChange,
               errors,
@@ -203,7 +212,6 @@ export default function Upload() {
                   }}
                   spacing={3}
                 >
-                  {" "}
                   <Grid item xs={12} sm={5}>
                     <div
                       id="form-file-upload"
@@ -267,7 +275,6 @@ export default function Upload() {
                             onChange={handleChange}
                             onBlur={handleBlur}
                             size="small"
-                            color="secondary"
                           />
                           {touched.title && errors.title && (
                             <FormHelperText error id="helper-text-book-title">
@@ -285,7 +292,6 @@ export default function Upload() {
                             value={values.author}
                             onChange={handleChange}
                             size="small"
-                            color="secondary"
                           />
                           {touched.author && errors.author && (
                             <FormHelperText error id="helper-text-book-author">
@@ -330,7 +336,6 @@ export default function Upload() {
                             value={values.bookDesc}
                             onChange={handleChange}
                             size="small"
-                            color="secondary"
                           />
                           {touched.bookDesc && errors.bookDesc && (
                             <FormHelperText error id="helper-text-book-desc">
@@ -339,6 +344,56 @@ export default function Upload() {
                           )}
                         </FormControl>
                       </InputContainer>
+                      <InputContainer>
+                        <small>Tags</small>
+                        <FormControl fullWidth>
+                          {/* <OutlinedInput
+                            type="number"
+                            name="pageCount"
+                            value={values.pageCount}
+                            onChange={handleChange}
+                            size="small"
+                            
+                          /> */}
+                          <Autocomplete
+                            size="small"
+                            multiple
+                            freeSolo
+                            id="tags-standard"
+                            options={["Option 1"]}
+                            value={value}
+                            inputValue={inputValue}
+                            onChange={(event, newValue) => {
+                              setValue(newValue);
+                            }}
+                            onInputChange={(event, newInputValue) => {
+                              const options = newInputValue.split(",");
+                              if (options.length > 1) {
+                                setValue(
+                                  value
+                                    .concat(options)
+                                    .map((x) => x.trim())
+                                    .filter((x) => x)
+                                );
+                              } else {
+                                setInputValue(newInputValue);
+                              }
+                            }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="Use comma(,) to separate tags"
+                              />
+                            )}
+                          />
+                          {touched.tags && errors.tags && (
+                            <FormHelperText error id="helper-text-book-tags">
+                              {errors.tags}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </InputContainer>
+
                       <Box gap={1} display="flex">
                         <Button
                           variant="outlined"
@@ -349,7 +404,6 @@ export default function Upload() {
                         </Button>
                         <Button
                           variant="contained"
-                          color="secondary"
                           type="submit"
                           disabled={isSubmitting}
                           endIcon={<UploadIcon />}
