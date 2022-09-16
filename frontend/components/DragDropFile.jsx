@@ -68,15 +68,7 @@ function DragDropFile() {
   const inputRef = useRef(null);
 
   // handle drag events
-  const handleDrag = function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
+  const inputRef = useRef(null);
 
   // triggers when file is dropped
   const handleDrop = function (e) {

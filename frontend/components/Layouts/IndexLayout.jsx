@@ -30,6 +30,7 @@ function Header(props) {
       <AppBar
         sx={{
           background: "transparent",
+          color: "secondary.main",
         }}
       >
         <Toolbar
