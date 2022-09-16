@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-require("colors");
+const colors = require("colors");
 const app = express();
 require("dotenv").config();
 const morgan = require("morgan");
@@ -18,6 +18,8 @@ app.use(cors());
 
 app.use("/api/users", require("./routes/userRoute"));
 app.use("/api", require("./routes/documentRoute"));
+app.use("api/admin", require("./routes/adminRoute"))
+
 
 app.listen(PORT, () => {
   console.log(`server is running on http://localhost:${PORT}`.bold);
