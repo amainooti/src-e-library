@@ -16,6 +16,7 @@ export default function Home() {
   const [modal, setModal] = useRecoilState(loginModalState);
 
   const [documents, setDocuments] = React.useState([]);
+
   React.useEffect(() => {
     const getDocuments = async () => {
       await axiosInstance
@@ -29,6 +30,7 @@ export default function Home() {
     };
     getDocuments();
   }, []);
+
   return (
     <IndexLayout>
       <Container
@@ -94,7 +96,7 @@ export default function Home() {
             <UpdateIcon />
             <h2
               style={{
-                marginBottom: "0px",
+                marginBottom: "10px",
                 marginTop: "0px",
                 fontSize: "25px",
                 fontWeight: "700",

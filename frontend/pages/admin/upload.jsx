@@ -19,6 +19,8 @@ import {
   Autocomplete,
   TextField,
 } from "@mui/material";
+import axiosInstance from "./api/axiosInstance";
+import axios from "axios";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -29,10 +31,10 @@ const InputContainer = styled(Box)(() => ({
   },
 }));
 
-async function handleFile(files) {
+async function handleFile(files, setFieldValue) {
   var pdf = files[0];
   var details = await pdfDetails(pdf);
-  console.log(details);
+  setFieldValue("pageCount", details[0].Pages);
   //   console.log(files);
   //   var fileName = files[0].name;
   //   var fileType = files[0].type;
@@ -111,10 +113,11 @@ export default function Upload() {
     }
   };
 
-  const handleChangeFile = function (e) {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      handleFile(e.target.files);
+  const handleChangeFile = function (event, setFieldValue) {
+    if (event.target.files && event.target.files[0]) {
+      setFieldValue("document", event.target.files[0]);
+      setFieldValue("title", event.target.files[0].name.split(".")[0]);
+      handleFile(event.target.files, setFieldValue);
     }
   };
 
@@ -149,6 +152,7 @@ export default function Upload() {
           <Formik
             initialValues={{
               title: "",
+              document: undefined,
               author: "",
               pageCount: "",
               bookDesc: "",
@@ -156,7 +160,7 @@ export default function Upload() {
               file: null,
             }}
             validationSchema={Yup.object().shape({
-              title: Yup.string().email().required("A Title is required"),
+              title: Yup.string().required("A Title is required"),
               author: Yup.string().required("An Author Name is required!"),
               pageCount: Yup.number().required("Page Count is required!"),
               bookDesc: Yup.string().required("Description is required!"),
@@ -165,6 +169,22 @@ export default function Upload() {
                 .required("You can't leave this blank.")
                 .nullable(),
             })}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              const formData = new FormData();
+              Object.entries(values).forEach((file) => {
+                formData.append(file[0], file[1]);
+              });
+              await axiosInstance
+                .post("/api/upload", formData)
+                .then((res) => {
+                  setSubmitting(false);
+                  resetForm({ values: "" });
+                })
+                .catch((err) => {
+                  console.log(err);
+                  setSubmitting(false);
+                });
+            }}
           >
             {({
               values,
@@ -174,6 +194,7 @@ export default function Upload() {
               handleBlur,
               touched,
               isSubmitting,
+              resetForm,
             }) => (
               <form noValidate onSubmit={handleSubmit}>
                 <Grid
@@ -199,10 +220,13 @@ export default function Upload() {
                       <input
                         ref={inputRef}
                         type="file"
+                        name="document"
                         id="input-file-upload"
                         accept=".pdf"
-                        multiple={true}
-                        onChange={handleChangeFile}
+                        multiple={false}
+                        onChange={(event) =>
+                          handleChangeFile(event, setFieldValue)
+                        }
                       />
                       <label
                         id="label-file-upload"
@@ -284,6 +308,8 @@ export default function Upload() {
                             value={values.pageCount}
                             onChange={handleChange}
                             size="small"
+                            color="secondary"
+                            disabled
                             endAdornment={
                               <InputAdornment position="end">
                                 Pages
@@ -368,7 +394,13 @@ export default function Upload() {
                       </InputContainer>
 
                       <Box gap={1} display="flex">
-                        <Button variant="outlined">Cancel</Button>
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          onClick={() => resetForm({ values: "" })}
+                        >
+                          Cancel
+                        </Button>
                         <Button
                           variant="contained"
                           type="submit"

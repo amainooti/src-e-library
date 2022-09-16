@@ -3,11 +3,12 @@ const path = require("path");
 const { PDFNet } = require("@pdftron/pdfnet-node");
 const { addMetadata } = require("../utils/helper");
 const Document = require("../Model/DocumentModel");
+const { fromPath } = require("pdf2pic");
 
 const uploadBook = async (req, res) => {
   try {
     const documentSent = req.file;
-    const { title, author } = req.body;
+    const { title, author, pageCount } = req.body;
     const newTitle = !title ? documentSent.originalname : title;
     // let document = await Document.findOne({ title: newTitle });
     // if (document) {
@@ -17,13 +18,13 @@ const uploadBook = async (req, res) => {
       title: newTitle,
       author: author,
       urlPath: documentSent.path,
+      noOfPages: pageCount,
     });
 
     // addMetadata(documentSent.path, newTitle);
 
     res.status(200).json(document);
   } catch (err) {
-    console.log(err);
     console.log(err);
     res.status(401).json({ error: "An error occured" });
   }
@@ -43,7 +44,6 @@ const getDocument = async (req, res) => {
     const qnew = req.query.new;
     let documents;
     if (qnew) {
-      console.log("new");
       documents = await Document.find().sort({ createdAt: -1 }).limit(6);
     } else {
       documents = await Document.find().sort({ createdAt: -1 });
@@ -52,6 +52,20 @@ const getDocument = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(401).json("Error occured");
+  }
+};
+
+const downloadDocument = async (req, res) => {
+  try {
+    const documentId = req.params.documentId;
+    const document = await Document.findById(documentId).lean();
+    if (!document) {
+      res.sendStatus(500);
+    }
+    const inputPath = path.resolve(__dirname, `../${document.urlPath}`);
+    res.download(inputPath);
+  } catch (err) {
+    res.status(500).end(err);
   }
 };
 
@@ -69,40 +83,65 @@ const searchDocument = async (req, res) => {
 };
 
 const generateThumbnail = async (req, res) => {
-  console.log("Running");
-  const documentId = req.params.documentId;
-  console.log(documentId);
-  const document = await Document.findById(documentId).lean();
-  if (!document) {
-    res.sendStatus(404);
-  }
-  console.log(document);
-  const outputPath = path.resolve(__dirname, "../public/thumbnails");
-  const inputPath = path.resolve(__dirname, `../${document.urlPath}`);
-  console.log(outputPath);
-  const getThumbFromDocument = async () => {
-    const doc = await PDFNet.PDFDoc.createFromFilePath(inputPath);
-    await doc.initSecurityHandler();
-    const pdfDraw = await PDFNet.PDFDraw.create(92);
-    const currPage = await doc.getPage(1);
-    await pdfDraw.export(currPage, outputPath, "PNG");
-  };
-  PDFNet.runWithCleanup(getThumbFromDocument)
-    .then(() => {
-      fs.readFile(outputPath, (err, data) => {
-        if (err) {
-          res.statusCode = 500;
-          res.end(err);
-        } else {
-          res.setHeader("ContentType", "application/png");
-          res.end(data);
-        }
-      });
-    })
-    .catch((err) => {
-      res.statusCode = 500;
-      res.end(err);
+  try {
+    const documentId = req.params.documentId;
+    const document = await Document.findById(documentId).lean();
+    if (!document) {
+      res.sendStatus(500);
+    }
+    const outputPath = path.resolve(__dirname, "../public/thumbnails");
+    const inputPath = path.resolve(__dirname, `../${document.urlPath}`);
+    const outputFile = `${outputPath}/${document.urlPath}.png`;
+    // const getThumbFromDocument = async () => {
+    //   const doc = await PDFNet.PDFDoc.createFromFilePath(inputPath);
+    //   await doc.initSecurityHandler();
+    //   const pdfDraw = await PDFNet.PDFDraw.create(92);
+    //   const currPage = await doc.getPage(1);
+    //   await pdfDraw.export(currPage, outputPath, "PNG");
+    // };
+
+    // PDFNet.runWithCleanup(getThumbFromDocument)
+    //   .then(() => {
+    //     fs.readFile(outputPath, (err, data) => {
+    //       if (err) {
+    //         res.statusCode = 500;
+    //         res.end(err);
+    //       } else {
+    //         res.setHeader("ContentType", "application/png");
+    //         res.end(data);
+    //       }
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     res.statusCode = 500;
+    //     res.end(err);
+    //   });
+    const options = {
+      density: 100,
+      saveFilename: `${document._id}`,
+      savePath: outputPath,
+      format: "png",
+      width: 600,
+      height: 600,
+    };
+    const storeAsImage = fromPath(inputPath, options);
+    const pageToConvertAsImage = 1;
+    await storeAsImage(pageToConvertAsImage).then((resolve) => {
+      return resolve;
     });
+    fs.readFile(`${outputPath}/${document._id}.1.png`, (err, data) => {
+      if (err) {
+        res.statusCode = 500;
+        res.end(err);
+      } else {
+        res.setHeader("ContentType", "application/png");
+        res.end(data);
+      }
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).end(err);
+  }
 };
 
 module.exports = {
@@ -111,4 +150,5 @@ module.exports = {
   getDocument,
   searchDocument,
   generateThumbnail,
+  downloadDocument,
 };
