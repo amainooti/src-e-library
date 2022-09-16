@@ -9,11 +9,11 @@ import IndexLayout from "../components/Layouts/IndexLayout";
 import React, { useState } from "react";
 import LoginForm from "../components/AuthForms/LoginForm";
 import { useRecoilState } from "recoil";
-import { openModal } from "../atoms/loginAtom";
 import { axiosInstance } from "./api/axiosInstance";
+import { loginModalState } from "../atoms/profileAtom";
 
 export default function Home() {
-  const [modal, setModal] = useRecoilState(openModal);
+  const [modal, setModal] = useRecoilState(loginModalState);
 
   const [documents, setDocuments] = React.useState([]);
   React.useEffect(() => {

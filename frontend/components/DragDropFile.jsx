@@ -1,17 +1,46 @@
 import { useRef, useState } from "react";
 
-function handleFile(files) {
+async function handleFile(files) {
+  var pdf = files[0];
+  var details = await pdfDetails(pdf);
+  console.log(details);
   //   console.log(files);
-  //   console.log(files[0].name);
-  //   console.log(files[0].type);
-  var fileName = files[0].name;
-  var fileType = files[0].type;
-  let fileSize = formatSizeUnits(files[0].size);
+  //   var fileName = files[0].name;
+  //   var fileType = files[0].type;
+  //   let fileSize = formatSizeUnits(files[0].size);
 
-  console.log(fileName);
-  console.log(fileType);
-  console.log(fileSize);
-  return fileName, fileType, fileSize;
+  //   console.log(fileName);
+  //   console.log(fileType);
+  //   console.log(fileSize);
+  //   return fileName, fileType, fileSize;
+}
+
+function pdfDetails(pdfBlob) {
+  return new Promise((done) => {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var raw = reader.result;
+
+      var Pages = raw.match(/\Type[\s]*\/Page[^s]/g).length;
+
+      var regex = /<xmp.*?:(.*?)>(.*?)</g;
+      var meta = [
+        {
+          Pages,
+        },
+      ];
+      var matches = regex.exec(raw);
+      while (matches != null) {
+        matches.shift();
+        meta.push({
+          [matches.shift()]: matches.shift(),
+        });
+        matches = regex.exec(raw);
+      }
+      done(meta);
+    };
+    reader.readAsBinaryString(pdfBlob);
+  });
 }
 
 function formatSizeUnits(bytes) {

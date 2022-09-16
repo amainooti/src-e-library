@@ -6,19 +6,19 @@ import Header from "../Header/Header";
 import { Box, Modal } from "@mui/material";
 import LoginForm from "../AuthForms/LoginForm";
 import { useRecoilState } from "recoil";
-import { openModal } from "../../atoms/loginAtom";
+import { profileShowState } from "../../atoms/profileAtom";
 
 const MainLayout = ({ children }) => {
   const theme = useTheme();
-  const [modal, setModal] = useRecoilState(openModal);
+  const [modalOpen, setModalOpen] = useRecoilState(profileShowState);
 
   return (
     <>
       <Header />
       <Modal
-        open={modal}
+        open={modalOpen}
         onClose={() => {
-          setModal(false);
+          setModalOpen(false);
         }}
       >
         <Box

@@ -1,13 +1,12 @@
 import { Avatar, Box, Typography, Paper, Button } from "@mui/material";
 import React from "react";
 import { useRecoilState } from "recoil";
-import { loginState, openProfile } from "../../atoms/loginAtom";
-import LoginForm from "../AuthForms/LoginForm";
-import AuthLayout from "../Layouts/AuthLayout";
+import { userLoginState } from "../../atoms/loginAtom";
+import { profileShowState } from "../../atoms/profileAtom";
 
 const Profile = () => {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState);
-  const [showProfile, setShowProfile] = useRecoilState(openProfile);
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userLoginState);
+  const [showProfile, setShowProfile] = useRecoilState(profileShowState);
 
   return (
     <>

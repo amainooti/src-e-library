@@ -18,6 +18,7 @@ import { Box } from "@mui/material";
 
 import { RWebShare } from "react-web-share";
 
+// eslint-disable-next-line react/display-name
 const BookLink = React.forwardRef(
   (
     { as, children, href, replace, scroll, shallow, passHref, ...rest }, // extract all next/link props and pass the rest to the anchor tag
