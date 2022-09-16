@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-require("colors");
+const colors = require("colors");
 const app = express();
 require("dotenv").config();
 const morgan = require("morgan");
