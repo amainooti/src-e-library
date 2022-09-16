@@ -15,6 +15,7 @@ import {
   Button,
   Container,
   InputAdornment,
+  Grid,
 } from "@mui/material";
 
 const InputContainer = styled(Box)(() => ({
@@ -167,154 +168,169 @@ export default function Upload() {
               isSubmitting,
             }) => (
               <form noValidate onSubmit={handleSubmit}>
-                <Box display="flex" gap={5}>
-                  <div
-                    id="form-file-upload"
-                    onDragEnter={handleDrag}
-                    onSubmit={(e) => e.preventDefault()}
-                  >
-                    <input
-                      ref={inputRef}
-                      type="file"
-                      id="input-file-upload"
-                      accept=".pdf"
-                      multiple={true}
-                      onChange={handleChangeFile}
-                    />
-                    <label
-                      id="label-file-upload"
-                      htmlFor="input-file-upload"
-                      className={dragActive ? "drag-active" : ""}
+                <Grid
+                  container
+                  sx={{
+                    height: "100%",
+                    boxSizing: "border-box",
+                    display: "flex",
+                    flexWrap: "wrap",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                  }}
+                  spacing={3}
+                >
+                  {" "}
+                  <Grid item xs={12} sm={5}>
+                    <div
+                      id="form-file-upload"
+                      onDragEnter={handleDrag}
+                      onSubmit={(e) => e.preventDefault()}
                     >
-                      <div>
-                        <p>Drag and drop your file here or</p>
-                        <button
-                          className="upload-button"
-                          onClick={onButtonClick}
-                        >
-                          Upload a file
-                        </button>
-                      </div>
-                    </label>
-                    {dragActive && (
-                      <div
-                        id="drag-file-element"
-                        onDragEnter={handleDrag}
-                        onDragLeave={handleDrag}
-                        onDragOver={handleDrag}
-                        onDrop={handleDrop}
-                      ></div>
-                    )}
-                  </div>
-                  <Box
-                    sx={{
-                      width: "100%",
-                    }}
-                  >
-                    <Image
-                      src={"/assets/book.jpg"}
-                      alt="Book Cover Image"
-                      width={200}
-                      height={200}
-                      responsive="true"
-                    />
-                    <InputContainer>
-                      <small>Title</small>
-                      <FormControl fullWidth>
-                        <OutlinedInput
-                          type="text"
-                          name="title"
-                          value={values.title}
-                          onChange={handleChange}
-                          onBlur={handleBlur}
-                          size="small"
-                          color="secondary"
-                        />
-                        {touched.title && errors.title && (
-                          <FormHelperText error id="helper-text-book-title">
-                            {errors.title}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </InputContainer>
-                    <InputContainer>
-                      <small>Author</small>
-                      <FormControl fullWidth>
-                        <OutlinedInput
-                          type="text"
-                          name="author"
-                          value={values.author}
-                          onChange={handleChange}
-                          size="small"
-                          color="secondary"
-                        />
-                        {touched.author && errors.author && (
-                          <FormHelperText error id="helper-text-book-author">
-                            {errors.author}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </InputContainer>
-                    <InputContainer>
-                      <small>Number of Pages</small>
-                      <FormControl fullWidth>
-                        <OutlinedInput
-                          type="number"
-                          name="pageCount"
-                          value={values.pageCount}
-                          onChange={handleChange}
-                          size="small"
-                          color="secondary"
-                          endAdornment={
-                            <InputAdornment position="end">
-                              Pages
-                            </InputAdornment>
-                          }
-                        />
-                        {touched.pageCount && errors.pageCount && (
-                          <FormHelperText error id="helper-text-page-count">
-                            {errors.pageCount}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </InputContainer>
-                    <InputContainer>
-                      <small>Book Description</small>
-                      <FormControl fullWidth>
-                        <OutlinedInput
-                          id="multiline"
-                          multiline
-                          type="text"
-                          name="bookDesc"
-                          maxRows={5}
-                          value={values.bookDesc}
-                          onChange={handleChange}
-                          size="small"
-                          color="secondary"
-                        />
-                        {touched.bookDesc && errors.bookDesc && (
-                          <FormHelperText error id="helper-text-book-desc">
-                            {errors.bookDesc}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </InputContainer>
-                    <Box gap={1} display="flex">
-                      <Button variant="outlined" color="secondary">
-                        Cancel
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        type="submit"
-                        disabled={isSubmitting}
-                        endIcon={<UploadIcon />}
+                      <input
+                        ref={inputRef}
+                        type="file"
+                        id="input-file-upload"
+                        accept=".pdf"
+                        multiple={true}
+                        onChange={handleChangeFile}
+                      />
+                      <label
+                        id="label-file-upload"
+                        htmlFor="input-file-upload"
+                        className={dragActive ? "drag-active" : ""}
                       >
-                        {isSubmitting ? <CircularProgress /> : "Upload"}
-                      </Button>
+                        <div>
+                          <p>Drag and drop your file here or</p>
+                          <Button variant="contained" onClick={onButtonClick}>
+                            Upload a file
+                          </Button>
+                        </div>
+                      </label>
+                      {dragActive && (
+                        <div
+                          id="drag-file-element"
+                          onDragEnter={handleDrag}
+                          onDragLeave={handleDrag}
+                          onDragOver={handleDrag}
+                          onDrop={handleDrop}
+                        ></div>
+                      )}
+                    </div>
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                    <Box
+                      sx={{
+                        width: "100%",
+                      }}
+                    >
+                      <Image
+                        src={"/assets/book.jpg"}
+                        alt="Book Cover Image"
+                        width={200}
+                        height={200}
+                        responsive="true"
+                      />
+                      <InputContainer>
+                        <small>Title</small>
+                        <FormControl fullWidth>
+                          <OutlinedInput
+                            type="text"
+                            name="title"
+                            value={values.title}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            size="small"
+                            color="secondary"
+                          />
+                          {touched.title && errors.title && (
+                            <FormHelperText error id="helper-text-book-title">
+                              {errors.title}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </InputContainer>
+                      <InputContainer>
+                        <small>Author</small>
+                        <FormControl fullWidth>
+                          <OutlinedInput
+                            type="text"
+                            name="author"
+                            value={values.author}
+                            onChange={handleChange}
+                            size="small"
+                            color="secondary"
+                          />
+                          {touched.author && errors.author && (
+                            <FormHelperText error id="helper-text-book-author">
+                              {errors.author}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </InputContainer>
+                      <InputContainer>
+                        <small>Number of Pages</small>
+                        <FormControl fullWidth>
+                          <OutlinedInput
+                            type="number"
+                            name="pageCount"
+                            value={values.pageCount}
+                            onChange={handleChange}
+                            size="small"
+                            color="secondary"
+                            endAdornment={
+                              <InputAdornment position="end">
+                                Pages
+                              </InputAdornment>
+                            }
+                          />
+                          {touched.pageCount && errors.pageCount && (
+                            <FormHelperText error id="helper-text-page-count">
+                              {errors.pageCount}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </InputContainer>
+                      <InputContainer>
+                        <small>Book Description</small>
+                        <FormControl fullWidth>
+                          <OutlinedInput
+                            id="multiline"
+                            multiline
+                            type="text"
+                            name="bookDesc"
+                            maxRows={5}
+                            value={values.bookDesc}
+                            onChange={handleChange}
+                            size="small"
+                            color="secondary"
+                          />
+                          {touched.bookDesc && errors.bookDesc && (
+                            <FormHelperText error id="helper-text-book-desc">
+                              {errors.bookDesc}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </InputContainer>
+                      <Box gap={1} display="flex">
+                        <Button variant="outlined" color="secondary">
+                          Cancel
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          type="submit"
+                          disabled={isSubmitting}
+                          endIcon={<UploadIcon />}
+                        >
+                          {isSubmitting ? <CircularProgress /> : "Upload"}
+                        </Button>
+                      </Box>
                     </Box>
-                  </Box>
-                </Box>
+                  </Grid>
+                </Grid>
               </form>
             )}
           </Formik>
