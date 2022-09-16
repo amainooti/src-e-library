@@ -8,7 +8,7 @@ const { fromPath } = require("pdf2pic");
 const uploadBook = async (req, res) => {
   try {
     const documentSent = req.file;
-    const { title, author, pageCount } = req.body;
+    const { title, author, pageCount, description } = req.body;
     const newTitle = !title ? documentSent.originalname : title;
     // let document = await Document.findOne({ title: newTitle });
     // if (document) {
@@ -19,6 +19,7 @@ const uploadBook = async (req, res) => {
       author: author,
       urlPath: documentSent.path,
       noOfPages: pageCount,
+      description: description,
     });
 
     // addMetadata(documentSent.path, newTitle);
@@ -52,6 +53,21 @@ const getDocument = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(401).json("Error occured");
+  }
+};
+
+const getDocumentById = async (req, res) => {
+  try {
+    const documentId = req.params.documentId;
+    const document = await Document.findById(documentId).lean();
+    if (document) {
+      res.status(200).json(document);
+    } else {
+      res.status(404).json({ error: "Document does not exist" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(401).json({ error: "An Error Occured" });
   }
 };
 
@@ -151,4 +167,5 @@ module.exports = {
   searchDocument,
   generateThumbnail,
   downloadDocument,
+  getDocumentById,
 };
