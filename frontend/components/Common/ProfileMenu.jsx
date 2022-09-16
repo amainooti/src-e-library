@@ -1,7 +1,13 @@
 import { Avatar, Box, Typography, Paper, Button } from "@mui/material";
 import React from "react";
+import { useRecoilState } from "recoil";
+import { userLoginState } from "../../atoms/loginAtom";
+import { profileShowState } from "../../atoms/profileAtom";
 
 const Profile = () => {
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userLoginState);
+  const [showProfile, setShowProfile] = useRecoilState(profileShowState);
+
   return (
     <>
       <Box mb={3}>
@@ -39,6 +45,7 @@ const Profile = () => {
           fontFamily: "'Josefin Sans', sans-serif",
         }}
         fullWidth
+        onClick={() => (setIsLoggedIn(false), setShowProfile(false))}
       >
         Logout
       </Button>
@@ -48,19 +55,21 @@ const Profile = () => {
 
 const ProfileMenu = ({ children }) => {
   return (
-    <Paper
-      sx={{
-        position: "absolute",
-        maxWidth: "350px",
-        right: "20px",
-        top: "60px",
-      }}
-      elevation={2}
-    >
-      <Box p={3}>
-        <Profile />
-      </Box>
-    </Paper>
+    <>
+      <Paper
+        sx={{
+          position: "absolute",
+          maxWidth: "350px",
+          right: "20px",
+          top: "60px",
+        }}
+        elevation={2}
+      >
+        <Box p={3}>
+          <Profile />
+        </Box>
+      </Paper>
+    </>
   );
 };
 

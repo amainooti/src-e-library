@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { useState } from "react";
+import Image from "next/image";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -117,8 +118,7 @@ function SearchBar({ size }) {
               sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
               {...props}
             >
-              <img
-                loading="lazy"
+              <Image
                 width="40"
                 height="40"
                 src="/assets/book.jpg"

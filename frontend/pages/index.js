@@ -1,17 +1,20 @@
-import React from "react";
 import Head from "next/head";
 import Image from "next/image";
-import { styled, alpha } from "@mui/material/styles";
+import { Box, Card, Container, Grid, Modal, Typography } from "@mui/material";
 
-import { Box, Card, Container, Grid, Typography } from "@mui/material";
-import MainLayout from "../components/Layouts/MainLayout";
 import SearchBar from "../components/Common/Search";
 import { BookCard } from "../components/Common/BookCard";
 import UpdateIcon from "@mui/icons-material/Update";
 import IndexLayout from "../components/Layouts/IndexLayout";
+import React, { useState } from "react";
+import LoginForm from "../components/AuthForms/LoginForm";
+import { useRecoilState } from "recoil";
 import { axiosInstance } from "./api/axiosInstance";
+import { loginModalState } from "../atoms/profileAtom";
 
 export default function Home() {
+  const [modal, setModal] = useRecoilState(loginModalState);
+
   const [documents, setDocuments] = React.useState([]);
 
   React.useEffect(() => {
@@ -105,7 +108,24 @@ export default function Home() {
               Recently Added Books:
             </h2>
           </Box>
-
+          <Modal
+            open={modal}
+            onClose={() => {
+              setModal(false);
+            }}
+          >
+            <Box
+              sx={{
+                width: { md: "500px", sm: "80%", xs: "100%" },
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <LoginForm />
+            </Box>
+          </Modal>
           <Grid
             container
             spacing={{ xs: 3 }}
