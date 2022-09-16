@@ -19,8 +19,9 @@ import {
   Autocomplete,
   TextField,
 } from "@mui/material";
-import axiosInstance from "./api/axiosInstance";
+
 import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
