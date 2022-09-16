@@ -1,7 +1,13 @@
 import React from "react";
+import LoginForm from "../components/AuthForms/LoginForm";
+import AuthLayout from "../components/Layouts/AuthLayout";
 
 const Login = () => {
-  return <div>Login</div>;
+  return (
+    <AuthLayout>
+      <LoginForm />
+    </AuthLayout>
+  );
 };
 
 export default Login;

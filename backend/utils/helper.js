@@ -1,20 +1,24 @@
 const multer = require("multer");
+const exif = require("exiftool");
+const fs = require("fs/promises");
+const Document = require("../Model/DocumentModel");
 
-const DOCUMENTDIR = "../public/documents";
+const DOCUMENTDIR = "./public/documents";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, DOCUMENTDIR);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + "_" + file.filetype);
+    // cb(null, Date.now() + "." + file.originalname.split("."));
+    cb(null, file.originalname);
   },
 });
 
 const uploadFile = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === "") {
+    if (file.mimetype === "application/pdf") {
       cb(null, true);
     } else {
       cb(null, false);
@@ -23,4 +27,23 @@ const uploadFile = multer({
   },
 });
 
-module.exports = { uploadFile };
+const addMetadata = async (path, title) => {
+  const document = await Document.findOne({ title: title });
+  if (document) {
+    const data = fs.readFile(path, "binary");
+    if (data) {
+      console.log("Data Exist");
+      exif.metadata(data, async function (err, metadata) {
+        if (metadata) {
+          console.log(metadata);
+          console.log(typeof metadata);
+          document.metadata = metadata;
+          console.log(document);
+          document.save();
+        }
+      });
+    }
+  }
+};
+
+module.exports = { uploadFile, addMetadata };
