@@ -13,6 +13,7 @@ import { axiosInstance } from "./api/axiosInstance";
 
 export default function Home() {
   const [documents, setDocuments] = React.useState([]);
+
   React.useEffect(() => {
     const getDocuments = async () => {
       await axiosInstance
@@ -26,6 +27,7 @@ export default function Home() {
     };
     getDocuments();
   }, []);
+
   return (
     <IndexLayout>
       <Container
