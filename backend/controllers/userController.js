@@ -33,7 +33,6 @@ const registerUser = async (req, res) => {
                 email,
                 department,
                 level,
-                password,
                 token: generateToken(user._id)
             })
         } catch (error) {
