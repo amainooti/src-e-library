@@ -2,10 +2,12 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { favoritesListState } from "../../atoms/favoritesAtom";
+
 import MainLayout from "../../components/Layouts/MainLayout";
 
 const LikedBooks = () => {
-  const favoriteList = useRecoilValue(favoritesListState);
+  var favoriteList = useRecoilValue(favoritesListState);
+  console.log(favoriteList);
   return (
     <MainLayout>
       {/* <Container>
@@ -37,7 +39,7 @@ const LikedBooks = () => {
             ))} */}
           {favoriteList.map((document, index) => (
             <Grid item xs={12} key={index}>
-              ksks
+              kskssdsd
               <HorizontalBookCard {...document} />
             </Grid>
           ))}

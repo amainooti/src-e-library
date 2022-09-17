@@ -14,9 +14,14 @@ import Link from "next/link";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShareIcon from "@mui/icons-material/Share";
 import DownloadIcon from "@mui/icons-material/Download";
-import { Box } from "@mui/material";
+import { Box, Checkbox } from "@mui/material";
 
 import { RWebShare } from "react-web-share";
+import { createKey } from "next/dist/shared/lib/router/router";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { favoritesListState } from "../../atoms/favoritesAtom";
+import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 
 // eslint-disable-next-line react/display-name
 const BookLink = React.forwardRef(
@@ -37,24 +42,6 @@ const BookImage = ({ image, bookId, width }) => {
   const onMouseEnter = () => setIsHovered(true);
   const onMouseLeave = () => setIsHovered(false);
 
-  const convertImage = (w, h) => `
-  <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-      <linearGradient id="g">
-        <stop stop-color="rgb(0,0,0,10%)" offset="20%" />
-        <stop stop-color="rgb(0,0,0,15%)" offset="45%" />
-        <stop stop-color="rgb(0,0,0,20%)" offset="70%" />
-      </linearGradient>
-    </defs>
-    <rect width="${w}" height="${h}" fill="rgb(0,0,0,10%)" />
-    <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-    <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-  </svg>`;
-
-  const toBase64 = (str) =>
-    typeof window === "undefined"
-      ? Buffer.from(str).toString("base64")
-      : window.btoa(str);
   return (
     <div
       className="flex items-center flex-shrink-0 mr-6 cursor-pointer"
@@ -109,7 +96,7 @@ export const BookCard = (props) => {
         <RWebShare
           data={{
             text: "Web Share - GfG",
-            url: `/book/${props.bookId}`,
+            url: `/book/${props._id}`,
             title: `Share ${props.title} - ABUAD E-Library`,
           }}
           onClick={() => console.log("shared successfully!")}
@@ -127,6 +114,50 @@ export const BookCard = (props) => {
 };
 
 export const HorizontalBookCard = (props) => {
+  const [liked, setLiked] = useState(false);
+
+  // const setFavList = useSetRecoilState(favoritesListState);
+  const [favList, setFavList] = useRecoilState(favoritesListState);
+
+  const addItem = () => {
+    setFavList((oldList) => [
+      ...oldList,
+      {
+        ...props,
+      },
+    ]);
+  };
+
+  const deleteItem = () => {
+    var remainingArr = favList.filter((data) => data._id != props._id);
+    setFavList(remainingArr);
+  };
+
+  function removeByKey(array, params) {
+    array.some(function (item, index) {
+      return array[index][params.key] === params.value
+        ? !!array.splice(index, 1)
+        : false;
+    });
+    return array;
+  }
+
+  const handleLiked = () => {
+    setLiked((prev) => !prev);
+
+    if (liked == true) {
+      removeByKey(favList, {
+        key: "_id",
+        value: props._id,
+      });
+    }
+    if (liked == false) {
+      addItem();
+    }
+
+    console.log(favList);
+  };
+
   return (
     <Card
       sx={{
@@ -187,9 +218,19 @@ export const HorizontalBookCard = (props) => {
         </Box>
       </Box>
       <CardActions flexDirection="column" display="flex">
-        <IconButton aria-label="add to Liked Books">
-          <FavoriteIcon />
-        </IconButton>
+        <Checkbox
+          icon={<FavoriteBorder />}
+          checkedIcon={<Favorite />}
+          onChange={handleLiked}
+          checked={liked}
+          inputProps={{ "aria-label": "controlled" }}
+          // sx={{
+          //   color: "black",
+          //   "&.Mui-checked": {
+          //     color: "black",
+          //   },
+          // }}
+        />
         <RWebShare
           data={{
             text: "Web Share - GfG",
