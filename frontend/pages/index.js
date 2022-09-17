@@ -50,7 +50,7 @@ export default function Home() {
           flexDirection="column"
           sx={{
             width: "100%",
-            transform: "scale(1.5)",
+
             alignItems: "center",
             position: "",
             display: { xs: "none", md: "flex", lg: "flex" },
@@ -64,7 +64,11 @@ export default function Home() {
             responsive="true"
           />
           <Box sx={{ flexGrow: { lg: 1, xs: 0 } }} />
-          <SearchBar />
+          <SearchBar
+            style={{
+              border: "2px solid red",
+            }}
+          />
           <Box sx={{ flexGrow: { lg: 1 } }} />
         </Box>
         <Box

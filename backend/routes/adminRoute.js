@@ -1,16 +1,11 @@
-const AdminBro = require("admin-bro");
-const AdminBroExpress = require("@admin-bro/express")
 const express = require("express")
+const { registerAdmin, loginAdmin } = require("../controllers/adminController")
+const router = express.Router()
+const {protect} = require("../middleware/authMiddleware")
 
-const app = express()
+router.post("/", registerAdmin)
+router.post("/login", protect, loginAdmin)
 
-
-const adminBro = new AdminBro({
-    Databases: [],
-    rootPath: "/admin"
-})
-
-const router = AdminBroExpress.buildRouter(adminBro)
 
 
 module.exports = router

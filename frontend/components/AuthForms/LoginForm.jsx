@@ -157,7 +157,6 @@ const LoginForm = ({ setMobileOpen }) => {
                   )}
                 </FormControl>
               </InputContainer>
-
               <Button
                 variant="contained"
                 type="submit"
