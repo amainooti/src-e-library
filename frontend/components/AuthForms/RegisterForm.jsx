@@ -42,6 +42,10 @@ const RegisterForm = () => {
   //     state.user && router.push("/");
   //   }, [state.user, router]);
 
+  useEffect(() => {
+})
+
+
   return (
     <>
       <Paper
