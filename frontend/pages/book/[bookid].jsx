@@ -8,19 +8,34 @@ import {
   Grid,
   Button,
 } from "@mui/material";
+import { useRouter } from "next/router";
 import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import { axiosInstance } from "../api/axiosInstance";
+import { Add, Router } from "@mui/icons-material";
 
 const BookInfo = () => {
+  const router = useRouter();
   const [documents, setDocuments] = React.useState([]);
+  const [selectedDocument, setSelectedDocument] = React.useState([]);
+
+  const bookId = router.query.bookid;
+
+  React.useEffect(() => {
+    const getBookById = async () => {
+      await axiosInstance.get(`/api/document/${bookId}`).then((res) => {
+        console.log(res.data);
+        setSelectedDocument(res.data);
+      });
+    };
+    getBookById();
+  }, [bookId]);
 
   React.useEffect(() => {
     const getRecentDocuments = async () => {
       await axiosInstance
         .get("/api/document")
         .then((res) => {
-          console.log(res.data);
           setDocuments(res.data);
         })
         .catch((err) => {
@@ -33,27 +48,60 @@ const BookInfo = () => {
   return (
     <MainLayout>
       <Container>
-        <Box display="flex">
-          <CardMedia component="img" image="" width={100} />
-          <Box sx={{ p: 3 }}>
+        <Box
+          display="flex"
+          sx={{ mt: 3, flexDirection: { xs: "column", sm: "row" } }}
+        >
+          <CardMedia
+            component="img"
+            image={`http://localhost:8080/api/document/thumbnail/${selectedDocument._id}`}
+            sx={{ width: 400, height: 400 }}
+          />
+          <Box sx={{ p: 3, flex: 1 }}>
             <Stack spacing={2}>
-              <Typography variant="h3">
-                Living in the Light: A guide to personal transformation
+              <Typography variant="h3">{selectedDocument?.title}</Typography>
+              <Typography component="p">
+                {selectedDocument?.noOfPages} Pages . 2001 .{" "}
+                {selectedDocument.fileSize} . {selectedDocument.downloads}{" "}
+                Download{selectedDocument.downloads > 1 && "s"}
               </Typography>
               <Typography component="p">
-                258 Pages . 2001 . 2.74 MB. 928,451 Downloads
+                by <span>{selectedDocument.author}</span>
               </Typography>
-              <Typography component="p">
-                by <Box>David Sargent</Box>
-              </Typography>
-              <Box>
-                <Button variant="contained">Download</Button>
+              <Box display="flex">
+                {selectedDocument.tags.map((tag) => (
+                  <span
+                    key={tag?._id}
+                    style={{
+                      marginRight: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {tag?.title}
+                  </span>
+                ))}
+              </Box>
+              <Box sx={{ textAlign: "right" }}>
+                <Button
+                  variant="contained"
+                  onClick={() =>
+                    router.push(
+                      `http://localhost:8080/api/document/download/${selectedDocument._id}`
+                    )
+                  }
+                >
+                  Download
+                </Button>
               </Box>
             </Stack>
           </Box>
         </Box>
         <Box>
-          <Typography variant="h5">Similar Documents</Typography>
+          <Typography variant="h5" sx={{ my: 3 }}>
+            Similar Documents
+          </Typography>
           <Box>
             <Stack spacing={3}>
               {documents.map((document, index) => (

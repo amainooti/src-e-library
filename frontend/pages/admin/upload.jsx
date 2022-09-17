@@ -20,7 +20,6 @@ import {
   TextField,
 } from "@mui/material";
 
-import axios from "axios";
 import axiosInstance from "../api/axiosInstance";
 
 const InputContainer = styled(Box)(() => ({
@@ -92,6 +91,7 @@ function formatSizeUnits(bytes) {
 
 export default function Upload() {
   const [dragActive, setDragActive] = React.useState(false);
+  const [tagOptions, setTagOptions] = React.useState([]);
 
   const inputRef = React.useRef(null);
 
@@ -128,6 +128,15 @@ export default function Upload() {
 
   const [value, setValue] = React.useState([]);
   const [inputValue, setInputValue] = React.useState("");
+
+  React.useEffect(() => {
+    const getAllTag = async () => {
+      await axiosInstance.get("/api/tags").then((res) => {
+        setTagOptions(res.data);
+      });
+    };
+    getAllTag();
+  }, []);
 
   return (
     <MainLayout>
@@ -353,11 +362,16 @@ export default function Upload() {
                             multiple
                             freeSolo
                             id="tags-standard"
-                            options={["Option 1"]}
-                            value={value}
+                            options={
+                              tagOptions
+                                ? tagOptions.map((obj) => obj.title)
+                                : []
+                            }
+                            value={values.tags}
                             inputValue={inputValue}
                             onChange={(event, newValue) => {
                               setValue(newValue);
+                              setFieldValue("tags", newValue);
                             }}
                             onInputChange={(event, newInputValue) => {
                               const options = newInputValue.split(",");
@@ -375,6 +389,7 @@ export default function Upload() {
                             renderInput={(params) => (
                               <TextField
                                 {...params}
+                                name="tags"
                                 placeholder="Use comma(,) to separate tags"
                               />
                             )}

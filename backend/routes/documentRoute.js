@@ -6,12 +6,15 @@ const {
   searchDocument,
   downloadDocument,
   generateThumbnail,
+  getDocumentById,
+  getAllTags,
 } = require("../controllers/bookController");
 const { uploadFile } = require("../utils/helper");
 
-router.post("/upload", uploadFile.single("document"), uploadBook);
-router.get("/document/:documentId", downloadBook);
 router.get("/document", getDocument);
+router.get("/tags", getAllTags);
+router.post("/upload", uploadFile.single("document"), uploadBook);
+router.get("/document/:documentId", getDocumentById);
 router.get("/document/search/:documentSearch", searchDocument);
 router.get("/document/thumbnail/:documentId", generateThumbnail);
 router.get("/document/download/:documentId", downloadDocument);

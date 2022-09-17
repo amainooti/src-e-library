@@ -201,9 +201,9 @@ export const HorizontalBookCard = (props) => {
             color="GrayText"
             mb={1}
           >
-            <Typography>{props.pageCount || "1234" + " pages"}</Typography>
+            <Typography>{props.noOfPages || "1234" + " pages"}</Typography>
             <Typography>{props.year || "2022"}</Typography>
-            <Typography>{props.year || "0" + " MB"}</Typography>
+            <Typography>{props.fileSize || "0" + " MB"}</Typography>
           </Box>
           <Typography
             color="GrayText"

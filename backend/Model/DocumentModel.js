@@ -17,6 +17,9 @@ const DocumentSchema = mongoose.Schema(
     noOfPages: {
       type: Number,
     },
+    fileSize: {
+      type: String,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -26,6 +29,14 @@ const DocumentSchema = mongoose.Schema(
     },
     metadata: {
       type: Object,
+    },
+    downloads: {
+      type: Number,
+      default: 0,
+    },
+    tags: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Tag",
     },
   },
   {

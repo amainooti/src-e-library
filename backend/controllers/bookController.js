@@ -1,39 +1,47 @@
 const fs = require("fs");
 const path = require("path");
 const { PDFNet } = require("@pdftron/pdfnet-node");
-const { addMetadata } = require("../utils/helper");
+// const { addMetadata } = require("../utils/helper");
 const Document = require("../Model/DocumentModel");
+const Tag = require("../Model/TagsModel");
 const { fromPath } = require("pdf2pic");
 
 const uploadBook = async (req, res) => {
   try {
     const documentSent = req.file;
-    const { title, author, pageCount, description } = req.body;
+    const { title, author, pageCount, description, tags } = req.body;
     const newTitle = !title ? documentSent.originalname : title;
+    const listTags = tags.split(",");
+    const addedTags = [];
+
+    for (const listTag of listTags) {
+      let tag = await Tag.findOne({
+        title: { $regex: listTag.toLowerCase(), $options: "i" },
+      });
+      if (!tag) {
+        tag = await Tag.create({ title: listTag });
+      }
+      addedTags.push(tag);
+    }
     // let document = await Document.findOne({ title: newTitle });
     // if (document) {
     //   return res.status(401).json({ error: "Document already exist!" });
     // }
+    const inputPath = path.resolve(__dirname, `../${documentSent.path}`);
+    const stats = fs.statSync(inputPath);
     document = await Document.create({
       title: newTitle,
       author: author,
       urlPath: documentSent.path,
       noOfPages: pageCount,
       description: description,
+      tags: addedTags,
+      fileSize: `${Number(stats.size / (1024 * 1024)).toFixed(2)} MB`,
     });
 
     // addMetadata(documentSent.path, newTitle);
 
     res.status(200).json(document);
-  } catch (err) {
-    console.log(err);
-    res.status(401).json({ error: "An error occured" });
-  }
-};
-
-const downloadBook = async (req, res) => {
-  try {
-    res.status(200).json("Download Working");
   } catch (err) {
     console.log(err);
     res.status(401).json({ error: "An error occured" });
@@ -59,7 +67,11 @@ const getDocument = async (req, res) => {
 const getDocumentById = async (req, res) => {
   try {
     const documentId = req.params.documentId;
-    const document = await Document.findById(documentId).lean();
+    const document = await Document.findById(documentId).populate({
+      path: "tags",
+      model: "Tag",
+      select: "title",
+    });
     if (document) {
       res.status(200).json(document);
     } else {
@@ -74,14 +86,17 @@ const getDocumentById = async (req, res) => {
 const downloadDocument = async (req, res) => {
   try {
     const documentId = req.params.documentId;
-    const document = await Document.findById(documentId).lean();
+    const document = await Document.findById(documentId);
     if (!document) {
       res.sendStatus(500);
     }
     const inputPath = path.resolve(__dirname, `../${document.urlPath}`);
+    document.downloads += 1;
+    document.save();
     res.download(inputPath);
   } catch (err) {
-    res.status(500).end(err);
+    console.log(err);
+    res.sendStatus(401);
   }
 };
 
@@ -156,16 +171,26 @@ const generateThumbnail = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).end(err);
+    res.status(401).json({ error: "An error occured" });
+  }
+};
+
+const getAllTags = async (req, res) => {
+  try {
+    const tags = await Tag.find().lean().select("title");
+    res.status(200).json(tags);
+  } catch (err) {
+    console.log(err);
+    json.sendStatus(401);
   }
 };
 
 module.exports = {
   uploadBook,
-  downloadBook,
   getDocument,
   searchDocument,
   generateThumbnail,
   downloadDocument,
   getDocumentById,
+  getAllTags,
 };
