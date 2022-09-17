@@ -69,7 +69,7 @@ const BookInfo = () => {
                 by <span>{selectedDocument.author}</span>
               </Typography>
               <Box display="flex">
-                {selectedDocument.tags.map((tag) => (
+                {selectedDocument?.tags?.map((tag) => (
                   <span
                     key={tag?._id}
                     style={{
