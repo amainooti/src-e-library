@@ -43,14 +43,13 @@ export default function Home() {
         }}
       >
         <Box
-          mb={24}
-          my={10}
+          mt={10}
+          mb={3}
           display="flex"
           gap={2}
           flexDirection="column"
           sx={{
             width: "100%",
-
             alignItems: "center",
             position: "",
             display: { xs: "none", md: "flex", lg: "flex" },
@@ -96,12 +95,16 @@ export default function Home() {
         </Box>
 
         <Box mt={1}>
-          <Box display="flex" alignItems="center" gap={1} mb={3}>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            mb={3}
+            sx={{ marginBottom: "10px" }}
+          >
             <UpdateIcon />
             <h2
               style={{
-                marginBottom: "10px",
-                marginTop: "0px",
                 fontSize: "25px",
                 fontWeight: "700",
                 lineHeight: "1",
@@ -134,8 +137,6 @@ export default function Home() {
             container
             spacing={{ xs: 3 }}
             sx={{
-              overflow: "auto",
-              height: "300px",
               flexDirection: "row",
             }}
           >

@@ -11,17 +11,22 @@ import {
   Avatar,
 } from "@mui/material";
 import Link from "next/link";
+import Image from "next/image";
 
 import SearchBar from "../Common/Search";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loginModalState, profileShowState } from "../../atoms/profileAtom";
 import { userLoginState } from "../../atoms/loginAtom";
+import userState from "../../atoms/userAtom";
 
 export default function Header(props) {
+  const user = useRecoilValue(userState);
   const [showProfile, setShowProfile] = useRecoilState(profileShowState);
   const [modal, setModal] = useRecoilState(loginModalState);
 
   const isLoggedIn = useRecoilValue(userLoginState);
+  console.log("User");
+  console.log(user);
 
   const menuId = "primary-search-account-menu";
 
@@ -35,9 +40,15 @@ export default function Header(props) {
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ display: { sm: "block" } }}
+                sx={{ display: "flex" }}
               >
-                LOGO
+                <Image
+                  src="/assets/src-cropped.jpeg"
+                  alt="SRC LOGO"
+                  width={60}
+                  height={60}
+                  responsive="true"
+                />
               </Typography>
             </a>
           </Link>
@@ -46,7 +57,7 @@ export default function Header(props) {
           <Box sx={{ flexGrow: { lg: 1 } }} />
 
           <Box sx={{ display: { md: "flex" } }}>
-            {!isLoggedIn ? (
+            {!user.loggedIn ? (
               <IconButton
                 size="large"
                 edge="end"

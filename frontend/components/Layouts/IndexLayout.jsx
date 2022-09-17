@@ -12,12 +12,15 @@ import {
   CssBaseline,
 } from "@mui/material";
 import Link from "next/link";
+import Image from "next/image";
 
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loginModalState, profileShowState } from "../../atoms/profileAtom";
 import { userLoginState } from "../../atoms/loginAtom";
+import userState from "../../atoms/userAtom";
 
 function Header(props) {
+  const user = useRecoilValue(userState);
   const [modal, setModal] = useRecoilState(loginModalState);
 
   const isLoggedIn = useRecoilValue(userLoginState);
@@ -44,15 +47,21 @@ function Header(props) {
                 variant="h6"
                 noWrap
                 component="div"
-                sx={{ display: { sm: "block" } }}
+                sx={{ display: "flex" }}
               >
-                LOGO
+                <Image
+                  src="/assets/src-cropped.jpeg"
+                  alt="SRC LOGO"
+                  width={60}
+                  height={60}
+                  responsive="true"
+                />
               </Typography>
             </a>
           </Link>
 
           <Box sx={{ display: { md: "flex" } }}>
-            {!isLoggedIn ? (
+            {!user.loggedIn ? (
               <IconButton
                 size="large"
                 edge="end"

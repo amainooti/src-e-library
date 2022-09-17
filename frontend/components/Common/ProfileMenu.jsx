@@ -1,10 +1,12 @@
 import { Avatar, Box, Typography, Paper, Button } from "@mui/material";
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userLoginState } from "../../atoms/loginAtom";
 import { profileShowState } from "../../atoms/profileAtom";
+import userState from "../../atoms/userAtom";
 
 const Profile = () => {
+  const user = useRecoilValue(userState);
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(userLoginState);
   const [showProfile, setShowProfile] = useRecoilState(profileShowState);
 
@@ -20,13 +22,13 @@ const Profile = () => {
                 fontWeight: "bold",
               }}
             >
-              User Name
+              {user.data?.name}
             </Typography>
             <Typography variant="paragraph" color="GrayText">
               (Student)
             </Typography>
             <Typography variant="paragraph" color="GrayText">
-              email@med-x.com
+              {user.data?.email}
             </Typography>
           </Box>
         </Box>
@@ -58,6 +60,7 @@ const ProfileMenu = ({ children }) => {
         sx={{
           position: "absolute",
           maxWidth: "350px",
+          width: "100%",
           right: "20px",
           top: "60px",
         }}

@@ -21,7 +21,11 @@ import EmailTwoToneIcon from "@mui/icons-material/EmailTwoTone";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
+import { useRecoilState } from "recoil";
 import * as Yup from "yup";
+
+import userState from "../../atoms/userAtom";
+import axiosInstance from "../../pages/api/axiosInstance";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -34,14 +38,11 @@ const InputContainer = styled(Box)(() => ({
 
 const LoginForm = ({ setMobileOpen }) => {
   const theme = useTheme();
+  const [user, setUser] = useRecoilState(userState);
   const [errorMessage, setErrorMessage] = React.useState();
   const [googleLoading, setGoogleLoading] = React.useState(false);
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
-
-  //   React.useEffect(() => {
-  //     state.user && router.push("/");
-  //   }, [state.user, router]);
 
   return (
     <>
@@ -73,7 +74,15 @@ const LoginForm = ({ setMobileOpen }) => {
               .required("Password is required!"),
           })}
           onSubmit={async (values) => {
-            LoginCall(values, dispatch, setErrorMessage);
+            await axiosInstance
+              .post("/api/users/login", values)
+              .then((res) => {
+                setUser({ loggedIn: true, data: res.data });
+                router.push("/");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           }}
         >
           {({

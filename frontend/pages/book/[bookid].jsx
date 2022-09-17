@@ -24,7 +24,6 @@ const BookInfo = () => {
   React.useEffect(() => {
     const getBookById = async () => {
       await axiosInstance.get(`/api/document/${bookId}`).then((res) => {
-        console.log(res.data);
         setSelectedDocument(res.data);
       });
     };

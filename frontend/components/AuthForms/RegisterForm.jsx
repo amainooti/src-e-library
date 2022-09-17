@@ -21,7 +21,11 @@ import {
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
 import * as Yup from "yup";
+
+import userState from "../../atoms/userAtom";
+import axiosInstance from "../../pages/api/axiosInstance";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -32,9 +36,44 @@ const InputContainer = styled(Box)(() => ({
   },
 }));
 
+const colleges = [
+  {
+    title: "Engineering",
+    id: "engineering",
+    department: ["Mechanical", "Electrical", "Mechatronics", "Computer"],
+  },
+  {
+    title: "Sciences",
+    id: "sciences",
+    department: [],
+  },
+  {
+    title: "Medicine and Health Sciences",
+    id: "medicine",
+    department: [],
+  },
+  {
+    title: "Law",
+    id: "law",
+    department: [],
+  },
+  {
+    title: "Pharmacy",
+    id: "pharmacy",
+    department: [],
+  },
+  {
+    title: "Social and Management Sciences",
+    id: "sms",
+    department: [],
+  },
+];
+
 const RegisterForm = () => {
   const theme = useTheme();
   const router = useRouter();
+
+  const [user, setUser] = useRecoilState(userState);
 
   const [errorMessage, setErrorMessage] = React.useState();
 
@@ -43,8 +82,8 @@ const RegisterForm = () => {
   //   }, [state.user, router]);
 
   useEffect(() => {
-})
-
+    console.log(user);
+  });
 
   return (
     <>
@@ -86,11 +125,17 @@ const RegisterForm = () => {
             checked: Yup.bool().oneOf([true], "Field must be checked"),
           })}
           onSubmit={async (values) => {
-            await RegisterCall(values, dispatch, setErrorMessage).catch(
-              (err) => {
-                console.log(JSON.stringify(err));
-              }
-            );
+            // await RegisterCall(values, dispatch, setErrorMessage).catch(
+            //   (err) => {
+            //     console.log(JSON.stringify(err));
+            //   }
+            // );
+            await axiosInstance
+              .post("/api/users/register", values)
+              .then((res) => {
+                setUser({ loggedIn: true, data: res.data });
+                router.push("/");
+              });
           }}
         >
           {({
@@ -197,6 +242,7 @@ const RegisterForm = () => {
                     name="confirmPassword"
                     value={values.confirmPassword}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     size="small"
                   />
                   {touched.confirmPassword && errors.confirmPassword && (
@@ -214,6 +260,7 @@ const RegisterForm = () => {
                 <FormControl fullWidth>
                   <Select
                     id="demo-simple-select=college"
+                    name="college"
                     value={values.college}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -262,6 +309,7 @@ const RegisterForm = () => {
                   <Select
                     id="demo-simple-select-level"
                     value={values.level}
+                    name="level"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     size="small"

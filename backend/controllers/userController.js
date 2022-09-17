@@ -4,42 +4,51 @@ const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
   // check if the text fields are empty
-  const { name, email, password, department, level } = req.body;
+  try {
+    const { firstname, lastname, email, password, department, level, college } =
+      req.body;
 
-  if (!name || !email || !password || !department || !level) {
-    res.status(400).json({ message: "Please fill in the fields" });
-  }
+    if (
+      !firstname ||
+      !lastname ||
+      !email ||
+      !password ||
+      !department ||
+      !level ||
+      !college
+    ) {
+      return res.status(400).json({ message: "Please fill in the fields" });
+    }
 
-  // check if the user already exists
-  const userExists = await User.findOne({ email });
-  if (userExists) {
-    res.status(400).json({ message: "User already exists! " });
-  } else {
-    try {
+    // check if the user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists! " });
+    } else {
       // hashpasword
       const salt = await bcrypt.genSalt(10);
       const hashpasword = await bcrypt.hash(password, salt);
 
       // create user
       const user = await User.create({
-        name,
+        name: `${firstname} ${lastname}`,
         email,
         department,
         level,
         password: hashpasword,
+        college: college,
       });
       res.status(200).json({
-        name,
+        name: `${firstname} ${lastname}`,
         email,
         department,
         level,
-        password,
         token: generateToken(user._id),
       });
-    } catch (error) {
-      console.log(error.message);
-      res.status(401).json({ error: "Anomaly detected!" });
     }
+  } catch (error) {
+    console.log("Error detected");
+    res.status(401).json({ error: "Anomaly detected!" });
   }
 };
 
@@ -58,9 +67,11 @@ const loginUser = async (req, res) => {
     // check if the passwords match
     if (user && (await bcrypt.compare(password, user.password))) {
       res.status(200).json({
-        _id: user.id,
         name: user.name,
         email: user.email,
+        college: user.college,
+        department: user.department,
+        level: user.level,
         token: generateToken(user._id),
       });
     } else {
