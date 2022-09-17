@@ -23,7 +23,7 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    collge: {
+    college: {
       type: String,
       required: true
     }
