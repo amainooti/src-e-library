@@ -139,13 +139,18 @@ export default function Home() {
               flexDirection: "row",
             }}
           >
-            {Array(12)
+            {/* {Array(12)
               .fill()
               .map((_, index) => (
                 <Grid item lg={2} md={3} sm={4} xs={6} key={index}>
                   <BookCard />
                 </Grid>
-              ))}
+              ))} */}
+            {documents.map((document, index) => (
+              <Grid item lg={2} md={3} sm={4} xs={6} key={index}>
+                <BookCard {...document} />
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Container>

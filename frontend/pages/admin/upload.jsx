@@ -191,7 +191,6 @@ export default function Upload() {
               values,
               setFieldValue,
               handleSubmit,
-              setFieldValue,
               handleChange,
               errors,
               handleBlur,

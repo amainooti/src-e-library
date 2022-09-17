@@ -18,8 +18,7 @@ app.use(cors());
 
 app.use("/api/users", require("./routes/userRoute"));
 app.use("/api", require("./routes/documentRoute"));
-app.use("api/admin", require("./routes/adminRoute"))
-
+app.use("/api/admin", require("./routes/adminRoute"));
 
 app.listen(PORT, () => {
   console.log(`server is running on http://localhost:${PORT}`.bold);

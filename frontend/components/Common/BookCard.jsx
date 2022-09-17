@@ -105,7 +105,11 @@ export const BookCard = (props) => {
             <ShareIcon />
           </IconButton>
         </RWebShare>
-        <IconButton aria-label="download">
+        <IconButton
+          aria-label="download"
+          component="a"
+          href={`http://127.0.0.1:8080/api/document/download/${props._id}`}
+        >
           <DownloadIcon />
         </IconButton>
       </CardActions>
