@@ -189,6 +189,7 @@ export default function Upload() {
           >
             {({
               values,
+              setFieldValue,
               handleSubmit,
               handleChange,
               errors,
@@ -347,14 +348,6 @@ export default function Upload() {
                       <InputContainer>
                         <small>Tags</small>
                         <FormControl fullWidth>
-                          {/* <OutlinedInput
-                            type="number"
-                            name="pageCount"
-                            value={values.pageCount}
-                            onChange={handleChange}
-                            size="small"
-                            
-                          /> */}
                           <Autocomplete
                             size="small"
                             multiple
