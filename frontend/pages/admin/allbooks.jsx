@@ -11,7 +11,7 @@ import {
 import MainLayout from "../../components/Layouts/MainLayout";
 import axiosInstance from "../api/axiosInstance";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { CreateOutlined } from "@mui/icons-material";
+import { CreateOutlined, DeleteOutlined } from "@mui/icons-material";
 import Link from "next/link";
 
 const columns = [
@@ -44,6 +44,9 @@ const columns = [
             <CreateOutlined />
           </IconButton>
         </Link>
+        <IconButton>
+          <DeleteOutlined />
+        </IconButton>
       </>
     ),
   },

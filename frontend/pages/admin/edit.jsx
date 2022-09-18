@@ -93,18 +93,6 @@ export default function EditBook({ selectedBook }) {
     }
   };
 
-  const handleChangeFile = function (event, setFieldValue) {
-    if (event.target.files && event.target.files[0]) {
-      setFieldValue("document", event.target.files[0]);
-      setFieldValue("title", event.target.files[0].name.split(".")[0]);
-      handleFile(event.target.files, setFieldValue);
-    }
-  };
-
-  const onButtonClick = () => {
-    inputRef.current.click();
-  };
-
   const [value, setValue] = React.useState([]);
   const [inputValue, setInputValue] = React.useState("");
 
@@ -162,20 +150,7 @@ export default function EditBook({ selectedBook }) {
                 .nullable(),
             })}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
-              const formData = new FormData();
-              Object.entries(values).forEach((file) => {
-                formData.append(file[0], file[1]);
-              });
-              await axiosInstance
-                .post("/api/upload", formData)
-                .then((res) => {
-                  setSubmitting(false);
-                  resetForm({ values: "" });
-                })
-                .catch((err) => {
-                  console.log(err);
-                  setSubmitting(false);
-                });
+              console.log(values);
             }}
           >
             {({
@@ -347,19 +322,12 @@ export default function EditBook({ selectedBook }) {
 
                       <Box gap={1} display="flex">
                         <Button
-                          variant="outlined"
-                          color="secondary"
-                          onClick={() => resetForm({ values: "" })}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
                           variant="contained"
                           type="submit"
                           disabled={isSubmitting}
                           endIcon={<UploadIcon />}
                         >
-                          {isSubmitting ? <CircularProgress /> : "Upload"}
+                          {isSubmitting ? <CircularProgress /> : "Update"}
                         </Button>
                       </Box>
                     </Box>
