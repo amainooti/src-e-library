@@ -41,7 +41,7 @@ export default function Header(props) {
                 sx={{ display: "flex" }}
               >
                 <Image
-                  src="/assets/src-cropped.jpeg"
+                  src="/assets/src-cropped-removebg-preview.png"
                   alt="SRC LOGO"
                   width={60}
                   height={60}
