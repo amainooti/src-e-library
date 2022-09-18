@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { useRouter } from "next/router";
 import UploadIcon from "@mui/icons-material/Upload";
 import MainLayout from "../../components/Layouts/MainLayout";
 import {
@@ -92,6 +93,7 @@ function formatSizeUnits(bytes) {
 export default function Upload() {
   const [dragActive, setDragActive] = React.useState(false);
   const [tagOptions, setTagOptions] = React.useState([]);
+  const router = useRouter();
 
   const inputRef = React.useRef(null);
 
@@ -142,21 +144,26 @@ export default function Upload() {
     <MainLayout>
       <Container maxWidth="md">
         <Box sx={{ my: 2 }}>
-          <Box display="flex" alignItems="center" gap={1} mb={3}>
-            <UploadIcon />
-            <h2
-              style={{
-                marginBottom: "0px",
-                marginTop: "0px",
-                fontSize: "25px",
-                fontWeight: "700",
-                lineHeight: "1",
-                textTransform: "none",
-                whiteSpace: "normal",
-              }}
-            >
-              Upload New Book
-            </h2>
+          <Box display="flex" justifyContent="space-between">
+            <Box display="flex" alignItems="center" gap={1} mb={3}>
+              <UploadIcon />
+              <h2
+                style={{
+                  marginBottom: "0px",
+                  marginTop: "0px",
+                  fontSize: "25px",
+                  fontWeight: "700",
+                  lineHeight: "1",
+                  textTransform: "none",
+                  whiteSpace: "normal",
+                }}
+              >
+                Upload New Book
+              </h2>
+            </Box>
+            <Button variant="contained" onClick={() => router.back()}>
+              Back
+            </Button>
           </Box>
 
           <Formik
@@ -216,7 +223,6 @@ export default function Upload() {
                     display: "flex",
                     flexWrap: "wrap",
                     flexDirection: "row",
-                    alignItems: "center",
                     justifyContent: "center",
                     textAlign: "center",
                   }}

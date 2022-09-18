@@ -1,6 +1,4 @@
-import Footer from "../Footer/Footer";
 import * as React from "react";
-import ProfileMenu from "../Common/ProfileMenu";
 
 import {
   AppBar,
@@ -13,8 +11,10 @@ import {
 } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
-
 import { useRecoilState, useRecoilValue } from "recoil";
+
+import Footer from "../Footer/Footer";
+import ProfileMenu from "../Common/ProfileMenu";
 import { loginModalState, profileShowState } from "../../atoms/profileAtom";
 import { userLoginState } from "../../atoms/loginAtom";
 import userState from "../../atoms/userAtom";
@@ -27,6 +27,12 @@ function Header(props) {
   const [showProfile, setShowProfile] = useRecoilState(profileShowState);
 
   const menuId = "primary-search-account-menu";
+
+  React.useEffect(() => {
+    if (user.loggedIn && modal) {
+      setModal(false);
+    }
+  }, [modal, setModal, user.loggedIn]);
 
   return (
     <React.Fragment>
@@ -87,11 +93,9 @@ function Header(props) {
               </IconButton>
             )}
           </Box>
-
           {showProfile && <ProfileMenu />}
         </Toolbar>
       </AppBar>
-
       <Toolbar />
     </React.Fragment>
   );

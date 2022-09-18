@@ -25,8 +25,6 @@ export default function Header(props) {
   const [modal, setModal] = useRecoilState(loginModalState);
 
   const isLoggedIn = useRecoilValue(userLoginState);
-  console.log("User");
-  console.log(user);
 
   const menuId = "primary-search-account-menu";
 

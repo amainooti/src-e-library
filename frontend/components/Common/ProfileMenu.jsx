@@ -1,5 +1,19 @@
-import { Avatar, Box, Typography, Paper, Button } from "@mui/material";
+import { Favorite, Upload } from "@mui/icons-material";
+import {
+  Avatar,
+  Box,
+  Typography,
+  Paper,
+  Button,
+  Divider,
+  ClickAwayListener,
+  MenuList,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import React from "react";
+import Link from "next/link";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { userLoginState } from "../../atoms/loginAtom";
 import { profileShowState } from "../../atoms/profileAtom";
@@ -32,11 +46,23 @@ const Profile = () => {
             </Typography>
           </Box>
         </Box>
-        {/* // profile menu */}
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Amet ea est
-        molestiae commodi nisi officia cupiditate delectus sint voluptate aut
-        cumque reiciendis rerum magni eos ducimus enim perspiciatis, ut
-        repellat!
+        <Divider />
+        <MenuList>
+          <MenuItem>
+            <ListItemIcon>
+              <Favorite fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>My Favorites</ListItemText>
+          </MenuItem>
+          <Link href="/admin/allbooks">
+            <MenuItem>
+              <ListItemIcon>
+                <Upload />
+              </ListItemIcon>
+              <ListItemText>My Uploads</ListItemText>
+            </MenuItem>
+          </Link>
+        </MenuList>
       </Box>
       <Button
         variant="contained"
@@ -54,8 +80,9 @@ const Profile = () => {
 };
 
 const ProfileMenu = ({ children }) => {
+  const [showProfile, setShowProfile] = useRecoilState(profileShowState);
   return (
-    <>
+    <ClickAwayListener onClickAway={() => setShowProfile(false)}>
       <Paper
         sx={{
           position: "absolute",
@@ -70,7 +97,7 @@ const ProfileMenu = ({ children }) => {
           <Profile />
         </Box>
       </Paper>
-    </>
+    </ClickAwayListener>
   );
 };
 
