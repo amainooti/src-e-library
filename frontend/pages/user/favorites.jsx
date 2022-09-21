@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { favoritesListState } from "../../atoms/favoritesAtom";
-
+import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 
 const LikedBooks = () => {

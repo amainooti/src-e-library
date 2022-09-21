@@ -1,6 +1,6 @@
+/* eslint-disable no-use-before-define */
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useRouter } from "next/router";
@@ -36,15 +36,6 @@ async function handleFile(files, setFieldValue) {
   var pdf = files[0];
   var details = await pdfDetails(pdf);
   setFieldValue("pageCount", details[0].Pages);
-  //   console.log(files);
-  //   var fileName = files[0].name;
-  //   var fileType = files[0].type;
-  //   let fileSize = formatSizeUnits(files[0].size);
-
-  //   console.log(fileName);
-  //   console.log(fileType);
-  //   console.log(fileSize);
-  //   return fileName, fileType, fileSize;
 }
 
 function pdfDetails(pdfBlob) {
@@ -329,7 +320,7 @@ export default function Upload() {
                             disabled
                             endAdornment={
                               <InputAdornment position="end">
-                                Pages
+                                {values.pageCount > 1 ? "pages" : "page"}
                               </InputAdornment>
                             }
                           />
@@ -411,7 +402,6 @@ export default function Upload() {
                       <Box gap={1} display="flex">
                         <Button
                           variant="outlined"
-                          color="secondary"
                           onClick={() => resetForm({ values: "" })}
                         >
                           Cancel

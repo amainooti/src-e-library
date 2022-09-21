@@ -48,12 +48,23 @@ const Profile = () => {
         </Box>
         <Divider />
         <MenuList>
-          <MenuItem>
-            <ListItemIcon>
-              <Favorite fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>My Favorites</ListItemText>
-          </MenuItem>
+          <Link href="/user/mybooks">
+            <MenuItem>
+              <ListItemIcon>
+                <Favorite fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>My Books </ListItemText>
+            </MenuItem>
+          </Link>
+          <Link href="/user/favorites">
+            <MenuItem>
+              <ListItemIcon>
+                <Favorite fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>My Favorites</ListItemText>
+            </MenuItem>
+          </Link>
+
           <Link href="/admin/allbooks">
             <MenuItem>
               <ListItemIcon>
