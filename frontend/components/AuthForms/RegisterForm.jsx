@@ -40,7 +40,8 @@ const colleges = [
   {
     title: "Engineering",
     id: "engineering",
-    department: ["Mechanical", "Electrical", "Mechatronics", "Computer"],
+    department: ["Mechanical", "Electrical", "Mechatronics", "Computer",
+      "Civil", "Chemical", "Petroleum", "Biomedical"],
   },
   {
     title: "Sciences",
