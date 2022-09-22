@@ -17,13 +17,13 @@ const registerUser = async (req, res) => {
       !level ||
       !college
     ) {
-      return res.status(400).json({ message: "Please fill in the fields" });
+      return res.status(400).json({ error: "Please fill in the fields" });
     }
 
     // check if the user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
-      return res.status(400).json({ message: "User already exists! " });
+      return res.status(400).json({ error: "User already exists! " });
     } else {
       // hashpasword
       const salt = await bcrypt.genSalt(10);
@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
     // check if the fields are there
     if (!email || !password) {
-      res.status(400).json({ message: "password and email required" });
+      res.status(400).json({ error: "password and email required" });
     }
 
     // get the user
@@ -75,7 +75,7 @@ const loginUser = async (req, res) => {
         token: generateToken(user._id),
       });
     } else {
-      res.status(400).json({ message: "incorrect email or password" });
+      res.status(400).json({ error: "incorrect email or password" });
     }
   } catch (err) {
     console.log(err.message);

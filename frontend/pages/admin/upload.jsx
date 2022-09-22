@@ -189,7 +189,6 @@ export default function Upload() {
                   resetForm({ values: "" });
                 })
                 .catch((err) => {
-                  console.log(err);
                   setSubmitting(false);
                 });
             }}

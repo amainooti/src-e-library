@@ -9,7 +9,7 @@ const { fromPath } = require("pdf2pic");
 const uploadBook = async (req, res) => {
   try {
     const documentSent = req.file;
-    const { title, author, pageCount, description, tags } = req.body;
+    const { title, author, pageCount, bookDesc, tags } = req.body;
     const newTitle = !title ? documentSent.originalname : title;
     const listTags = tags.split(",");
     const addedTags = [];
@@ -27,6 +27,10 @@ const uploadBook = async (req, res) => {
     // if (document) {
     //   return res.status(401).json({ error: "Document already exist!" });
     // }
+
+    if (!author || !bookDesc || !pageCount) {
+      return res.status(400).json({ error: "Please fill in the fields" });
+    }
     const inputPath = path.resolve(__dirname, `../${documentSent.path}`);
     const stats = fs.statSync(inputPath);
     document = await Document.create({
@@ -34,13 +38,12 @@ const uploadBook = async (req, res) => {
       author: author,
       urlPath: documentSent.path,
       noOfPages: pageCount,
-      description: description,
+      description: bookDesc,
       tags: addedTags,
       fileSize: `${Number(stats.size / (1024 * 1024)).toFixed(2)} MB`,
     });
 
     // addMetadata(documentSent.path, newTitle);
-
     res.status(200).json(document);
   } catch (err) {
     console.log(err);
@@ -80,6 +83,56 @@ const getDocumentById = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(401).json({ error: "An Error Occured" });
+  }
+};
+
+const deleteDocumentById = async (req, res) => {
+  try {
+    const product = await Document.findByIdAndDelete(req.params.documentId);
+    if (!product) {
+      return res.status(400).json({ error: "Product does not exist" });
+    }
+    return res.status(200).json(product);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ error: "Unable to delete product" });
+  }
+};
+
+const updateDocumentById = async (req, res) => {
+  try {
+    const { author, tags, bookDesc } = req.body;
+    if (!author || !bookDesc) {
+      return res.status(400).json({ error: "Please fill in the fields" });
+    }
+    const addedTags = [];
+    for (const listTag of tags) {
+      let tag = await Tag.findOne({
+        title: { $regex: listTag.toLowerCase(), $options: "i" },
+      });
+      if (!tag) {
+        tag = await Tag.create({ title: listTag });
+      }
+      addedTags.push(tag);
+    }
+    const product = await Document.findByIdAndUpdate(
+      req.params.documentId,
+      {
+        $set: {
+          description: bookDesc,
+          author: author,
+          tags: addedTags,
+        },
+      },
+      { new: true }
+    );
+    if (!product) {
+      return res.status(400).json({ error: "Product does not exist" });
+    }
+    res.status(200).json(product);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ error: "Unable to delete product" });
   }
 };
 
@@ -175,6 +228,13 @@ const generateThumbnail = async (req, res) => {
   }
 };
 
+const generatePreview = async (req, res) => {
+  try {
+    const outputPath = path.resolve(__dirname, "../public/thumbnails");
+    const inputPath = path.resolve(__dirname, `../${document.urlPath}`);
+  } catch (err) {}
+};
+
 const getAllTags = async (req, res) => {
   try {
     const tags = await Tag.find().lean().select("title");
@@ -210,4 +270,6 @@ module.exports = {
   downloadDocument,
   getDocumentById,
   getAllTags,
+  deleteDocumentById,
+  updateDocumentById,
 };

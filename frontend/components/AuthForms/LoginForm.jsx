@@ -56,6 +56,7 @@ const LoginForm = ({ setMobileOpen }) => {
       >
         <Snackbar
           open={errorMessage ? true : false}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
           onClose={() => {
             setErrorMessage();
           }}
@@ -81,7 +82,11 @@ const LoginForm = ({ setMobileOpen }) => {
                 router.push("/");
               })
               .catch((err) => {
-                console.log(err);
+                setErrorMessage(
+                  err.response
+                    ? err.response.data.error
+                    : "An error occured! Trya again later."
+                );
               });
           }}
         >

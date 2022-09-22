@@ -40,8 +40,16 @@ const colleges = [
   {
     title: "Engineering",
     id: "engineering",
-    department: ["Mechanical", "Electrical", "Mechatronics", "Computer",
-      "Civil", "Chemical", "Petroleum", "Biomedical"],
+    department: [
+      "Mechanical",
+      "Electrical",
+      "Mechatronics",
+      "Computer",
+      "Civil",
+      "Chemical",
+      "Petroleum",
+      "Biomedical",
+    ],
   },
   {
     title: "Sciences",
@@ -82,10 +90,6 @@ const RegisterForm = () => {
   //     state.user && router.push("/");
   //   }, [state.user, router]);
 
-  useEffect(() => {
-    console.log(user);
-  });
-
   return (
     <>
       <Paper
@@ -98,6 +102,7 @@ const RegisterForm = () => {
       >
         <Snackbar
           open={errorMessage ? true : false}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
           onClose={() => {
             setErrorMessage();
           }}
@@ -126,16 +131,18 @@ const RegisterForm = () => {
             checked: Yup.bool().oneOf([true], "Field must be checked"),
           })}
           onSubmit={async (values) => {
-            // await RegisterCall(values, dispatch, setErrorMessage).catch(
-            //   (err) => {
-            //     console.log(JSON.stringify(err));
-            //   }
-            // );
             await axiosInstance
               .post("/api/users/register", values)
               .then((res) => {
                 setUser({ loggedIn: true, data: res.data });
                 router.push("/");
+              })
+              .catch((err) => {
+                setErrorMessage(
+                  err.response
+                    ? err.response.data.error
+                    : "An error occured! Trya again later."
+                );
               });
           }}
         >

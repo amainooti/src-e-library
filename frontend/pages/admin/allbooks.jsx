@@ -6,6 +6,7 @@ import {
   Box,
   IconButton,
   CardMedia,
+  Modal,
   Button,
 } from "@mui/material";
 import MainLayout from "../../components/Layouts/MainLayout";
@@ -14,46 +15,23 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { CreateOutlined, DeleteOutlined } from "@mui/icons-material";
 import Link from "next/link";
 
-const columns = [
-  { field: "_id", headerName: "ID", width: 90 },
-  {
-    field: "thumb",
-    headerName: "Thumbnail",
-    width: 100,
-    renderCell: (params) => (
-      <Box>
-        <CardMedia
-          component="img"
-          image={`http://localhost:8080/api/document/thumbnail/${params.row._id}`}
-          sx={{ height: "3rem", width: "3rem" }}
-        />
-      </Box>
-    ),
+const classes = {
+  cardPaper: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    transform: "translate(-50%, -50%)",
+    p: 4,
   },
-  { field: "author", headerName: "Author", width: 150 },
-  {
-    field: "action",
-    headerName: "Action",
-    width: 150,
-    renderCell: (params) => (
-      <>
-        <Link
-          href={{ pathname: "/admin/edit", query: { book: params.row._id } }}
-        >
-          <IconButton>
-            <CreateOutlined />
-          </IconButton>
-        </Link>
-        <IconButton>
-          <DeleteOutlined />
-        </IconButton>
-      </>
-    ),
-  },
-];
+};
 
 const BookTable = () => {
+  const [open, setOpen] = React.useState(false);
   const [documents, setDocuments] = React.useState([]);
+  const [deleteDocument, setDeleteDocument] = React.useState();
+
   React.useEffect(() => {
     const getAllDocuments = async () => {
       await axiosInstance.get("/api/document").then((res) => {
@@ -62,8 +40,91 @@ const BookTable = () => {
     };
     getAllDocuments();
   }, []);
+
+  const handleDelete = (documentId) => {
+    const deleteProductById = async () => {
+      await axiosInstance.delete(`/api/document/${documentId}`).then((res) => {
+        const newDocuments = documents.filter(
+          (document) => document._id !== documentId
+        );
+        setDocuments(newDocuments);
+      });
+    };
+    deleteProductById();
+    setOpen(false);
+  };
+
+  const handleConfirm = (documentId, documentName) => {
+    setDeleteDocument({ id: documentId, name: documentName });
+    setOpen(true);
+  };
+  const columns = [
+    { field: "_id", headerName: "ID", width: 90 },
+    {
+      field: "thumb",
+      headerName: "Thumbnail",
+      width: 100,
+      renderCell: (params) => (
+        <Box>
+          <CardMedia
+            component="img"
+            image={`http://localhost:8080/api/document/thumbnail/${params.row._id}`}
+            sx={{ height: "3rem", width: "3rem" }}
+          />
+        </Box>
+      ),
+    },
+    { field: "title", headerName: "Title", width: 200 },
+    { field: "author", headerName: "Author", width: 150 },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 150,
+      renderCell: (params) => (
+        <>
+          <Link
+            href={{ pathname: "/admin/edit", query: { book: params.row._id } }}
+          >
+            <IconButton>
+              <CreateOutlined />
+            </IconButton>
+          </Link>
+          <IconButton
+            onClick={() => handleConfirm(params.row._id, params.row.title)}
+          >
+            <DeleteOutlined />
+          </IconButton>
+        </>
+      ),
+    },
+  ];
+
   return (
     <MainLayout>
+      {deleteDocument && (
+        <Modal open={open} onClose={() => setOpen(false)}>
+          <Box sx={classes.cardPaper}>
+            <Typography variant="h3">Confirmation</Typography>
+            <Box sx={{ my: 4 }}>
+              <Typography component="p">
+                Are you sure you want to delete{" "}
+                {deleteDocument && deleteDocument.name}
+              </Typography>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Button
+                variant="outlined"
+                onClick={() => handleDelete(deleteDocument.id)}
+              >
+                Yes
+              </Button>
+              <Button variant="contained" onClick={() => setOpen(false)}>
+                No
+              </Button>
+            </Box>
+          </Box>
+        </Modal>
+      )}
       <Container>
         <Box sx={{ my: 3 }}>
           <Box sx={{ my: 2 }} display="flex" justifyContent="space-between">
@@ -78,6 +139,7 @@ const BookTable = () => {
                 rows={documents}
                 columns={columns}
                 checkboxSelection
+                disableSelectionOnClick
                 getRowId={(row) => row._id}
                 components={{ Toolbar: GridToolbar }}
               />

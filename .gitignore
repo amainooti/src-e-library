@@ -9,5 +9,5 @@ yarn.lock
 package-lock.json
 
 
-/backend/public/thumbnail/*
+/backend/public/thumbnails/*
 /backend/public/documents/*

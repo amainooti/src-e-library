@@ -19,6 +19,7 @@ import {
   Grid,
   Autocomplete,
   TextField,
+  Snackbar,
 } from "@mui/material";
 
 import axiosInstance from "../api/axiosInstance";
@@ -66,35 +67,18 @@ function pdfDetails(pdfBlob) {
 
 export default function EditBook({ selectedBook }) {
   const router = useRouter();
+  const inputRef = React.useRef(null);
+  const [value, setValue] = React.useState([]);
   const [dragActive, setDragActive] = React.useState(false);
   const [tagOptions, setTagOptions] = React.useState([]);
-  const inputRef = React.useRef(null);
-
-  if (selectedBook?.tags) {
-    selectedBook.tags.map((tags) => {});
-  }
-
-  const handleDrag = function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFile(e.dataTransfer.files);
-    }
-  };
-
-  const [value, setValue] = React.useState([]);
   const [inputValue, setInputValue] = React.useState("");
+  const [alertMessage, setAlertMessage] = React.useState("");
+
+  function objectToArray(data) {
+    let newData = [];
+    data.map((dat) => newData.push(dat.title));
+    return newData;
+  }
 
   React.useEffect(() => {
     const getAllTag = async () => {
@@ -107,6 +91,14 @@ export default function EditBook({ selectedBook }) {
 
   return (
     <MainLayout>
+      <Snackbar
+        open={alertMessage ? true : false}
+        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        onClose={() => {
+          setAlertMessage();
+        }}
+        message={alertMessage}
+      />
       <Container maxWidth="md">
         <Box sx={{ my: 2 }}>
           <Box display="flex" justifyContent="space-between">
@@ -137,7 +129,7 @@ export default function EditBook({ selectedBook }) {
               author: selectedBook.author,
               pageCount: selectedBook.noOfPages,
               bookDesc: selectedBook?.description,
-              tags: [],
+              tags: objectToArray(selectedBook?.tags),
             }}
             validationSchema={Yup.object().shape({
               title: Yup.string().required("A Title is required"),
@@ -150,7 +142,11 @@ export default function EditBook({ selectedBook }) {
                 .nullable(),
             })}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
-              console.log(values);
+              await axiosInstance
+                .put(`/api/document/${router.query?.book}`, values)
+                .then((res) => {
+                  setAlertMessage(`Book Updated Successfully!`);
+                });
             }}
           >
             {({
@@ -343,7 +339,6 @@ export default function EditBook({ selectedBook }) {
 }
 
 export async function getServerSideProps({ query }) {
-  console.log(query?.book);
   const resp = await axiosInstance.get(`/api/document/${query?.book}`);
   const data = await resp.data;
 
