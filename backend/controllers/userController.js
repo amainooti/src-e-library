@@ -44,6 +44,7 @@ const registerUser = async (req, res) => {
         department,
         level,
         token: generateToken(user._id),
+        roles: user.roles,
       });
     }
   } catch (error) {
@@ -73,6 +74,7 @@ const loginUser = async (req, res) => {
         department: user.department,
         level: user.level,
         token: generateToken(user._id),
+        roles: user.roles,
       });
     } else {
       res.status(400).json({ error: "incorrect email or password" });
@@ -84,11 +86,16 @@ const loginUser = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
-  const { _id, name, email } = await User.findById(req.user.id);
+  const { firstname, lastname, email, department, level, roles } =
+    await User.findById(req.user.id);
+
   res.status(200).json({
-    id: _id,
-    name,
+    firstname,
+    lastname,
+    department,
     email,
+    level,
+    roles,
   });
 };
 

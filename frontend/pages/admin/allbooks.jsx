@@ -9,11 +9,13 @@ import {
   Modal,
   Button,
 } from "@mui/material";
-import MainLayout from "../../components/Layouts/MainLayout";
-import axiosInstance from "../api/axiosInstance";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { CreateOutlined, DeleteOutlined } from "@mui/icons-material";
 import Link from "next/link";
+
+import MainLayout from "../../components/Layouts/MainLayout";
+import axiosInstance from "../api/axiosInstance";
+import useAxiosPrivate from "../../hooks/usePrivateAxios";
 
 const classes = {
   cardPaper: {
@@ -28,6 +30,7 @@ const classes = {
 };
 
 const BookTable = () => {
+  const axiosPrivate = useAxiosPrivate();
   const [open, setOpen] = React.useState(false);
   const [documents, setDocuments] = React.useState([]);
   const [deleteDocument, setDeleteDocument] = React.useState();
@@ -43,7 +46,7 @@ const BookTable = () => {
 
   const handleDelete = (documentId) => {
     const deleteProductById = async () => {
-      await axiosInstance.delete(`/api/document/${documentId}`).then((res) => {
+      await axiosPrivate.delete(`/api/document/${documentId}`).then((res) => {
         const newDocuments = documents.filter(
           (document) => document._id !== documentId
         );
@@ -86,13 +89,13 @@ const BookTable = () => {
             href={{ pathname: "/admin/edit", query: { book: params.row._id } }}
           >
             <IconButton>
-              <CreateOutlined />
+              <CreateOutlined color="success" />
             </IconButton>
           </Link>
           <IconButton
             onClick={() => handleConfirm(params.row._id, params.row.title)}
           >
-            <DeleteOutlined />
+            <DeleteOutlined color="error" />
           </IconButton>
         </>
       ),

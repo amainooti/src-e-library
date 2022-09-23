@@ -25,7 +25,7 @@ export default function Home() {
           setDocuments(res.data);
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err?.response);
         });
     };
     getDocuments();

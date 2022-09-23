@@ -15,15 +15,18 @@ import {
 import React from "react";
 import Link from "next/link";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userLoginState } from "../../atoms/loginAtom";
 import { profileShowState } from "../../atoms/profileAtom";
 import userState from "../../atoms/userAtom";
+import useLogout from "../../hooks/useLogout";
 
 const Profile = () => {
   const user = useRecoilValue(userState);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(userLoginState);
+  const logout = useLogout();
   const [showProfile, setShowProfile] = useRecoilState(profileShowState);
-
+  const handleLogout = () => {
+    logout();
+    setShowProfile(false);
+  };
   return (
     <>
       <Box mb={3}>
@@ -39,7 +42,7 @@ const Profile = () => {
               {user.data?.name}
             </Typography>
             <Typography variant="paragraph" color="GrayText">
-              (Student)
+              ({user?.data?.roles?.includes("Admin") ? "Admin" : "Student"})
             </Typography>
             <Typography variant="paragraph" color="GrayText">
               {user.data?.email}
@@ -82,7 +85,7 @@ const Profile = () => {
           fontFamily: "'Josefin Sans', sans-serif",
         }}
         fullWidth
-        onClick={() => (setIsLoggedIn(false), setShowProfile(false))}
+        onClick={() => handleLogout()}
       >
         Logout
       </Button>

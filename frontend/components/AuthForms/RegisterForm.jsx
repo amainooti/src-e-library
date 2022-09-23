@@ -24,6 +24,7 @@ import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import * as Yup from "yup";
 
+import { convertRoles } from "../../utils/helper";
 import userState from "../../atoms/userAtom";
 import axiosInstance from "../../pages/api/axiosInstance";
 
@@ -134,7 +135,11 @@ const RegisterForm = () => {
             await axiosInstance
               .post("/api/users/register", values)
               .then((res) => {
-                setUser({ loggedIn: true, data: res.data });
+                console.log(res.data);
+                setUser({
+                  loggedIn: true,
+                  data: { ...res.data, roles: convertRoles(res?.data?.roles) },
+                });
                 router.push("/");
               })
               .catch((err) => {

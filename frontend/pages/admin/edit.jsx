@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 
 import axiosInstance from "../api/axiosInstance";
+import useAxiosPrivate from "../../hooks/usePrivateAxios";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -32,12 +33,6 @@ const InputContainer = styled(Box)(() => ({
     textAlign: "left",
   },
 }));
-
-async function handleFile(files, setFieldValue) {
-  var pdf = files[0];
-  var details = await pdfDetails(pdf);
-  setFieldValue("pageCount", details[0].Pages);
-}
 
 function pdfDetails(pdfBlob) {
   return new Promise((done) => {
@@ -66,10 +61,9 @@ function pdfDetails(pdfBlob) {
 }
 
 export default function EditBook({ selectedBook }) {
+  const axiosPrivate = useAxiosPrivate();
   const router = useRouter();
-  const inputRef = React.useRef(null);
   const [value, setValue] = React.useState([]);
-  const [dragActive, setDragActive] = React.useState(false);
   const [tagOptions, setTagOptions] = React.useState([]);
   const [inputValue, setInputValue] = React.useState("");
   const [alertMessage, setAlertMessage] = React.useState("");
@@ -82,12 +76,12 @@ export default function EditBook({ selectedBook }) {
 
   React.useEffect(() => {
     const getAllTag = async () => {
-      await axiosInstance.get("/api/tags").then((res) => {
+      await axiosPrivate.get("/api/tags").then((res) => {
         setTagOptions(res.data);
       });
     };
     getAllTag();
-  }, []);
+  }, [axiosPrivate]);
 
   return (
     <MainLayout>
@@ -142,10 +136,14 @@ export default function EditBook({ selectedBook }) {
                 .nullable(),
             })}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
-              await axiosInstance
+              await axiosPrivate
                 .put(`/api/document/${router.query?.book}`, values)
                 .then((res) => {
                   setAlertMessage(`Book Updated Successfully!`);
+                }).catch((err) => {
+                  setAlertMessage( err.response
+                    ? err.response.data.error
+                    : "An error occured! Try again later.")
                 });
             }}
           >

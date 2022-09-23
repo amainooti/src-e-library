@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import NextNProgress from "nextjs-progressbar";
 import { RecoilRoot } from "recoil";
+import PersistLogin from "../components/Common/PersistLogin";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -13,7 +14,9 @@ function MyApp({ Component, pageProps }) {
           showOnShallow={true}
           color="#fff"
         />
-        <Component {...pageProps} />
+        <PersistLogin>
+          <Component {...pageProps} />
+        </PersistLogin>
       </RecoilRoot>
       <div className="background-items">
         <div className="ocean">

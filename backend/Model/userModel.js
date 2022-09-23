@@ -25,8 +25,12 @@ const userSchema = mongoose.Schema(
     },
     college: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
+    roles: {
+      type: [Number],
+      default: 4096,
+    },
   },
   {
     timestamps: true,

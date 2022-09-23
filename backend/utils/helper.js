@@ -35,10 +35,7 @@ const addMetadata = async (path, title) => {
       console.log("Data Exist");
       exif.metadata(data, async function (err, metadata) {
         if (metadata) {
-          console.log(metadata);
-          console.log(typeof metadata);
           document.metadata = metadata;
-          console.log(document);
           document.save();
         }
       });
@@ -46,4 +43,9 @@ const addMetadata = async (path, title) => {
   }
 };
 
-module.exports = { uploadFile, addMetadata };
+const Roles = {
+  Student: 4096,
+  Admin: 2048,
+};
+
+module.exports = { uploadFile, addMetadata, Roles };

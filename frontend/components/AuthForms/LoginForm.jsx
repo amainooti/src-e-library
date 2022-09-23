@@ -23,7 +23,9 @@ import { useRouter } from "next/router";
 import { Formik } from "formik";
 import { useRecoilState } from "recoil";
 import * as Yup from "yup";
+import { addToLocalStorage } from "../../utils/browserStorage";
 
+import { convertRoles } from "../../utils/helper";
 import userState from "../../atoms/userAtom";
 import axiosInstance from "../../pages/api/axiosInstance";
 
@@ -78,14 +80,18 @@ const LoginForm = ({ setMobileOpen }) => {
             await axiosInstance
               .post("/api/users/login", values)
               .then((res) => {
-                setUser({ loggedIn: true, data: res.data });
+                addToLocalStorage("token", res.data?.token);
+                setUser({
+                  loggedIn: true,
+                  data: { ...res.data, roles: convertRoles(res?.data?.roles) },
+                });
                 router.push("/");
               })
               .catch((err) => {
                 setErrorMessage(
                   err.response
                     ? err.response.data.error
-                    : "An error occured! Trya again later."
+                    : "An error occured! Try again later."
                 );
               });
           }}

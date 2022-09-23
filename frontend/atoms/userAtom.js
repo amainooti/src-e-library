@@ -10,6 +10,7 @@ const userState = atom({
       college: "",
       department: "",
       level: "",
+      roles: [],
     },
     loggedIn: false,
   },

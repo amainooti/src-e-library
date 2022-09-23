@@ -10,7 +10,7 @@ export const addToLocalStorage = (key, value) => {
 
 export const getFromLocalStorage = (key) => {
   try {
-    return JSON.parse(localStorage.getItem(key) || "");
+    return localStorage.getItem(key) || "";
   } catch (err) {
     console.log(err);
     return "";

@@ -18,10 +18,12 @@ import {
   InputAdornment,
   Grid,
   Autocomplete,
+  Snackbar,
   TextField,
 } from "@mui/material";
 
 import axiosInstance from "../api/axiosInstance";
+import useAxiosPrivate from "../../hooks/usePrivateAxios";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -84,6 +86,8 @@ function formatSizeUnits(bytes) {
 export default function Upload() {
   const [dragActive, setDragActive] = React.useState(false);
   const [tagOptions, setTagOptions] = React.useState([]);
+  const [errorMessage, setErrorMessage] = React.useState();
+  const axiosPrivate = useAxiosPrivate();
   const router = useRouter();
 
   const inputRef = React.useRef(null);
@@ -124,7 +128,7 @@ export default function Upload() {
 
   React.useEffect(() => {
     const getAllTag = async () => {
-      await axiosInstance.get("/api/tags").then((res) => {
+      await axiosPrivate.get("/api/tags").then((res) => {
         setTagOptions(res.data);
       });
     };
@@ -134,6 +138,14 @@ export default function Upload() {
   return (
     <MainLayout>
       <Container maxWidth="md">
+        <Snackbar
+          open={errorMessage ? true : false}
+          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+          onClose={() => {
+            setErrorMessage();
+          }}
+          message={errorMessage}
+        />
         <Box sx={{ my: 2 }}>
           <Box display="flex" justifyContent="space-between">
             <Box display="flex" alignItems="center" gap={1} mb={3}>
@@ -182,13 +194,18 @@ export default function Upload() {
               Object.entries(values).forEach((file) => {
                 formData.append(file[0], file[1]);
               });
-              await axiosInstance
+              await axiosPrivate
                 .post("/api/upload", formData)
                 .then((res) => {
                   setSubmitting(false);
                   resetForm({ values: "" });
                 })
                 .catch((err) => {
+                  setErrorMessage(
+                    err.response
+                      ? err.response.data.error
+                      : "An error occured! Try again later."
+                  );
                   setSubmitting(false);
                 });
             }}
