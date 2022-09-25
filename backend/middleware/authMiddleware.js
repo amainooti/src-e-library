@@ -7,6 +7,10 @@ const protect = async (req, res, next) => {
 
   // jwt is a Bearer token that works with headers
 
+  if (!token) {
+    return res.status(403).json({ error: "Access Denied, No Token!" });
+  }
+
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
@@ -25,9 +29,6 @@ const protect = async (req, res, next) => {
       console.log(error);
       res.status(403).json({ error: "Access Denied." });
     }
-  }
-  if (!token) {
-    res.status(403).json({ error: "Access Denied, No Token!" });
   }
 };
 

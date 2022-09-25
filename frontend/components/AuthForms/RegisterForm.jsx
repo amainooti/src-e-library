@@ -53,29 +53,29 @@ const colleges = [
     ],
   },
   {
-    title: "Sciences",
-    id: "sciences",
-    department: [],
+    title: "Science",
+    id: "science",
+    department: ["A", "B", "C"],
   },
   {
     title: "Medicine and Health Sciences",
     id: "medicine",
-    department: [],
+    department: ["DA", "EB", "FC"],
   },
   {
     title: "Law",
     id: "law",
-    department: [],
+    department: ["GD", "HE", "IF"],
   },
   {
     title: "Pharmacy",
     id: "pharmacy",
-    department: [],
+    department: ["JG", "KH"],
   },
   {
     title: "Social and Management Sciences",
     id: "sms",
-    department: [],
+    department: ["LI", "MJ"],
   },
 ];
 
@@ -90,6 +90,14 @@ const RegisterForm = () => {
   //   useEffect(() => {
   //     state.user && router.push("/");
   //   }, [state.user, router]);
+  const getDepartment = (collegeName) => {
+    for (const college of colleges) {
+      if (college.title === collegeName) {
+        return college.department;
+      }
+    }
+    return [];
+  };
 
   return (
     <>
@@ -135,7 +143,6 @@ const RegisterForm = () => {
             await axiosInstance
               .post("/api/users/register", values)
               .then((res) => {
-                console.log(res.data);
                 setUser({
                   loggedIn: true,
                   data: { ...res.data, roles: convertRoles(res?.data?.roles) },
@@ -279,18 +286,11 @@ const RegisterForm = () => {
                     onBlur={handleBlur}
                     size="small"
                   >
-                    <MenuItem value="Engineering">
-                      College of Engineering
-                    </MenuItem>
-                    <MenuItem value="Sciences">College of Sciences</MenuItem>
-                    <MenuItem value="Medicine and Health Sciences">
-                      College of Medicine and Health Sciences
-                    </MenuItem>
-                    <MenuItem value="Law">College of Law</MenuItem>
-                    <MenuItem value="Pharmacy">College of Pharmacy</MenuItem>
-                    <MenuItem value="Social and Management Sciences">
-                      College of Social &amp; Management Sciences
-                    </MenuItem>
+                    {colleges.map((college) => (
+                      <MenuItem value={college.title} key={college.id}>
+                        College of {college.title}
+                      </MenuItem>
+                    ))}
                   </Select>
                   {touched.college && errors.college && (
                     <FormHelperText error id="helper-text-college">
@@ -299,23 +299,34 @@ const RegisterForm = () => {
                   )}
                 </FormControl>
               </InputContainer>
+
               <InputContainer>
                 <small>Department</small>
                 <FormControl fullWidth>
-                  <OutlinedInput
-                    type="text"
+                  <Select
+                    id="demo-simple-select=college"
                     name="department"
                     value={values.department}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      setFieldValue("department", e.target.value);
+                    }}
+                    onBlur={handleBlur}
                     size="small"
-                  />
+                  >
+                    {getDepartment(values.college).map((department, index) => (
+                      <MenuItem value={department} key={index}>
+                        {department}
+                      </MenuItem>
+                    ))}
+                  </Select>
                   {touched.department && errors.department && (
-                    <FormHelperText error id="helper-text-department-signup">
+                    <FormHelperText error id="helper-text-department">
                       {errors.department}
                     </FormHelperText>
                   )}
                 </FormControl>
               </InputContainer>
+
               <InputContainer>
                 <small>Level</small>
                 <FormControl fullWidth>

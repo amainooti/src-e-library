@@ -133,7 +133,7 @@ export default function Upload() {
       });
     };
     getAllTag();
-  }, []);
+  }, [axiosPrivate]);
 
   return (
     <MainLayout>

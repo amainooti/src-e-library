@@ -67,15 +67,16 @@ const Profile = () => {
               <ListItemText>My Favorites</ListItemText>
             </MenuItem>
           </Link>
-
-          <Link href="/admin/allbooks">
-            <MenuItem>
-              <ListItemIcon>
-                <Upload />
-              </ListItemIcon>
-              <ListItemText>My Uploads</ListItemText>
-            </MenuItem>
-          </Link>
+          {user.roles?.includes("Admin") && (
+            <Link href="/admin/allbooks">
+              <MenuItem>
+                <ListItemIcon>
+                  <Upload />
+                </ListItemIcon>
+                <ListItemText>My Uploads</ListItemText>
+              </MenuItem>
+            </Link>
+          )}
         </MenuList>
       </Box>
       <Button

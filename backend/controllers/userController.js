@@ -1,6 +1,8 @@
 const { User } = require("../Model/userModel");
+const Token = require("../Model/TokenModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../utils/emails/sendMail");
 
 const registerUser = async (req, res) => {
   // check if the text fields are empty
@@ -99,6 +101,81 @@ const getUser = async (req, res) => {
   });
 };
 
+const resetPasswordRequestContoller = async (req, res) => {
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: "An email is required!" });
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ error: "User does not exist" });
+  }
+  const token = await Token.findOne({ userId: user._id });
+  if (token) await token.deleteOne();
+
+  let resetoken = await bcrypt.genSalt(32).toString("hex");
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(resetToken, salt);
+
+  const createdToken = await new Token({
+    userId: user._id,
+    token: hash,
+  }).save();
+  const link = `${clientURL}/passwordReset?token=${resetoken}&id=${user._id}`;
+  sendEmail(
+    user.email,
+    "Password Reset Request",
+    {
+      name: `${user.firstname} ${user.lastname}`,
+      link: link,
+    },
+    "./template/requestResetPassword.handlebars"
+  );
+
+  res.status(200).json("Sent Reset Password Request!");
+};
+
+const resetPasswordController = async (req, res) => {
+  const { userId, token, password } = req.body;
+  const passwordResetToken = await Token.findOne({ userId });
+  if (!passwordResetToken) {
+    return res
+      .status(400)
+      .json({ error: "Invalid or Expired Password Reset Token" });
+  }
+  const isValid = await bcrypt.compare(token, passwordResetToken.token);
+  if (!isValid) {
+    return res
+      .status(400)
+      .json({ error: "Invalid or Expired Password Reset Token" });
+  }
+
+  const salt = await bcrypt.genSalt(10);
+  const hash = await bcrypt.hash(password, salt);
+  const user = await User.findById({ _id: userId });
+  if (!user) {
+    return res
+      .status(400)
+      .json({ error: "Invalid or Expired Password Reset Token" });
+  }
+  await User.updateOne(
+    { _id: user._id },
+    { $set: { password: hash } },
+    { new: true }
+  );
+
+  sendEmail(
+    user.email,
+    "Password Reset Successful",
+    {
+      name: `${user.name} ${user.name}`,
+    },
+    "./template/resetPassword.handlebars"
+  );
+  await passwordResetToken.deleteOne();
+  res.status(200).json("Updated Password Successfully");
+};
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "60d",
@@ -109,4 +186,6 @@ module.exports = {
   registerUser,
   loginUser,
   getUser,
+  resetPasswordController,
+  resetPasswordRequestContoller,
 };

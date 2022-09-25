@@ -59,16 +59,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const searchResults = async (str) => {
-  try {
-    let result = str.replace(/,/g, "");
-    let { data } = await axiosInstance.get(`/api/document/search/${result}`);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 function SearchBar({ size }) {
   const theme = useTheme();
   const router = useRouter();
@@ -79,16 +69,22 @@ function SearchBar({ size }) {
   const handleSearch = (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
-    console.log("Submitting Data");
     const searchData = data.get("search");
-    console.log(resultOptions);
     const result = resultOptions.filter((item) => item.title === searchData);
-    console.log(result);
-    console.log(searchData);
     if (result.length > 0) {
       router.push(`/book/${result[0]._id}`);
     } else {
       console.log("Sorry book does not exist");
+    }
+  };
+
+  const searchResults = async (str) => {
+    try {
+      let result = str.replace(/,/g, "");
+      let { data } = await axiosInstance.get(`/api/document/search/${result}`);
+      return data;
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -107,13 +103,14 @@ function SearchBar({ size }) {
         </SearchIconWrapper>
         <Autocomplete
           freeSolo
+          getOptionLabel={(option) => option.title}
           size={size || "small"}
           id="book-search-bar"
           disableClearable
-          options={resultOptions ? resultOptions.map((obj) => obj.title) : []}
+          options={resultOptions ? resultOptions.map((obj) => obj) : []}
           renderOption={(props, option) => (
             <Box
-              key={option.id}
+              key={option._id}
               component="li"
               sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
               {...props}
@@ -121,11 +118,11 @@ function SearchBar({ size }) {
               <Image
                 width="40"
                 height="40"
-                src="/assets/book.jpg"
+                src={`http://localhost:8080/api/document/thumbnail/${option._id}`}
                 srcSet="/assets/book.jpg"
                 alt=""
               />
-              {option}
+              {option.title}
             </Box>
           )}
           renderInput={(params) => {
