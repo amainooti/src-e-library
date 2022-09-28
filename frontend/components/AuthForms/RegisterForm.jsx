@@ -53,7 +53,7 @@ const sort_by = (field, reverse, primer) => {
   };
 };
 
-var colleges = [
+const colleges = [
   {
     title: "Medicine and Health Sciences",
     id: "medicine",
@@ -143,7 +143,7 @@ var colleges = [
     department: ["Performing Arts"],
   },
 ];
-colleges = colleges.sort(sort_by("title", false, (a) => a.toUpperCase()));
+colleges.sort(sort_by("title", false, (a) => a.toUpperCase()));
 
 const RegisterForm = () => {
   const theme = useTheme();
