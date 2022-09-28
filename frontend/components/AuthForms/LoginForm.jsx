@@ -38,7 +38,7 @@ const InputContainer = styled(Box)(() => ({
   },
 }));
 
-const LoginForm = ({ setMobileOpen }) => {
+const LoginForm = () => {
   const theme = useTheme();
   const [user, setUser] = useRecoilState(userState);
   const [errorMessage, setErrorMessage] = React.useState();
