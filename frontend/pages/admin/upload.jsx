@@ -403,7 +403,7 @@ export default function Upload() {
                               <TextField
                                 {...params}
                                 name="tags"
-                                placeholder="Use comma(,) to separate tags"
+                                placeholder="Use enter to separate tags"
                               />
                             )}
                           />
