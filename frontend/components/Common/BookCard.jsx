@@ -52,7 +52,7 @@ const BookImage = ({ image, bookId, width }) => {
         <Image
           src={
             bookId
-              ? `http://127.0.0.1:8080/api/document/thumbnail/${bookId}`
+              ? `${image?.substr(0, image?.lastIndexOf("."))}.png`
               : "/assets/book.jpg"
           }
           alt="Book Cover Image"
@@ -84,7 +84,7 @@ export const BookCard = (props) => {
       }}
       elevation={over ? 1 : 0}
     >
-      <BookImage image={props?.image} bookId={props?._id} />
+      <BookImage image={props?.urlPath} bookId={props?._id} />
       <CardActions
         sx={{
           justifyContent: "space-evenly",
@@ -105,11 +105,7 @@ export const BookCard = (props) => {
             <ShareIcon />
           </IconButton>
         </RWebShare>
-        <IconButton
-          aria-label="download"
-          component="a"
-          href={`http://127.0.0.1:8080/api/document/download/${props._id}`}
-        >
+        <IconButton aria-label="download" component="a" href={props.urlPath}>
           <DownloadIcon />
         </IconButton>
       </CardActions>
@@ -172,7 +168,7 @@ export const HorizontalBookCard = (props) => {
     >
       <Box display="flex">
         <Box>
-          <BookImage image={props?.image} bookId={props?._id} width={150} />
+          <BookImage image={props?.urlPath} bookId={props?._id} width={150} />
         </Box>
         <Box p={3}>
           <Link href={`/book/${props._id}`}>

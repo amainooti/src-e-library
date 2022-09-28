@@ -14,6 +14,10 @@ const uploadBook = async (req, res) => {
     const listTags = tags.split(",");
     const addedTags = [];
 
+    if (!author || !bookDesc || !pageCount) {
+      return res.status(400).json({ error: "Please fill in the fields" });
+    }
+    
     for (const listTag of listTags) {
       let tag = await Tag.findOne({
         title: { $regex: listTag.toLowerCase(), $options: "i" },
@@ -28,9 +32,6 @@ const uploadBook = async (req, res) => {
     //   return res.status(401).json({ error: "Document already exist!" });
     // }
 
-    if (!author || !bookDesc || !pageCount) {
-      return res.status(400).json({ error: "Please fill in the fields" });
-    }
     const inputPath = path.resolve(__dirname, `../${documentSent.path}`);
     const stats = fs.statSync(inputPath);
     document = await Document.create({

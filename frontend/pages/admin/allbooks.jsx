@@ -71,7 +71,10 @@ const BookTable = () => {
         <Box>
           <CardMedia
             component="img"
-            image={`http://localhost:8080/api/document/thumbnail/${params.row._id}`}
+            image={`${params.row.urlPath.substr(
+              0,
+              params.row.urlPath.lastIndexOf(".")
+            )}.png`}
             sx={{ height: "3rem", width: "3rem" }}
           />
         </Box>
