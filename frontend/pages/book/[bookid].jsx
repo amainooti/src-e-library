@@ -53,7 +53,10 @@ const BookInfo = () => {
         >
           <CardMedia
             component="img"
-            image={`http://localhost:8080/api/document/thumbnail/${selectedDocument._id}`}
+            image={`${selectedDocument?.urlPath?.substr(
+              0,
+              selectedDocument?.urlPath?.lastIndexOf(".")
+            )}.png`}
             sx={{ width: 400, height: 400 }}
           />
           <Box sx={{ p: 3, flex: 1 }}>
@@ -85,11 +88,7 @@ const BookInfo = () => {
               <Box sx={{ textAlign: "right" }}>
                 <Button
                   variant="contained"
-                  onClick={() =>
-                    router.push(
-                      `http://localhost:8080/api/document/download/${selectedDocument._id}`
-                    )
-                  }
+                  onClick={() => router.push(selectedDocument.urlPath)}
                 >
                   Download
                 </Button>

@@ -6,14 +6,14 @@ const fs = require("fs");
 require("dotenv").config();
 const morgan = require("morgan");
 const { connectionDB } = require("./config/db");
-const PORT = 8080 || process.env.PORT;
+const PORT = process.env.PORT || 3100;
 
 connectionDB();
 // @middleware
 
-const accessLogStream = fs.createWriteStream(__dirname + "/logs/access.log", {
-  flags: "a",
-});
+// const accessLogStream = fs.createWriteStream(__dirname + "/logs/access.log", {
+//   flags: "a",
+// });
 // app.use(morgan("dev", {stream: accessLogStream}));
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +32,10 @@ app.use(
 app.use("/api/users", require("./routes/userRoute"));
 app.use("/api", require("./routes/documentRoute"));
 app.use("/api/admin", require("./routes/adminRoute"));
+
+app.get("/", async (req, res) => {
+  res.status(200).json({ success: "Okay" });
+});
 
 app.listen(PORT, () => {
   console.log(`server is running on http://localhost:${PORT}`.bold);

@@ -27,6 +27,7 @@ const Profile = () => {
     logout();
     setShowProfile(false);
   };
+
   return (
     <>
       <Box mb={3}>
@@ -67,7 +68,7 @@ const Profile = () => {
               <ListItemText>My Favorites</ListItemText>
             </MenuItem>
           </Link>
-          {user.roles?.includes("Admin") && (
+          {user?.data?.roles?.includes("Admin") && (
             <Link href="/admin/allbooks">
               <MenuItem>
                 <ListItemIcon>

@@ -11,3 +11,4 @@ package-lock.json
 /backend/logs/*
 /backend/public/thumbnails/*
 /backend/public/documents/*
+/backend/.git.backend
