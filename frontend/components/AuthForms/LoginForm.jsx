@@ -21,13 +21,14 @@ import EmailTwoToneIcon from "@mui/icons-material/EmailTwoTone";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Formik } from "formik";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import * as Yup from "yup";
 import { addToLocalStorage } from "../../utils/browserStorage";
 
 import { convertRoles } from "../../utils/helper";
 import userState from "../../atoms/userAtom";
 import axiosInstance from "../../pages/api/axiosInstance";
+import { loginModalState } from "../../atoms/profileAtom";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -45,6 +46,7 @@ const LoginForm = () => {
   const [googleLoading, setGoogleLoading] = React.useState(false);
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
+  const setLoginModal = useSetRecoilState(loginModalState);
 
   return (
     <>
@@ -85,7 +87,7 @@ const LoginForm = () => {
                   loggedIn: true,
                   data: { ...res.data, roles: convertRoles(res?.data?.roles) },
                 });
-                router.push("/");
+                setLoginModal(false);
               })
               .catch((err) => {
                 setErrorMessage(

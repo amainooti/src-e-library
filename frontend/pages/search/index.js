@@ -49,7 +49,7 @@ const Search = () => {
               </Grid>
             ))
           ) : (
-            <Box>
+            <Box sx={{ textAlign: "center" }}>
               <Image
                 src="/assets/puzzle-21.png"
                 alt=""
@@ -77,7 +77,7 @@ const Search = () => {
                 can{" "}
                 <span
                   style={{
-                    color: "#3f51b5",
+                    color: "#fff",
                     cursor: "pointer",
                     fontWeight: "bold",
                   }}

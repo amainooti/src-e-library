@@ -1,11 +1,11 @@
 import { atom } from "recoil";
 
 export const loginModalState = atom({
-  key: "kfjxmikldfdsfdssdfmg",
+  key: "loginModalState",
   default: false,
 });
 
 export const profileShowState = atom({
-  key: "dikjfsklskldfskdffmksmdlf",
+  key: "profileShowState",
   default: false,
 });

@@ -16,14 +16,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import Footer from "../Footer/Footer";
 import ProfileMenu from "../Common/ProfileMenu";
 import { loginModalState, profileShowState } from "../../atoms/profileAtom";
-import { userLoginState } from "../../atoms/loginAtom";
+
 import userState from "../../atoms/userAtom";
 
 function Header(props) {
   const user = useRecoilValue(userState);
   const [modal, setModal] = useRecoilState(loginModalState);
 
-  const isLoggedIn = useRecoilValue(userLoginState);
   const [showProfile, setShowProfile] = useRecoilState(profileShowState);
 
   const menuId = "primary-search-account-menu";
@@ -56,11 +55,11 @@ function Header(props) {
                 sx={{ display: "flex" }}
               >
                 <Image
-                  src="/assets/src-cropped.jpeg"
+                  src="/assets/src-cropped-removebg-preview.png"
                   alt="SRC LOGO"
                   width={60}
                   height={60}
-                  responsive="true"
+                  responsive={true}
                 />
               </Typography>
             </a>
