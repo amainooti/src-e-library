@@ -1,4 +1,5 @@
-import { Favorite, Upload } from "@mui/icons-material";
+import { Favorite, Upload, AutoStories, LockReset } from "@mui/icons-material";
+
 import {
   Avatar,
   Box,
@@ -55,7 +56,7 @@ const Profile = () => {
           <Link href="/user/mybooks">
             <MenuItem>
               <ListItemIcon>
-                <Favorite fontSize="small" />
+                <AutoStories fontSize="small" />
               </ListItemIcon>
               <ListItemText>My Books </ListItemText>
             </MenuItem>
@@ -66,6 +67,14 @@ const Profile = () => {
                 <Favorite fontSize="small" />
               </ListItemIcon>
               <ListItemText>My Favorites</ListItemText>
+            </MenuItem>
+          </Link>
+          <Link href="/resetpassword/userid">
+            <MenuItem>
+              <ListItemIcon>
+                <LockReset fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Reset Password</ListItemText>
             </MenuItem>
           </Link>
           {user?.data?.roles?.includes("Admin") && (

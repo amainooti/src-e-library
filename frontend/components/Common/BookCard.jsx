@@ -246,7 +246,7 @@ export const HorizontalBookCard = (props) => {
         <IconButton
           aria-label="download"
           component="a"
-          href={`http://127.0.0.1:8080/api/document/download/${props._id}`}
+          href={`${process.env.HOST_URL}/api/document/download/${props._id}`}
         >
           <DownloadIcon />
         </IconButton>
