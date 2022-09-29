@@ -4,6 +4,7 @@ import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
 import { favoritesListState } from "../../atoms/favoritesAtom";
+import { useRecoilValue } from "recoil";
 
 const MyBooks = () => {
   var favoriteList = useRecoilValue(favoritesListState);
@@ -23,16 +24,8 @@ const MyBooks = () => {
           </Typography>
         </Box>
         <Grid container spacing={2}>
-          {/* {Array(24)
-            .fill()
-            .map((_, index) => (
-              <Grid item xs={24} key={index}>
-                <HorizontalBookCard />
-              </Grid>
-            ))} */}
           {favoriteList.map((document, index) => (
             <Grid item xs={12} key={index}>
-              kskssdsd
               <HorizontalBookCard {...document} />
             </Grid>
           ))}

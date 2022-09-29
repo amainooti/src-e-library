@@ -78,14 +78,32 @@ const Profile = () => {
             </MenuItem>
           </Link>
           {user?.data?.roles?.includes("Admin") && (
-            <Link href="/admin/allbooks">
-              <MenuItem>
-                <ListItemIcon>
-                  <Upload />
-                </ListItemIcon>
-                <ListItemText>My Uploads</ListItemText>
-              </MenuItem>
-            </Link>
+            <>
+              <Link href="/admin/requestedbooks">
+                <MenuItem>
+                  <ListItemIcon>
+                    <Upload />
+                  </ListItemIcon>
+                  <ListItemText>View all Users</ListItemText>
+                </MenuItem>
+              </Link>
+              <Link href="/admin/allbooks">
+                <MenuItem>
+                  <ListItemIcon>
+                    <Upload />
+                  </ListItemIcon>
+                  <ListItemText>My Uploads</ListItemText>
+                </MenuItem>
+              </Link>
+              <Link href="/admin/requestedbooks">
+                <MenuItem>
+                  <ListItemIcon>
+                    <Upload />
+                  </ListItemIcon>
+                  <ListItemText>Book Requests</ListItemText>
+                </MenuItem>
+              </Link>
+            </>
           )}
         </MenuList>
       </Box>

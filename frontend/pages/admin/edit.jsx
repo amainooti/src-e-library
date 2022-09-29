@@ -20,10 +20,12 @@ import {
   Autocomplete,
   TextField,
   Snackbar,
+  Alert,
 } from "@mui/material";
 
 import axiosInstance from "../api/axiosInstance";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
+import Head from "next/head";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -85,14 +87,27 @@ export default function EditBook({ selectedBook }) {
 
   return (
     <MainLayout>
+      <Head>
+        <title>{`Edit ${selectedBook?.title || "Book"} - SRC E-LIBRARY`}</title>
+      </Head>
       <Snackbar
         open={alertMessage ? true : false}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        autoHideDuration={4000}
         onClose={() => {
           setAlertMessage();
         }}
-        message={alertMessage}
-      />
+      >
+        <Alert
+          onClose={() => {
+            setAlertMessage();
+          }}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <Container maxWidth="md">
         <Box sx={{ my: 2 }}>
           <Box display="flex" justifyContent="space-between">
@@ -140,10 +155,13 @@ export default function EditBook({ selectedBook }) {
                 .put(`/api/document/${router.query?.book}`, values)
                 .then((res) => {
                   setAlertMessage(`Book Updated Successfully!`);
-                }).catch((err) => {
-                  setAlertMessage( err.response
-                    ? err.response.data.error
-                    : "An error occured! Try again later.")
+                })
+                .catch((err) => {
+                  setAlertMessage(
+                    err.response
+                      ? err.response.data.error
+                      : "An error occurred! Try again later."
+                  );
                 });
             }}
           >
@@ -174,7 +192,7 @@ export default function EditBook({ selectedBook }) {
                 >
                   <Grid item xs={12} sm={5}>
                     <Image
-                      src={`http://localhost:8080/api/document/thumbnail/${selectedBook._id}`}
+                      src={`${process.env.HOST_URL}api/document/thumbnail/${selectedBook._id}`}
                       alt="Book Cover Image"
                       width={400}
                       height={400}

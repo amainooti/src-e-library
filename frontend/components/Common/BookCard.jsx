@@ -212,8 +212,7 @@ export const HorizontalBookCard = (props) => {
               WebkitBoxOrient: "vertical",
             }}
           >
-            {props.desc ||
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga eaque est, debitis beatae atque perferendis optio necessitatibus fugiat error dicta placeat ducimus! Sunt fugiat esse ex a voluptatum laborum fuga?"}
+            {props.description || "No Description"}
           </Typography>
         </Box>
       </Box>
@@ -235,7 +234,7 @@ export const HorizontalBookCard = (props) => {
           data={{
             text: "Web Share - GfG",
             url: `/book/${props.bookId}`,
-            title: "Share Book - ABUAD E-Library",
+            title: `Share ${props.title}  - SRC E-Library`,
           }}
           onClick={() => console.log("shared successfully!")}
         >

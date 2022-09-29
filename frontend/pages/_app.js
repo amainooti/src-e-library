@@ -12,7 +12,7 @@ function MyApp({ Component, pageProps }) {
           stopDelayMs={200}
           height={3}
           showOnShallow={true}
-          color="#23003F7C"
+          color="#074682"
         />
         <PersistLogin>
           <Component {...pageProps} />

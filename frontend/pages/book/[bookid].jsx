@@ -13,6 +13,8 @@ import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import { axiosInstance } from "../api/axiosInstance";
 import { Add, Router } from "@mui/icons-material";
+import Head from "next/head";
+import Image from "next/image";
 
 const BookInfo = () => {
   const router = useRouter();
@@ -46,6 +48,9 @@ const BookInfo = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>{`Download ${selectedDocument?.title} - SRC E-LIBRARY`}</title>
+      </Head>
       <Container>
         <Box
           display="flex"
@@ -59,13 +64,14 @@ const BookInfo = () => {
             )}.png`}
             sx={{ width: 400, height: 400 }}
           />
+
           <Box sx={{ p: 3, flex: 1 }}>
             <Stack spacing={2}>
               <Typography variant="h3">{selectedDocument?.title}</Typography>
               <Typography component="p">
                 {selectedDocument?.noOfPages} Pages . 2001 .{" "}
                 {selectedDocument.fileSize} . {selectedDocument.downloads}{" "}
-                Download{selectedDocument.downloads > 1 && "s"}
+                Download{selectedDocument.downloads !== 1 && "s"}
               </Typography>
               <Typography component="p">
                 by <span>{selectedDocument.author}</span>
