@@ -1,14 +1,17 @@
 const fs = require("fs");
 const path = require("path");
 const { PDFNet } = require("@pdftron/pdfnet-node");
+const { fromPath } = require("pdf2pic");
+
 // const { addMetadata } = require("../utils/helper");
 const Document = require("../Model/DocumentModel");
 const Tag = require("../Model/TagsModel");
-const { fromPath } = require("pdf2pic");
+const { User } = require("../Model/userModel");
 
 const uploadBook = async (req, res) => {
   try {
     const documentSent = req.file;
+    const postedUser = req.user;
     const { title, author, pageCount, bookDesc, tags } = req.body;
     const newTitle = !title ? documentSent.originalname : title;
     const listTags = tags.split(",");
@@ -17,7 +20,7 @@ const uploadBook = async (req, res) => {
     if (!author || !bookDesc || !pageCount) {
       return res.status(400).json({ error: "Please fill in the fields" });
     }
-    
+
     for (const listTag of listTags) {
       let tag = await Tag.findOne({
         title: { $regex: listTag.toLowerCase(), $options: "i" },
@@ -41,13 +44,14 @@ const uploadBook = async (req, res) => {
       noOfPages: pageCount,
       description: bookDesc,
       tags: addedTags,
+      user: postedUser,
       fileSize: `${Number(stats.size / (1024 * 1024)).toFixed(2)} MB`,
     });
 
     // addMetadata(documentSent.path, newTitle);
     res.status(200).json(document);
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
     res.status(401).json({ error: "An error occured" });
   }
 };
@@ -263,6 +267,98 @@ function formatSizeUnits(bytes) {
   return bytes;
 }
 
+const addToFavorite = async (req, res) => {
+  try {
+    const { documentId } = req.body;
+    if (!documentId) {
+      return res.status(400).json({ error: "Book Id is required" });
+    }
+    const document = await Document.findById(documentId);
+    if (!document) {
+      return res.status(404).json({ error: "Book does not exist!" });
+    }
+    const userId = req.user;
+    const user = await (
+      await User.findById(userId._id)
+    ).populate({ path: "favoriteBooks", model: "Document" });
+    const oldFavorite = user.favoriteBooks;
+    const bookExist = oldFavorite.find((item) => item._id.equals(document._id));
+    if (!bookExist) {
+      user.favoriteBooks.push(document);
+    } else {
+      const remainBooks = oldFavorite.filter(
+        (item) => !item._id.equals(document._id)
+      );
+      user.favoriteBooks = remainBooks;
+      user.save();
+      return res.status(200).json(remainBooks);
+    }
+    user.save();
+    res.status(200).json(user.favoriteBooks);
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json(err.message);
+  }
+};
+
+const getFavorites = async (req, res) => {
+  try {
+    const userId = req.user;
+    const user = await User.findById(userId._id).populate({
+      path: "favoriteBooks",
+      model: "Document",
+    });
+    res.status(200).json(user.favoriteBooks);
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({ error: err.message });
+  }
+};
+
+const getMyBooks = async (req, res) => {
+  try {
+    const user = req.user;
+
+    let mybooks = await Document.find().populate({
+      path: "tags",
+      model: "Tag",
+      match: {
+        $or: [
+          {
+            title: {
+              $eq: user.department,
+            },
+          },
+          {
+            title: {
+              $eq: user.college,
+            },
+          },
+          {
+            title: {
+              $eq: user.level,
+            },
+          },
+          {
+            title: {
+              $eq: `${user.level} Level`,
+            },
+          },
+        ],
+      },
+    });
+
+    mybooks = mybooks.filter(function (book) {
+      return book.tags.length;
+    });
+
+    res.status(200).json(mybooks);
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({ error: err.message });
+  }
+};
+
 module.exports = {
   uploadBook,
   getDocument,
@@ -273,4 +369,7 @@ module.exports = {
   getAllTags,
   deleteDocumentById,
   updateDocumentById,
+  addToFavorite,
+  getFavorites,
+  getMyBooks,
 };

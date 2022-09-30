@@ -192,7 +192,10 @@ export default function EditBook({ selectedBook }) {
                 >
                   <Grid item xs={12} sm={5}>
                     <Image
-                      src={`${process.env.HOST_URL}api/document/thumbnail/${selectedBook._id}`}
+                      src={`${selectedBook?.urlPath?.substr(
+                        0,
+                        selectedBook?.urlPath?.lastIndexOf(".")
+                      )}.png`}
                       alt="Book Cover Image"
                       width={400}
                       height={400}

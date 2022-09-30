@@ -22,8 +22,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { favoritesListState } from "../../atoms/favoritesAtom";
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import useAxiosPrivate from "../../hooks/usePrivateAxios";
 import userState from "../../atoms/userAtom";
-import { loginModalState } from "../../atoms/profileAtom";
 
 // eslint-disable-next-line react/display-name
 const BookLink = React.forwardRef(
@@ -73,6 +73,26 @@ const BookImage = ({ image, bookId, width }) => {
 
 export const BookCard = (props) => {
   const [over, setOver] = useState(false);
+  const user = useRecoilValue(userState);
+  const [favList, setFavList] = useRecoilState(favoritesListState);
+  const axiosPrivate = useAxiosPrivate();
+
+  const favoriteBookActive = favList.filter(
+    (item) => item._id === props?._id
+  ).length;
+
+  const handleLiked = (documentId) => {
+    const updateFavorite = async () => {
+      await axiosPrivate
+        .post("/api/document/favorite", { documentId })
+        .then((res) => {
+          setFavList(res.data);
+        });
+    };
+    if (user?.loggedIn) {
+      updateFavorite();
+    }
+  };
 
   return (
     <Card
@@ -97,9 +117,13 @@ export const BookCard = (props) => {
           justifyContent: "space-evenly",
         }}
       >
-        <IconButton aria-label="add to Liked Books">
-          <FavoriteIcon />
-        </IconButton>
+        <Checkbox
+          icon={<FavoriteBorder />}
+          checkedIcon={<Favorite />}
+          onChange={() => handleLiked(props?._id)}
+          checked={favoriteBookActive}
+          inputProps={{ "aria-label": "controlled" }}
+        />
         <RWebShare
           data={{
             text: "Web Share - GfG",
@@ -121,51 +145,29 @@ export const BookCard = (props) => {
 };
 
 export const HorizontalBookCard = (props) => {
-  const [liked, setLiked] = useState(false);
-
+  const axiosPrivate = useAxiosPrivate();
   // const setFavList = useSetRecoilState(favoritesListState);
+  const user = useRecoilValue(userState);
   const [favList, setFavList] = useRecoilState(favoritesListState);
 
-  const addItem = () => {
-    setFavList((oldList) => [
-      ...oldList,
-      {
-        ...props,
-      },
-    ]);
-  };
-
-  const deleteItem = () => {
-    var remainingArr = favList.filter((data) => data._id != props._id);
-    setFavList(remainingArr);
-  };
-
-  function removeByKey(array, params) {
-    array.some(function (item, index) {
-      return array[index][params.key] === params.value
-        ? !!array.splice(index, 1)
-        : false;
-    });
-    return array;
-  }
-
-  const handleLiked = () => {
-    setLiked((prev) => !prev);
-
-    if (liked == true) {
-      removeByKey(favList, {
-        key: "_id",
-        value: props._id,
-      });
+  const handleLiked = (documentId) => {
+    const updateFavorite = async () => {
+      await axiosPrivate
+        .post("/api/document/favorite", { documentId })
+        .then((res) => {
+          setFavList(res.data);
+        });
+    };
+    if (user?.loggedIn) {
+      updateFavorite();
     }
-    if (liked == false) {
-      addItem();
-    }
-
-    console.log(favList);
   };
   const loginState = useRecoilValue(userState);
   const setLoginModal = useSetRecoilState(loginModalState);
+
+  const favoriteBookActive = favList.filter(
+    (item) => item._id === props?._id
+  ).length;
 
   return (
     <Card
@@ -230,15 +232,9 @@ export const HorizontalBookCard = (props) => {
         <Checkbox
           icon={<FavoriteBorder />}
           checkedIcon={<Favorite />}
-          onChange={handleLiked}
-          checked={liked}
+          onChange={() => handleLiked(props?._id)}
+          checked={favoriteBookActive}
           inputProps={{ "aria-label": "controlled" }}
-          // sx={{
-          //   color: "black",
-          //   "&.Mui-checked": {
-          //     color: "black",
-          //   },
-          // }}
         />
         <RWebShare
           data={{

@@ -38,7 +38,7 @@ const InputContainer = styled(Box)(() => ({
   },
 }));
 
-function ResetPassword() {
+function ResetPassword(props) {
   const theme = useTheme();
   const [user, setUser] = useRecoilState(userState);
   const [errorMessage, setErrorMessage] = React.useState();
@@ -75,7 +75,23 @@ function ResetPassword() {
               .oneOf([Yup.ref("password"), null], "Passwords must match")
               .required("Please confirm your password"),
           })}
-          onSubmit=""
+          onSubmit={async (values, { setSubmitting }) => {
+            await axiosInstance
+              .post("/api/users/resetPassword", {
+                ...values,
+                ...props,
+              })
+              .then((res) => {
+                console.log(res.data);
+                // Create A Sweet alert here that Password has been updated successfully
+                // Then redirect to login Page for user to login
+              })
+              .catch((err) => {
+                console.log(err.message);
+                setErrorMessage(err.messsage);
+              });
+            setSubmitting(false);
+          }}
         >
           {({
             values,

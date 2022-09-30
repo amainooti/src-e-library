@@ -7,7 +7,7 @@ const {
   resetPasswordController,
 } = require("../controllers/userController");
 const route = express.Router();
-const { protect } = require("../middleware/authMiddleware");
+const { protect, userLoggedIn } = require("../middleware/authMiddleware");
 
 route.post("/register", registerUser);
 route.post("/login", loginUser);

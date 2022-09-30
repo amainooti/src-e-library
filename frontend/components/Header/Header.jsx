@@ -45,10 +45,10 @@ export default function Header(props) {
               />
             </a>
           </Link>
-          <Box sx={{ flexGrow: { lg: 1, xs: 0 } }} />
-
+          <Box sx={{ flexGrow: { xs: 1 } }} />
           <SearchBar />
-          <Box sx={{ flexGrow: { lg: 1 } }} />
+          <Box sx={{ flexGrow: { xs: 1 } }} />
+
           <Box sx={{ display: { md: "flex" } }}>
             {!user.loggedIn ? (
               <IconButton
