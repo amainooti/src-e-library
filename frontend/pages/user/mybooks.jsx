@@ -12,11 +12,11 @@ import { HorizontalBookCard } from "../../components/Common/BookCard";
 import { SkeletonHorizontalBookCard } from "../../components/Common/SkeletonCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
-import { favoritesListState } from "../../atoms/favoritesAtom";
-import { useRecoilValue } from "recoil";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 const MyBooks = () => {
+  const router = useRouter();
   const axiosPrivate = useAxiosPrivate();
   const [myBooks, setMyBooks] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -96,7 +96,10 @@ const MyBooks = () => {
                   size="large"
                   onClick={() => router.back()}
                   variant="outlined"
-                  color="secondary"
+                  sx={{
+                    color: "white",
+                    borderColor: "white",
+                  }}
                 >
                   Go Back
                 </Button>

@@ -62,14 +62,6 @@ const BookInfo = () => {
           display="flex"
           sx={{ mt: 3, flexDirection: { xs: "column", sm: "row" } }}
         >
-          {/* <CardMedia
-            component="img"
-            image={`${selectedDocument?.urlPath?.substr(
-              0,
-              selectedDocument?.urlPath?.lastIndexOf(".")
-            )}.png`}
-            sx={{ width: 400, height: 400 }}
-          /> */}
           {selectedDocument?.urlPath && (
             <Image
               src={`${selectedDocument?.urlPath?.substr(
@@ -79,19 +71,34 @@ const BookInfo = () => {
               alt="book cover"
               width={400}
               height={400}
+              responsive={true}
             />
           )}
 
           <Box sx={{ p: 3, flex: 1 }}>
             <Stack spacing={2}>
-              <Typography variant="h3">{selectedDocument?.title}</Typography>
-              <Typography component="p">
-                {selectedDocument?.noOfPages} Pages . 2001 .{" "}
-                {selectedDocument.fileSize} . {selectedDocument.downloads}{" "}
-                Download{selectedDocument.downloads !== 1 && "s"}
-              </Typography>
-              <Typography component="p">
-                by <span>{selectedDocument.author}</span>
+              <Typography variant="h4">{selectedDocument?.title}</Typography>
+              <Box display="flex" flexDirection="row" gap={2}>
+                <Typography variant="p" sx={{ display: "inline" }}>
+                  {selectedDocument?.noOfPages} Pages
+                </Typography>
+                <Typography variant="p" sx={{ display: "inline" }}>
+                  {selectedDocument.fileSize}
+                </Typography>
+                <Typography variant="p" sx={{ display: "inline" }}>
+                  Download{selectedDocument.downloads !== 1 && "s"}:{" "}
+                  {selectedDocument.downloads}
+                </Typography>
+              </Box>
+              <Typography component="h6">
+                by{" "}
+                <span
+                  style={{
+                    fontWeight: "600",
+                  }}
+                >
+                  {selectedDocument.author}
+                </span>
               </Typography>
               <Box display="flex">
                 {selectedDocument?.tags?.map((tag) => (
@@ -105,6 +112,14 @@ const BookInfo = () => {
                     />
                   </>
                 ))}
+              </Box>
+              <Box>
+                <Typography variant="h6" sx={{ fontWeight: 500 }}>
+                  Description:
+                </Typography>
+                <Typography component="h6">
+                  {selectedDocument.description}
+                </Typography>
               </Box>
               <Box sx={{ textAlign: "right" }}>
                 {loginState.loggedIn ? (
@@ -126,6 +141,7 @@ const BookInfo = () => {
             </Stack>
           </Box>
         </Box>
+
         <Box>
           <Typography variant="h5" sx={{ my: 3 }}>
             Similar Documents

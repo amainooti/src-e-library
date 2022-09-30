@@ -92,7 +92,7 @@ const Profile = () => {
             <ListItemIcon>
               <LockReset fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Reset Password</ListItemText>
+            <ListItemText>Change Password</ListItemText>
           </MenuItem>
           <Divider />
 

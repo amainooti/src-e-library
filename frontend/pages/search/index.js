@@ -87,7 +87,7 @@ const Search = () => {
                 You can{" "}
                 <span
                   style={{
-                    color: "secondary.main",
+                    color: "#fff",
                     cursor: "pointer",
                     fontWeight: "bold",
                   }}

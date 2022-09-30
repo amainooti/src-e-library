@@ -231,40 +231,47 @@ export const HorizontalBookCard = (props) => {
           </Typography>
         </Box>
       </Box>
-      <CardActions flexDirection="column" display="flex">
-        <Checkbox
-          icon={<FavoriteBorder />}
-          checkedIcon={<Favorite />}
-          onChange={() => handleLiked(props?._id)}
-          checked={favoriteBookActive}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-        <RWebShare
-          data={{
-            text: "Web Share - GfG",
-            url: `/book/${props.bookId}`,
-            title: `Share ${props.title}  - SRC E-Library`,
-          }}
-          onClick={() => console.log("shared successfully!")}
-        >
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-        </RWebShare>
-        {user.loggedIn ? (
-          <IconButton aria-label="download" component="a" href={props.urlPath}>
-            <DownloadIcon />
-          </IconButton>
-        ) : (
-          <IconButton
-            aria-label="download"
-            component="a"
-            onClick={() => setLoginModal(true)}
+      {/* <CardActions flexDirection={{ md: "column", xs: "row" }} display="flex"> */}
+      <Box justifyContent="center" alignItems="center" display="flex">
+        <Box display="flex" flexDirection={{ md: "row", xs: "column" }}>
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            onChange={() => handleLiked(props?._id)}
+            checked={favoriteBookActive}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+          <RWebShare
+            data={{
+              text: "Web Share - GfG",
+              url: `/book/${props.bookId}`,
+              title: `Share ${props.title}  - SRC E-Library`,
+            }}
+            onClick={() => console.log("shared successfully!")}
           >
-            <DownloadIcon />
-          </IconButton>
-        )}
-      </CardActions>
+            <IconButton aria-label="share">
+              <ShareIcon />
+            </IconButton>
+          </RWebShare>
+          {user.loggedIn ? (
+            <IconButton
+              aria-label="download"
+              component="a"
+              href={props.urlPath}
+            >
+              <DownloadIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              aria-label="download"
+              component="a"
+              onClick={() => setLoginModal(true)}
+            >
+              <DownloadIcon />
+            </IconButton>
+          )}
+        </Box>
+      </Box>
     </Card>
   );
 };

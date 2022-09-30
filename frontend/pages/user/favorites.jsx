@@ -66,7 +66,10 @@ const LikedBooks = () => {
                   size="large"
                   onClick={() => router.back()}
                   variant="outlined"
-                  color="secondary"
+                  sx={{
+                    color: "white",
+                    borderColor: "white",
+                  }}
                 >
                   Go Back
                 </Button>
