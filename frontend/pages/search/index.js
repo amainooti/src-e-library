@@ -6,6 +6,7 @@ import { axiosInstance } from "../api/axiosInstance";
 import Image from "next/image";
 import SuggestBook from "../../components/Common/SuggestBook";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Search = () => {
   const [documents, setDocuments] = React.useState([]);
