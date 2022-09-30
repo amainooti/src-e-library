@@ -20,10 +20,12 @@ import {
   Autocomplete,
   Snackbar,
   TextField,
+  Alert,
 } from "@mui/material";
 
 import axiosInstance from "../api/axiosInstance";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
+import Head from "next/head";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -140,7 +142,7 @@ export default function Upload() {
       <Container maxWidth="md">
         <Snackbar
           open={errorMessage ? true : false}
-          anchorOrigin={{ vertical: "top", horizontal: "left" }}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
           onClose={() => {
             setErrorMessage();
           }}
@@ -222,6 +224,11 @@ export default function Upload() {
               resetForm,
             }) => (
               <form noValidate onSubmit={handleSubmit}>
+                <Head>
+                  <title>{`Upload ${
+                    values?.title || "Book"
+                  } - SRC E-LIBRARY`}</title>
+                </Head>
                 <Grid
                   container
                   sx={{

@@ -118,7 +118,7 @@ function SearchBar({ size }) {
               <Image
                 width="40"
                 height="40"
-                src={`http://localhost:8080/api/document/thumbnail/${option._id}`}
+                src={`${process.env.HOST_URL}/api/document/thumbnail/${option._id}`}
                 srcSet="/assets/book.jpg"
                 alt=""
               />

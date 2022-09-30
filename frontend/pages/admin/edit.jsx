@@ -20,10 +20,12 @@ import {
   Autocomplete,
   TextField,
   Snackbar,
+  Alert,
 } from "@mui/material";
 
 import axiosInstance from "../api/axiosInstance";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
+import Head from "next/head";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -85,14 +87,27 @@ export default function EditBook({ selectedBook }) {
 
   return (
     <MainLayout>
+      <Head>
+        <title>{`Edit ${selectedBook?.title || "Book"} - SRC E-LIBRARY`}</title>
+      </Head>
       <Snackbar
         open={alertMessage ? true : false}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        autoHideDuration={4000}
         onClose={() => {
           setAlertMessage();
         }}
-        message={alertMessage}
-      />
+      >
+        <Alert
+          onClose={() => {
+            setAlertMessage();
+          }}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          {alertMessage}
+        </Alert>
+      </Snackbar>
       <Container maxWidth="md">
         <Box sx={{ my: 2 }}>
           <Box display="flex" justifyContent="space-between">
@@ -145,7 +160,7 @@ export default function EditBook({ selectedBook }) {
                   setAlertMessage(
                     err.response
                       ? err.response.data.error
-                      : "An error occured! Try again later."
+                      : "An error occurred! Try again later."
                   );
                 });
             }}

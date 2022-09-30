@@ -45,10 +45,13 @@ const BookImage = ({ image, bookId, width }) => {
   const onMouseLeave = () => setIsHovered(false);
 
   return (
-    <div
-      className="flex items-center flex-shrink-0 mr-6 cursor-pointer"
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+    <Box
+      sx={{
+        borderRadius: "4px",
+        overflow: "hidden",
+        flexShrink: 0,
+        itemAlign: "center",
+      }}
     >
       <BookLink href={`/book/${bookId}`}>
         <Image
@@ -60,10 +63,11 @@ const BookImage = ({ image, bookId, width }) => {
           alt="Book Cover Image"
           width={width || 400}
           height={width || 400}
+          intrinsic
           responsive="true"
         />
       </BookLink>
-    </div>
+    </Box>
   );
 };
 
@@ -103,6 +107,7 @@ export const BookCard = (props) => {
         justifyContent: "space-between",
         boxShadow: "0px 1px 3px rgb(3 0 71 / 9%)",
         transition: "all 250ms ease-in-out",
+        background: " rgba( 255, 255, 255, 0.4 )",
       }}
       elevation={over ? 1 : 0}
     >
@@ -157,6 +162,8 @@ export const HorizontalBookCard = (props) => {
       updateFavorite();
     }
   };
+  const loginState = useRecoilValue(userState);
+  const setLoginModal = useSetRecoilState(loginModalState);
 
   const favoriteBookActive = favList.filter(
     (item) => item._id === props?._id
@@ -168,11 +175,12 @@ export const HorizontalBookCard = (props) => {
         height: "150px",
         display: "flex",
         justifyContent: "space-between",
+        background: " rgba( 255, 255, 255, 0.4 )",
       }}
     >
       <Box display="flex">
-        <Box>
-          <BookImage image={props?.urlPath} bookId={props?._id} width={150} />
+        <Box p={1}>
+          <BookImage image={props?.urlPath} bookId={props?._id} width={130} />
         </Box>
         <Box p={3}>
           <Link href={`/book/${props._id}`}>
@@ -216,8 +224,7 @@ export const HorizontalBookCard = (props) => {
               WebkitBoxOrient: "vertical",
             }}
           >
-            {props.desc ||
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga eaque est, debitis beatae atque perferendis optio necessitatibus fugiat error dicta placeat ducimus! Sunt fugiat esse ex a voluptatum laborum fuga?"}
+            {props.description || "No Description"}
           </Typography>
         </Box>
       </Box>
@@ -233,7 +240,7 @@ export const HorizontalBookCard = (props) => {
           data={{
             text: "Web Share - GfG",
             url: `/book/${props.bookId}`,
-            title: "Share Book - ABUAD E-Library",
+            title: `Share ${props.title}  - SRC E-Library`,
           }}
           onClick={() => console.log("shared successfully!")}
         >
@@ -241,13 +248,23 @@ export const HorizontalBookCard = (props) => {
             <ShareIcon />
           </IconButton>
         </RWebShare>
-        <IconButton
-          aria-label="download"
-          component="a"
-          href={`${process.env.HOST_URL}/api/document/download/${props._id}`}
-        >
-          <DownloadIcon />
-        </IconButton>
+        {loginState.loggedIn ? (
+          <IconButton
+            aria-label="download"
+            component="a"
+            href={`${process.env.HOST_URL}api/document/download/${props._id}`}
+          >
+            <DownloadIcon />
+          </IconButton>
+        ) : (
+          <IconButton
+            aria-label="download"
+            component="a"
+            onClick={() => setLoginModal(true)}
+          >
+            <DownloadIcon />
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   );

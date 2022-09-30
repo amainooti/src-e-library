@@ -6,7 +6,13 @@ const nextConfig = {
     HOST_URL: process.env.HOST_URL,
   },
   images: {
-    domains: ["127.0.0.1", "localhost", "cloudinary.com", "res.cloudinary.com"],
+    domains: [
+      "127.0.0.1",
+      "localhost",
+      "cloudinary.com",
+      "res.cloudinary.com",
+      "srcelibrary.herokuapp.com",
+    ],
   },
 };
 

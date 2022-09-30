@@ -16,15 +16,12 @@ import Image from "next/image";
 import SearchBar from "../Common/Search";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { loginModalState, profileShowState } from "../../atoms/profileAtom";
-import { userLoginState } from "../../atoms/loginAtom";
 import userState from "../../atoms/userAtom";
 
 export default function Header(props) {
   const user = useRecoilValue(userState);
   const [showProfile, setShowProfile] = useRecoilState(profileShowState);
   const [modal, setModal] = useRecoilState(loginModalState);
-
-  const isLoggedIn = useRecoilValue(userLoginState);
 
   const menuId = "primary-search-account-menu";
 
@@ -45,7 +42,7 @@ export default function Header(props) {
                   alt="SRC LOGO"
                   width={60}
                   height={60}
-                  responsive="true"
+                  responsive={true}
                 />
               </Typography>
             </a>

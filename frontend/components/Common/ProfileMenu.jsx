@@ -1,4 +1,11 @@
-import { Favorite, Upload, AutoStories, LockReset } from "@mui/icons-material";
+import {
+  Favorite,
+  Upload,
+  AutoStories,
+  LockReset,
+  Group,
+  QuestionAnswer,
+} from "@mui/icons-material";
 
 import {
   Avatar,
@@ -14,20 +21,22 @@ import {
   ListItemText,
 } from "@mui/material";
 import React from "react";
-import Link from "next/link";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { profileShowState } from "../../atoms/profileAtom";
 import userState from "../../atoms/userAtom";
 import useLogout from "../../hooks/useLogout";
+import { useRouter } from "next/router";
 
 const Profile = () => {
   const user = useRecoilValue(userState);
   const logout = useLogout();
-  const [showProfile, setShowProfile] = useRecoilState(profileShowState);
+  const setShowProfile = useSetRecoilState(profileShowState);
   const handleLogout = () => {
     logout();
     setShowProfile(false);
   };
+
+  const router = useRouter();
 
   return (
     <>
@@ -53,39 +62,74 @@ const Profile = () => {
         </Box>
         <Divider />
         <MenuList>
-          <Link href="/user/mybooks">
-            <MenuItem>
-              <ListItemIcon>
-                <AutoStories fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>My Books </ListItemText>
-            </MenuItem>
-          </Link>
-          <Link href="/user/favorites">
-            <MenuItem>
-              <ListItemIcon>
-                <Favorite fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>My Favorites</ListItemText>
-            </MenuItem>
-          </Link>
-          <Link href="/resetpassword">
-            <MenuItem>
-              <ListItemIcon>
-                <LockReset fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Reset Password</ListItemText>
-            </MenuItem>
-          </Link>
+          <MenuItem
+            onClick={() => (
+              router.push("/user/mybooks"), setShowProfile(false)
+            )}
+          >
+            <ListItemIcon>
+              <AutoStories fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>My Books </ListItemText>
+          </MenuItem>
+
+          <MenuItem
+            onClick={() => (
+              router.push("/user/favorites"), setShowProfile(false)
+            )}
+          >
+            <ListItemIcon>
+              <Favorite fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>My Favorites</ListItemText>
+          </MenuItem>
+
+          <MenuItem
+            onClick={() => (
+              router.push("/resetpassword"), setShowProfile(false)
+            )}
+          >
+            <ListItemIcon>
+              <LockReset fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Reset Password</ListItemText>
+          </MenuItem>
+
           {user?.data?.roles?.includes("Admin") && (
-            <Link href="/admin/allbooks">
-              <MenuItem>
+            <>
+              <MenuItem
+                onClick={() => (
+                  router.push("/admin/allusers"), setShowProfile(false)
+                )}
+              >
+                <ListItemIcon>
+                  <Group />
+                </ListItemIcon>
+                <ListItemText>View all Users</ListItemText>
+              </MenuItem>
+
+              <MenuItem
+                onClick={() => (
+                  router.push("/admin/allbooks"), setShowProfile(false)
+                )}
+              >
                 <ListItemIcon>
                   <Upload />
                 </ListItemIcon>
                 <ListItemText>My Uploads</ListItemText>
               </MenuItem>
-            </Link>
+
+              <MenuItem
+                onClick={() => (
+                  router.push("/admin/requestedbooks"), setShowProfile(false)
+                )}
+              >
+                <ListItemIcon>
+                  <QuestionAnswer />
+                </ListItemIcon>
+                <ListItemText>Book Requests</ListItemText>
+              </MenuItem>
+            </>
           )}
         </MenuList>
       </Box>
@@ -105,7 +149,7 @@ const Profile = () => {
 };
 
 const ProfileMenu = ({ children }) => {
-  const [showProfile, setShowProfile] = useRecoilState(profileShowState);
+  const setShowProfile = useSetRecoilState(profileShowState);
   return (
     <ClickAwayListener onClickAway={() => setShowProfile(false)}>
       <Paper

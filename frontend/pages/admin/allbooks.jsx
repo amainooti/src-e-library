@@ -13,6 +13,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { CreateOutlined, DeleteOutlined } from "@mui/icons-material";
 import Link from "next/link";
 import moment from "moment";
+import { useRouter } from "next/router";
 
 import MainLayout from "../../components/Layouts/MainLayout";
 import axiosInstance from "../api/axiosInstance";
@@ -35,6 +36,7 @@ const BookTable = () => {
   const [open, setOpen] = React.useState(false);
   const [documents, setDocuments] = React.useState([]);
   const [deleteDocument, setDeleteDocument] = React.useState();
+  const router = useRouter();
 
   React.useEffect(() => {
     const getAllDocuments = async () => {
@@ -144,9 +146,13 @@ const BookTable = () => {
         <Box sx={{ my: 3 }}>
           <Box sx={{ my: 2 }} display="flex" justifyContent="space-between">
             <Typography variant="h4">Books</Typography>
-            <Link href="/admin/upload">
-              <Button variant="contained">Upload</Button>
-            </Link>
+
+            <Button
+              variant="contained"
+              onClick={() => router.push("/admin/upload")}
+            >
+              Upload
+            </Button>
           </Box>
           <Card>
             <Box sx={{ height: 700, width: "100%" }}>
