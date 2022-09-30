@@ -23,14 +23,14 @@ body::before{
   width: 100%;
   height: 100%;
   opacity: 0.1;
-  background: url(../public/assets/bonbon-line-planning-calendar-and-hand-with-pen.png) 10px 800px no-repeat,
-              url(../public/assets/clip-library-1.png) 1700px 50% no-repeat,
-              url(../public/assets/bonbon-line-science-education-1.png) 50% bottom no-repeat,
-              url(../public/assets/bonbon-line-child-at-math-lesson-with-calculator-and-apple-1.png) 14% 50% no-repeat,
-              url(../public/assets/bonbon-line-science-education-1.png) 67% 30% no-repeat,
-              url(../public/assets/bonbon-line-book.png) right 5% no-repeat,
-              url(../public/assets/bonbon-line-glass-flask.png) 50% top no-repeat,
-              url(../public/assets/inky-black-test-tube-with-liquid.png) 5px 10px no-repeat;
+  background: url(/assets/bonbon-line-planning-calendar-and-hand-with-pen.png) 10px 800px no-repeat,
+              url(/assets/clip-library-1.png) 1700px 50% no-repeat,
+              url(/assets/bonbon-line-science-education-1.png) 50% bottom no-repeat,
+              url(/assets/bonbon-line-child-at-math-lesson-with-calculator-and-apple-1.png) 14% 50% no-repeat,
+              url(/assets/bonbon-line-science-education-1.png) 67% 30% no-repeat,
+              url(/assets/bonbon-line-book.png) right 5% no-repeat,
+              url(/assets/bonbon-line-glass-flask.png) 50% top no-repeat,
+              url(/assets/inky-black-test-tube-with-liquid.png) 5px 10px no-repeat;
       
 }
 
