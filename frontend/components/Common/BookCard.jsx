@@ -173,7 +173,7 @@ export const HorizontalBookCard = (props) => {
         height: "150px",
         display: "flex",
         justifyContent: "space-between",
-        background: " rgba( 255, 255, 255, 0.4 )",
+        background: "rgba( 255, 255, 255, 0.4 )",
       }}
     >
       <Box display="flex">
@@ -208,16 +208,16 @@ export const HorizontalBookCard = (props) => {
             mb={1}
           >
             <Typography>{props.noOfPages || "1234"} pages</Typography>
-            <Typography>{props.year || "2022"}</Typography>
+
             <Typography>{props.fileSize || "0" + " MB"}</Typography>
           </Box>
           <Typography
             color="GrayText"
+            display={{ xs: "none", sm: "block" }}
             sx={{
-              width: "500px",
+              // width: "500px",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              display: "-webkit-box",
               WebkitLineClamp: "2",
               WebkitBoxOrient: "vertical",
             }}

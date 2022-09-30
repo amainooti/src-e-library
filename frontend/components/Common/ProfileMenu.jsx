@@ -94,6 +94,7 @@ const Profile = () => {
             </ListItemIcon>
             <ListItemText>Reset Password</ListItemText>
           </MenuItem>
+          <Divider />
 
           {user?.data?.roles?.includes("Admin") && (
             <>
