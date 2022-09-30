@@ -1,15 +1,11 @@
 import React from "react";
-<<<<<<< HEAD
-import { useRouter } from "next/router";
-import { Container, Grid, Box, Typography } from "@mui/material";
-=======
 import { Container, Grid, Box, Typography, Modal } from "@mui/material";
->>>>>>> 71852155820dea9eb505b5b9502e3f68ca73e4ee
 import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import { axiosInstance } from "../api/axiosInstance";
 import Image from "next/image";
 import SuggestBook from "../../components/Common/SuggestBook";
+import { useRouter } from "next/router";
 
 const Search = () => {
   const [documents, setDocuments] = React.useState([]);
@@ -48,7 +44,7 @@ const Search = () => {
       >
         <Box sx={{ my: 5 }}>
           <Typography variant="h5" sx={{ fontWeight: 800 }}>
-            Search Results for "search query"...
+            Search Results for &quot;search query&quot;...
           </Typography>
         </Box>
         <Grid container spacing={2}>
@@ -83,11 +79,11 @@ const Search = () => {
                   fontFamily: "inherit",
                 }}
               >
-                We are sorry, but we don't have this book in our library. You
-                can{" "}
+                We are sorry, but we don&apos;t have this book in our library.
+                You can{" "}
                 <span
                   style={{
-                    color: "#fff",
+                    color: "secondary.main",
                     cursor: "pointer",
                     fontWeight: "bold",
                   }}
