@@ -70,15 +70,18 @@ const BookInfo = () => {
             )}.png`}
             sx={{ width: 400, height: 400 }}
           /> */}
-          <Image
-            src={`${selectedDocument?.urlPath?.substr(
-              0,
-              selectedDocument?.urlPath?.lastIndexOf(".")
-            )}.png`}
-            alt="book cover"
-            width={400}
-            height={400}
-          />
+          {selectedDocument?.urlPath && (
+            <Image
+              src={`${selectedDocument?.urlPath?.substr(
+                0,
+                selectedDocument?.urlPath?.lastIndexOf(".")
+              )}.png`}
+              alt="book cover"
+              width={400}
+              height={400}
+            />
+          )}
+
           <Box sx={{ p: 3, flex: 1 }}>
             <Stack spacing={2}>
               <Typography variant="h3">{selectedDocument?.title}</Typography>

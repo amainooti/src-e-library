@@ -1,4 +1,5 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/router";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { favoritesListState } from "../../atoms/favoritesAtom";
@@ -7,6 +8,7 @@ import MainLayout from "../../components/Layouts/MainLayout";
 
 const LikedBooks = () => {
   var favoriteList = useRecoilValue(favoritesListState);
+  const router = useRouter();
 
   return (
     <MainLayout>
@@ -50,9 +52,30 @@ const LikedBooks = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 width: "100%",
+                flexDirection: "column",
               }}
             >
-              <Typography variant="h3">You have no Favorite Book. </Typography>
+              <Typography variant="h3">You have no Favorite Book.</Typography>
+
+              <Stack direction="row" gap="1rem" mt={1}>
+                <Button
+                  size="large"
+                  onClick={() => router.back()}
+                  variant="outlined"
+                  color="secondary"
+                >
+                  Go Back
+                </Button>
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  onClick={() => router.push("/")}
+                >
+                  Go to Home
+                </Button>
+              </Stack>
             </Box>
           )}
         </Grid>

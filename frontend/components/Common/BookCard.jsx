@@ -24,6 +24,7 @@ import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
 import userState from "../../atoms/userAtom";
+import { loginModalState } from "../../atoms/profileAtom";
 
 // eslint-disable-next-line react/display-name
 const BookLink = React.forwardRef(
@@ -160,6 +161,8 @@ export const HorizontalBookCard = (props) => {
     };
     if (user?.loggedIn) {
       updateFavorite();
+    } else {
+      setLoginModal(true);
     }
   };
   const loginState = useRecoilValue(userState);
@@ -248,12 +251,8 @@ export const HorizontalBookCard = (props) => {
             <ShareIcon />
           </IconButton>
         </RWebShare>
-        {loginState.loggedIn ? (
-          <IconButton
-            aria-label="download"
-            component="a"
-            href={`${process.env.HOST_URL}api/document/download/${props._id}`}
-          >
+        {user.loggedIn ? (
+          <IconButton aria-label="download" component="a" href={props.urlPath}>
             <DownloadIcon />
           </IconButton>
         ) : (

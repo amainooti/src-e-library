@@ -6,6 +6,7 @@ import {
   Container,
   Skeleton,
   Stack,
+  Button,
 } from "@mui/material";
 import { HorizontalBookCard } from "../../components/Common/BookCard";
 import { SkeletonHorizontalBookCard } from "../../components/Common/SkeletonCard";
@@ -80,11 +81,30 @@ const MyBooks = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 width: "100%",
+                flexDirection: "column",
               }}
             >
-              <Typography variant="h3">
+              <Typography variant="h3" textAlign="center">
                 No Book in your level or college has been uploaded.{" "}
               </Typography>
+              <Stack direction="row" gap="1rem" mt={1}>
+                <Button
+                  size="large"
+                  onClick={() => router.back()}
+                  variant="outlined"
+                  color="secondary"
+                >
+                  Go Back
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  onClick={() => router.push("/")}
+                >
+                  Go to Home
+                </Button>
+              </Stack>
             </Box>
           )}
         </Grid>
