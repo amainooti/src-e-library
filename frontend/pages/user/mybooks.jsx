@@ -14,6 +14,7 @@ import MainLayout from "../../components/Layouts/MainLayout";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
 import { favoritesListState } from "../../atoms/favoritesAtom";
 import { useRecoilValue } from "recoil";
+import Head from "next/head";
 
 const MyBooks = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -37,6 +38,9 @@ const MyBooks = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>My Books | SRC E-LIBRARY</title>
+      </Head>
       <Container
         maxWidth="md"
         sx={{
