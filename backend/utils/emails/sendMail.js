@@ -1,4 +1,6 @@
 const fs = require("fs");
+const path = require("path");
+
 const handlebars = require("handlebars");
 const nodemailer = require("nodemailer");
 
@@ -8,8 +10,8 @@ const sendEmail = async (email, subject, payload, template) => {
       host: "smtp.ethereal.email",
       port: 587,
       auth: {
-        user: "carey.macgyver69@ethereal.email",
-        pass: "pujWDYUeKvBeKawGeK",
+        user: "della88@ethereal.email",
+        pass: "sDUbkDzBAfhvuaSrCU",
       },
     });
 
@@ -28,7 +30,7 @@ const sendEmail = async (email, subject, payload, template) => {
         return new Error(err);
       } else {
         console.log(info);
-        console.log("Message sent: %s", info.message);
+        console.log("Message sent: %s", info?.message);
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         return true;
       }

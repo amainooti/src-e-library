@@ -69,7 +69,7 @@ const Profile = () => {
               <ListItemText>My Favorites</ListItemText>
             </MenuItem>
           </Link>
-          <Link href="/resetpassword/userid">
+          <Link href="/resetpassword">
             <MenuItem>
               <ListItemIcon>
                 <LockReset fontSize="small" />

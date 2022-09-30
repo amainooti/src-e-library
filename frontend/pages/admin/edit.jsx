@@ -140,10 +140,13 @@ export default function EditBook({ selectedBook }) {
                 .put(`/api/document/${router.query?.book}`, values)
                 .then((res) => {
                   setAlertMessage(`Book Updated Successfully!`);
-                }).catch((err) => {
-                  setAlertMessage( err.response
-                    ? err.response.data.error
-                    : "An error occured! Try again later.")
+                })
+                .catch((err) => {
+                  setAlertMessage(
+                    err.response
+                      ? err.response.data.error
+                      : "An error occured! Try again later."
+                  );
                 });
             }}
           >
@@ -174,7 +177,10 @@ export default function EditBook({ selectedBook }) {
                 >
                   <Grid item xs={12} sm={5}>
                     <Image
-                      src={`http://localhost:8080/api/document/thumbnail/${selectedBook._id}`}
+                      src={`${selectedBook?.urlPath?.substr(
+                        0,
+                        selectedBook?.urlPath?.lastIndexOf(".")
+                      )}.png`}
                       alt="Book Cover Image"
                       width={400}
                       height={400}

@@ -72,7 +72,20 @@ const ForgotPasswordForm = () => {
               .max(255)
               .required("Email is required"),
           })}
-          onSubmit=""
+          onSubmit={async (values, { setSubmitting }) => {
+            await axiosInstance
+              .post("/api/users/requestResetPassword", values)
+              .then((res) => {
+                console.log(res.data);
+                setSubmitting(false);
+                // Put a sweeet alert that an Email has been sent
+              })
+              .catch((err) => {
+                console.log(err.message);
+                setErrorMessage(err.message);
+                setSubmitting(false);
+              });
+          }}
         >
           {({
             values,

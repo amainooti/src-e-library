@@ -12,6 +12,7 @@ import {
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { CreateOutlined, DeleteOutlined } from "@mui/icons-material";
 import Link from "next/link";
+import moment from "moment";
 
 import MainLayout from "../../components/Layouts/MainLayout";
 import axiosInstance from "../api/axiosInstance";
@@ -62,7 +63,7 @@ const BookTable = () => {
     setOpen(true);
   };
   const columns = [
-    { field: "_id", headerName: "ID", width: 90 },
+    { field: "_id", headerName: "ID", width: 250 },
     {
       field: "thumb",
       headerName: "Thumbnail",
@@ -82,6 +83,14 @@ const BookTable = () => {
     },
     { field: "title", headerName: "Title", width: 200 },
     { field: "author", headerName: "Author", width: 150 },
+    {
+      field: "updatedAt",
+      headderName: "Updated At",
+      width: 200,
+      renderCell: (params) => (
+        <>{moment(params.row.updatedAt).format("MMMM Do YYYY")}</>
+      ),
+    },
     {
       field: "action",
       headerName: "Action",

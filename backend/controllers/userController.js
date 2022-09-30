@@ -3,6 +3,9 @@ const Token = require("../Model/TokenModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/emails/sendMail");
+const crypto = require("crypto");
+
+const clientURL = "http://localhost:3000";
 
 const registerUser = async (req, res) => {
   // check if the text fields are empty
@@ -22,6 +25,10 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: "Please fill in the fields" });
     }
 
+    const constLEVEL = [100, 200, 300, 400, 500, 600];
+    if (!constLEVEL.includes(level)) {
+      return res.status(400).json({ error: "Invalid Level" });
+    }
     // check if the user already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
@@ -113,7 +120,7 @@ const resetPasswordRequestContoller = async (req, res) => {
   const token = await Token.findOne({ userId: user._id });
   if (token) await token.deleteOne();
 
-  let resetoken = await bcrypt.genSalt(32).toString("hex");
+  let resetToken = crypto.randomBytes(32).toString("hex");
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(resetToken, salt);
 
@@ -121,15 +128,15 @@ const resetPasswordRequestContoller = async (req, res) => {
     userId: user._id,
     token: hash,
   }).save();
-  const link = `${clientURL}/passwordReset?token=${resetoken}&id=${user._id}`;
+  const link = `${clientURL}/resetpassword?token=${resetToken}&id=${user._id}`;
   sendEmail(
     user.email,
     "Password Reset Request",
     {
-      name: `${user.firstname} ${user.lastname}`,
+      name: `${user.name}`,
       link: link,
     },
-    "./template/requestResetPassword.handlebars"
+    "./templates/requestResetPassword.handlebars"
   );
 
   res.status(200).json("Sent Reset Password Request!");
@@ -168,9 +175,9 @@ const resetPasswordController = async (req, res) => {
     user.email,
     "Password Reset Successful",
     {
-      name: `${user.name} ${user.name}`,
+      name: `${user.name}`,
     },
-    "./template/resetPassword.handlebars"
+    "./templates/resetPassword.handlebars"
   );
   await passwordResetToken.deleteOne();
   res.status(200).json("Updated Password Successfully");

@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { Container, Grid, Box, Typography } from "@mui/material";
 import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
@@ -6,6 +7,11 @@ import { axiosInstance } from "../api/axiosInstance";
 
 const Search = () => {
   const [documents, setDocuments] = React.useState([]);
+  const router = useRouter();
+  const searchBook = router.query.book;
+  console.log(searchBook);
+  console.log(router.query);
+
   React.useEffect(() => {
     const getRecentDocuments = async () => {
       await axiosInstance

@@ -29,6 +29,7 @@ async function cloudinaryUpload(req, res) {
     const newTitle = !title ? documentSent.originalname : title;
     const listTags = tags.split(",");
     const addedTags = [];
+    const postedUser = req.user;
 
     if (!author || !bookDesc || !pageCount) {
       return res.status(400).json({ error: "Please fill in the fields" });
@@ -80,6 +81,7 @@ async function cloudinaryUpload(req, res) {
         noOfPages: pageCount,
         description: bookDesc,
         tags: addedTags,
+        user: postedUser,
         fileSize: `${Number(result.bytes / (1024 * 1024)).toFixed(2)} MB`,
       });
 

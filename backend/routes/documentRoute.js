@@ -16,6 +16,9 @@ const {
   deleteDocumentById,
   updateDocumentById,
   getAllTags,
+  addToFavorite,
+  getFavorites,
+  getMyBooks,
 } = require("../controllers/bookController");
 // const { uploadFile } = require("../utils/helper");
 const { protect, adminProtect } = require("../middleware/authMiddleware");
@@ -23,6 +26,9 @@ const { protect, adminProtect } = require("../middleware/authMiddleware");
 const uploadFile = multer();
 
 router.get("/document", getDocument);
+router.post("/document/favorite", protect, addToFavorite);
+router.get("/document/favorite", protect, getFavorites);
+router.get("/document/mybooks", protect, getMyBooks);
 router.get("/tags", protect, adminProtect, getAllTags);
 // router.post(
 //   "/upload",

@@ -404,12 +404,12 @@ const RegisterForm = () => {
                     onBlur={handleBlur}
                     size="small"
                   >
-                    <MenuItem value="100 lvl">100 lvl</MenuItem>
-                    <MenuItem value="200 lvl">200 lvl</MenuItem>
-                    <MenuItem value="300 lvl">300 lvl</MenuItem>
-                    <MenuItem value="400 lvl">400 lvl</MenuItem>
-                    <MenuItem value="500 lvl">500 lvl</MenuItem>
-                    <MenuItem value="600 lvl">600 lvl</MenuItem>
+                    <MenuItem value="100">100 lvl</MenuItem>
+                    <MenuItem value="200">200 lvl</MenuItem>
+                    <MenuItem value="300">300 lvl</MenuItem>
+                    <MenuItem value="400">400 lvl</MenuItem>
+                    <MenuItem value="500">500 lvl</MenuItem>
+                    <MenuItem value="600">600 lvl</MenuItem>
                   </Select>
                   {touched.level && errors.level && (
                     <FormHelperText error id="helper-text-level">

@@ -7,7 +7,7 @@ import MainLayout from "../../components/Layouts/MainLayout";
 
 const LikedBooks = () => {
   var favoriteList = useRecoilValue(favoritesListState);
-  console.log(favoriteList);
+
   return (
     <MainLayout>
       {/* <Container>
@@ -39,10 +39,22 @@ const LikedBooks = () => {
             ))} */}
           {favoriteList.map((document, index) => (
             <Grid item xs={12} key={index}>
-              kskssdsd
               <HorizontalBookCard {...document} />
             </Grid>
           ))}
+          {!favoriteList.length > 0 && (
+            <Box
+              sx={{
+                height: "50vh",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <Typography variant="h3">You have no Favorite Book. </Typography>
+            </Box>
+          )}
         </Grid>
       </Container>
     </MainLayout>

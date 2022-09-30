@@ -31,6 +31,10 @@ const userSchema = mongoose.Schema(
       type: [Number],
       default: 4096,
     },
+    favoriteBooks: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Document",
+    },
   },
   {
     timestamps: true,
