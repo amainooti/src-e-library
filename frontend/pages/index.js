@@ -11,6 +11,7 @@ import LoginForm from "../components/AuthForms/LoginForm";
 import { useRecoilState } from "recoil";
 import { axiosInstance } from "./api/axiosInstance";
 import { loginModalState } from "../atoms/profileAtom";
+import Head from "next/head";
 
 export default function Home() {
   const [modal, setModal] = useRecoilState(loginModalState);
@@ -33,6 +34,9 @@ export default function Home() {
 
   return (
     <IndexLayout>
+      <Head>
+        <title>SRC E-LIBRARY</title>
+      </Head>
       <Container
         maxWidth="lg"
         display="flex"

@@ -1,4 +1,5 @@
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React from "react";
 import { useRecoilValue } from "recoil";
@@ -12,6 +13,9 @@ const LikedBooks = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>Favourites | SRC E-LIBRARY</title>
+      </Head>
       {/* <Container>
         <Box sx={{ my: 2 }}>
           {todoList.map((todoItem) => (

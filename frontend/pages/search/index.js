@@ -35,6 +35,9 @@ const Search = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>Search | SRC E-LIBRARY</title>
+      </Head>
       <Container
         maxWidth="md"
         sx={{

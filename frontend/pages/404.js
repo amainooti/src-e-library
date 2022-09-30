@@ -5,11 +5,15 @@ import MainLayout from "../components/Layouts/MainLayout";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import Head from "next/head";
 
 const FourOhFour = () => {
   const router = useRouter();
   return (
     <MainLayout>
+      <Head>
+        <title>404 | SRC E-LIBRARY</title>
+      </Head>
       <AuthLayout>
         <Image
           src="/assets/taxi-page-not-found-1.png"
