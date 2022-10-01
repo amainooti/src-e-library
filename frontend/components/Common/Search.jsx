@@ -62,6 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function SearchBar({ size }) {
   const theme = useTheme();
   const router = useRouter();
+  const [searchValue, setSearchValue] = React.useState("");
   const [resultOptions, setResultOptions] = useState([]);
 
   // const [searchResults, setSearchResults] = useState([]);
@@ -70,10 +71,15 @@ function SearchBar({ size }) {
     e.preventDefault();
     const data = new FormData(e.target);
     const searchData = data.get("search");
+    console.log(searchData);
     const result = resultOptions.filter((item) => item.title === searchData);
     if (result.length > 0) {
-      router.push(`/book/${result[0]._id}`);
+      router.push({
+        pathname: "/search",
+        query: { book: result[0].title },
+      });
     } else {
+      console.log(searchData);
       console.log("Sorry book does not exist");
     }
   };
@@ -118,7 +124,10 @@ function SearchBar({ size }) {
               <Image
                 width="40"
                 height="40"
-                src={`${process.env.HOST_URL}/api/document/thumbnail/${option._id}`}
+                src={`${option?.urlPath?.substr(
+                  0,
+                  option?.urlPath?.lastIndexOf(".")
+                )}.png`}
                 srcSet="/assets/book.jpg"
                 alt=""
               />

@@ -9,26 +9,38 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 const Search = () => {
-  const [documents, setDocuments] = React.useState([]);
+  const [searchDocuments, setSearchDocuments] = React.useState([]);
+  // const [documents, setDocuments] = React.useState([]);
   const router = useRouter();
   const searchBook = router.query.book;
-  console.log(searchBook);
-  console.log(router.query);
-
   React.useEffect(() => {
-    const getRecentDocuments = async () => {
+    const getSearchBook = async () => {
       await axiosInstance
-        .get("/api/document")
+        .get(`/api/document/search/${searchBook}`)
         .then((res) => {
           console.log(res.data);
-          setDocuments(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
+          setSearchDocuments(res.data);
         });
     };
-    getRecentDocuments();
-  }, []);
+    if (searchBook) {
+      getSearchBook();
+    }
+  }, [searchBook]);
+
+  // React.useEffect(() => {
+  //   const getRecentDocuments = async () => {
+  //     await axiosInstance
+  //       .get("/api/document")
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         setDocuments(res.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  //   };
+  //   getRecentDocuments();
+  // }, []);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -48,12 +60,12 @@ const Search = () => {
       >
         <Box sx={{ my: 5 }}>
           <Typography variant="h5" sx={{ fontWeight: 800 }}>
-            Search Results for &quot;search query&quot;...
+            Search Results for &quot;{searchBook}&quot;...
           </Typography>
         </Box>
         <Grid container spacing={2}>
-          {!documents ? (
-            documents?.map((document, index) => (
+          {searchDocuments.length ? (
+            searchDocuments?.map((document, index) => (
               <Grid item xs={12} key={index}>
                 <HorizontalBookCard {...document} />
               </Grid>

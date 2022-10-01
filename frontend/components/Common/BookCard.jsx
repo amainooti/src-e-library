@@ -25,7 +25,6 @@ import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
 import userState from "../../atoms/userAtom";
-import { loginModalState } from "../../atoms/profileAtom";
 
 // eslint-disable-next-line react/display-name
 const BookLink = React.forwardRef(

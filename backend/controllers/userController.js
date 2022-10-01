@@ -124,11 +124,13 @@ const resetPasswordRequestContoller = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(resetToken, salt);
 
-  const createdToken = await new Token({
+  await new Token({
     userId: user._id,
     token: hash,
   }).save();
+
   const link = `${clientURL}/resetpassword?token=${resetToken}&id=${user._id}`;
+
   sendEmail(
     user.email,
     "Password Reset Request",
