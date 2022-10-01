@@ -20,6 +20,7 @@ import { RWebShare } from "react-web-share";
 import { createKey } from "next/dist/shared/lib/router/router";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { favoritesListState } from "../../atoms/favoritesAtom";
+import { loginModalState } from "../../atoms/profileAtom";
 import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";

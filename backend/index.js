@@ -15,17 +15,37 @@ connectionDB();
 //   flags: "a",
 // });
 // app.use(morgan("dev", {stream: accessLogStream}));
+
+const whitelist = [
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+  "https://src-e-library.vercel.app",
+  "http://src-e-library.vercel.app",
+];
+const corOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed CORS"));
+    }
+  },
+  optionsSuccessStatus: 200,
+  credentials: true,
+};
+app.use(cors(corOptions));
+
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(
-  cors({
-    origin: "http://localhost:3000",
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "http://localhost:3000",
+//     methods: "GET,POST,PUT,DELETE",
+//     credentials: true,
+//   })
+// );
 
 // @custom middleware
 

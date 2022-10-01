@@ -1,10 +1,5 @@
 import React from "react";
-<<<<<<< HEAD
-import { useRouter } from "next/router";
-import { Container, Grid, Box, Typography } from "@mui/material";
-=======
 import { Container, Grid, Box, Typography, Modal } from "@mui/material";
->>>>>>> 71852155820dea9eb505b5b9502e3f68ca73e4ee
 import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import { axiosInstance } from "../api/axiosInstance";

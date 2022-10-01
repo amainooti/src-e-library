@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/emails/sendMail");
 const crypto = require("crypto");
 
-const clientURL = "http://localhost:3000";
+const clientURL = process.env.CLIENT_URL;
 
 const registerUser = async (req, res) => {
   // check if the text fields are empty
@@ -26,7 +26,7 @@ const registerUser = async (req, res) => {
     }
 
     const constLEVEL = [100, 200, 300, 400, 500, 600];
-    if (!constLEVEL.includes(level)) {
+    if (!constLEVEL.includes(Number(level))) {
       return res.status(400).json({ error: "Invalid Level" });
     }
     // check if the user already exists
