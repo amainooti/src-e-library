@@ -145,7 +145,7 @@ const BookTable = () => {
       <Container>
         <Box sx={{ my: 3 }}>
           <Box sx={{ my: 2 }} display="flex" justifyContent="space-between">
-            <Typography variant="h4">Books</Typography>
+            <Typography variant="h4">All Books</Typography>
 
             <Button
               variant="contained"
@@ -154,7 +154,12 @@ const BookTable = () => {
               Upload
             </Button>
           </Box>
-          <Card>
+          <Card
+            sx={{
+              background: " rgba( 255, 255, 255, 0.5 )",
+            }}
+            elevation={1}
+          >
             <Box sx={{ height: 700, width: "100%" }}>
               <DataGrid
                 rows={documents}

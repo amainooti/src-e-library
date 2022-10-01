@@ -25,6 +25,7 @@ import Favorite from "@mui/icons-material/Favorite";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
 import userState from "../../atoms/userAtom";
+import { loginModalState } from "../../atoms/profileAtom";
 
 // eslint-disable-next-line react/display-name
 const BookLink = React.forwardRef(
@@ -161,6 +162,8 @@ export const HorizontalBookCard = (props) => {
     };
     if (user?.loggedIn) {
       updateFavorite();
+    } else {
+      setLoginModal(true);
     }
   };
   const loginState = useRecoilValue(userState);
@@ -176,7 +179,7 @@ export const HorizontalBookCard = (props) => {
         height: "150px",
         display: "flex",
         justifyContent: "space-between",
-        background: " rgba( 255, 255, 255, 0.4 )",
+        background: "rgba( 255, 255, 255, 0.4 )",
       }}
     >
       <Box display="flex">
@@ -211,16 +214,16 @@ export const HorizontalBookCard = (props) => {
             mb={1}
           >
             <Typography>{props.noOfPages || "1234"} pages</Typography>
-            <Typography>{props.year || "2022"}</Typography>
+
             <Typography>{props.fileSize || "0" + " MB"}</Typography>
           </Box>
           <Typography
             color="GrayText"
+            display={{ xs: "none", sm: "block" }}
             sx={{
-              width: "500px",
+              // width: "500px",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              display: "-webkit-box",
               WebkitLineClamp: "2",
               WebkitBoxOrient: "vertical",
             }}
@@ -229,44 +232,47 @@ export const HorizontalBookCard = (props) => {
           </Typography>
         </Box>
       </Box>
-      <CardActions flexDirection="column" display="flex">
-        <Checkbox
-          icon={<FavoriteBorder />}
-          checkedIcon={<Favorite />}
-          onChange={() => handleLiked(props?._id)}
-          checked={favoriteBookActive}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-        <RWebShare
-          data={{
-            text: "Web Share - GfG",
-            url: `/book/${props.bookId}`,
-            title: `Share ${props.title}  - SRC E-Library`,
-          }}
-          onClick={() => console.log("shared successfully!")}
-        >
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
-        </RWebShare>
-        {loginState.loggedIn ? (
-          <IconButton
-            aria-label="download"
-            component="a"
-            href={`${process.env.HOST_URL}api/document/download/${props._id}`}
+      {/* <CardActions flexDirection={{ md: "column", xs: "row" }} display="flex"> */}
+      <Box justifyContent="center" alignItems="center" display="flex">
+        <Box display="flex" flexDirection={{ md: "row", xs: "column" }}>
+          <Checkbox
+            icon={<FavoriteBorder />}
+            checkedIcon={<Favorite />}
+            onChange={() => handleLiked(props?._id)}
+            checked={favoriteBookActive}
+            inputProps={{ "aria-label": "controlled" }}
+          />
+          <RWebShare
+            data={{
+              text: "Web Share - GfG",
+              url: `/book/${props.bookId}`,
+              title: `Share ${props.title}  - SRC E-Library`,
+            }}
+            onClick={() => console.log("shared successfully!")}
           >
-            <DownloadIcon />
-          </IconButton>
-        ) : (
-          <IconButton
-            aria-label="download"
-            component="a"
-            onClick={() => setLoginModal(true)}
-          >
-            <DownloadIcon />
-          </IconButton>
-        )}
-      </CardActions>
+            <IconButton aria-label="share">
+              <ShareIcon />
+            </IconButton>
+          </RWebShare>
+          {user.loggedIn ? (
+            <IconButton
+              aria-label="download"
+              component="a"
+              href={props.urlPath}
+            >
+              <DownloadIcon />
+            </IconButton>
+          ) : (
+            <IconButton
+              aria-label="download"
+              component="a"
+              onClick={() => setLoginModal(true)}
+            >
+              <DownloadIcon />
+            </IconButton>
+          )}
+        </Box>
+      </Box>
     </Card>
   );
 };

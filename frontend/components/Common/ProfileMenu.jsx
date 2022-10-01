@@ -92,12 +92,13 @@ const Profile = () => {
             <ListItemIcon>
               <LockReset fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Reset Password</ListItemText>
+            <ListItemText>Change Password</ListItemText>
           </MenuItem>
+          <Divider />
 
           {user?.data?.roles?.includes("Admin") && (
             <>
-              <MenuItem
+              {/* <MenuItem
                 onClick={() => (
                   router.push("/admin/allusers"), setShowProfile(false)
                 )}
@@ -106,7 +107,7 @@ const Profile = () => {
                   <Group />
                 </ListItemIcon>
                 <ListItemText>View all Users</ListItemText>
-              </MenuItem>
+              </MenuItem> */}
 
               <MenuItem
                 onClick={() => (

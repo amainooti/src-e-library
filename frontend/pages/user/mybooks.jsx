@@ -6,15 +6,17 @@ import {
   Container,
   Skeleton,
   Stack,
+  Button,
 } from "@mui/material";
 import { HorizontalBookCard } from "../../components/Common/BookCard";
 import { SkeletonHorizontalBookCard } from "../../components/Common/SkeletonCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import useAxiosPrivate from "../../hooks/usePrivateAxios";
-import { favoritesListState } from "../../atoms/favoritesAtom";
-import { useRecoilValue } from "recoil";
+import Head from "next/head";
+import { useRouter } from "next/router";
 
 const MyBooks = () => {
+  const router = useRouter();
   const axiosPrivate = useAxiosPrivate();
   const [myBooks, setMyBooks] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
@@ -36,6 +38,9 @@ const MyBooks = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>My Books | SRC E-LIBRARY</title>
+      </Head>
       <Container
         maxWidth="md"
         sx={{
@@ -80,11 +85,33 @@ const MyBooks = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 width: "100%",
+                flexDirection: "column",
               }}
             >
-              <Typography variant="h3">
+              <Typography variant="h3" textAlign="center">
                 No Book in your level or college has been uploaded.{" "}
               </Typography>
+              <Stack direction="row" gap="1rem" mt={1}>
+                <Button
+                  size="large"
+                  onClick={() => router.back()}
+                  variant="outlined"
+                  sx={{
+                    color: "white",
+                    borderColor: "white",
+                  }}
+                >
+                  Go Back
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  onClick={() => router.push("/")}
+                >
+                  Go to Home
+                </Button>
+              </Stack>
             </Box>
           )}
         </Grid>

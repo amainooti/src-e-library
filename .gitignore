@@ -12,3 +12,4 @@ package-lock.json
 /backend/public/thumbnails/*
 /backend/public/documents/*
 /backend/.git.backend
+frontend/public/assets/favicon_io.zip

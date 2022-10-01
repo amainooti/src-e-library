@@ -5,6 +5,8 @@ import MainLayout from "../../components/Layouts/MainLayout";
 import { axiosInstance } from "../api/axiosInstance";
 import Image from "next/image";
 import SuggestBook from "../../components/Common/SuggestBook";
+import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Search = () => {
   const [documents, setDocuments] = React.useState([]);
@@ -34,6 +36,9 @@ const Search = () => {
 
   return (
     <MainLayout>
+      <Head>
+        <title>Search | SRC E-LIBRARY</title>
+      </Head>
       <Container
         maxWidth="md"
         sx={{
@@ -43,7 +48,7 @@ const Search = () => {
       >
         <Box sx={{ my: 5 }}>
           <Typography variant="h5" sx={{ fontWeight: 800 }}>
-            Search Results for "search query"...
+            Search Results for &quot;search query&quot;...
           </Typography>
         </Box>
         <Grid container spacing={2}>
@@ -78,8 +83,8 @@ const Search = () => {
                   fontFamily: "inherit",
                 }}
               >
-                We are sorry, but we don't have this book in our library. You
-                can{" "}
+                We are sorry, but we don&apos;t have this book in our library.
+                You can{" "}
                 <span
                   style={{
                     color: "#fff",

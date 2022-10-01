@@ -29,22 +29,20 @@ export default function Header(props) {
     <React.Fragment>
       <AppBar>
         <Toolbar>
-          <Link href="/">
+          <Link
+            href="/"
+            style={{
+              marginRight: "auto",
+            }}
+          >
             <a>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ display: "flex" }}
-              >
-                <Image
-                  src="/assets/src-cropped-removebg-preview.png"
-                  alt="SRC LOGO"
-                  width={60}
-                  height={60}
-                  responsive={true}
-                />
-              </Typography>
+              <Image
+                src="/assets/src-cropped-removebg-preview.png"
+                alt="SRC LOGO"
+                width={60}
+                height={60}
+                responsive={true}
+              />
             </a>
           </Link>
           <Box sx={{ flexGrow: { xs: 1 } }} />

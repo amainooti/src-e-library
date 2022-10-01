@@ -252,7 +252,7 @@ export default function EditBook({ selectedBook }) {
                             value={values.pageCount}
                             onChange={handleChange}
                             size="small"
-                            color="secondary"
+                            color="primary"
                             disabled
                             endAdornment={
                               <InputAdornment position="end">

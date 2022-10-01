@@ -33,6 +33,9 @@ export default function Home() {
 
   return (
     <IndexLayout>
+      <Head>
+        <title>SRC E-LIBRARY</title>
+      </Head>
       <Container
         maxWidth="lg"
         display="flex"
