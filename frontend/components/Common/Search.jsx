@@ -63,6 +63,7 @@ function SearchBar({ size }) {
   const theme = useTheme();
   const router = useRouter();
   const [searchValue, setSearchValue] = useState("");
+
   const [resultOptions, setResultOptions] = useState([]);
 
   // const [searchResults, setSearchResults] = useState([]);
@@ -126,6 +127,9 @@ function SearchBar({ size }) {
             }
             return option;
           }}
+          onChange={(e) =>
+            router.push("/book/" + resultOptions[e.target.value]?._id)
+          }
           size={size || "small"}
           id="book-search-bar"
           disableClearable
