@@ -57,14 +57,6 @@ function ResetPassword(props) {
           margin: "auto",
         }}
       >
-        <Snackbar
-          open={errorMessage ? true : false}
-          anchorOrigin={{ vertical: "top", horizontal: "left" }}
-          onClose={() => {
-            setErrorMessage();
-          }}
-          message={errorMessage}
-        />
         <Formik
           initialValues={{ password: "", confirmpassword: "", submit: null }}
           validationSchema={Yup.object().shape({
@@ -76,7 +68,7 @@ function ResetPassword(props) {
               .oneOf([Yup.ref("password"), null], "Passwords must match")
               .required("Please confirm your password"),
           })}
-          onSubmit={async (values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
             await axiosInstance
               .post("/api/users/resetPassword", {
                 ...values,
@@ -89,9 +81,9 @@ function ResetPassword(props) {
                   icon: "success",
                   title:
                     "Password has been updated successfully, you'd be redirected to login page",
-                  showConfirmButton: false,
-                  timer: 1500,
+                  timer: 2500,
                 });
+                resetForm({ values: "" });
                 router.push("/login");
                 // Create A Sweet alert here that Password has been updated successfully
                 // Then redirect to login Page for user to login
@@ -103,7 +95,7 @@ function ResetPassword(props) {
                   icon: "error",
                   title: "Oops...",
                   text: "Something went wrong! Please try again",
-                  timer: 2500,
+                  timer: 3500,
                   footer: err.message,
                 });
               });
@@ -116,6 +108,7 @@ function ResetPassword(props) {
             handleChange,
             handleBlur,
             handleSubmit,
+            resetForm,
             touched,
             isSubmitting,
           }) => (

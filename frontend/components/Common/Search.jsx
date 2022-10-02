@@ -155,7 +155,6 @@ function SearchBar({ size }) {
           }}
           noOptionsText={"No results found for your search"}
         />
-        {console.log(resultOptions)}
       </form>
     </Search>
   );

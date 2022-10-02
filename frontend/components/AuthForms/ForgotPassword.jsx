@@ -14,6 +14,8 @@ import {
   Snackbar,
   IconButton,
 } from "@mui/material";
+import Swal from "sweetalert2";
+
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LockTwoToneIcon from "@mui/icons-material/LockTwoTone";
@@ -56,14 +58,6 @@ const ForgotPasswordForm = () => {
           margin: "auto",
         }}
       >
-        <Snackbar
-          open={errorMessage ? true : false}
-          anchorOrigin={{ vertical: "top", horizontal: "left" }}
-          onClose={() => {
-            setErrorMessage();
-          }}
-          message={errorMessage}
-        />
         <Formik
           initialValues={{ email: "", submit: null }}
           validationSchema={Yup.object().shape({
@@ -72,17 +66,37 @@ const ForgotPasswordForm = () => {
               .max(255)
               .required("Email is required"),
           })}
-          onSubmit={async (values, { setSubmitting }) => {
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
             await axiosInstance
               .post("/api/users/requestResetPassword", values)
               .then((res) => {
                 console.log(res.data);
+                Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: `An Email has been sent to ${values.email} containing your reset password link`,
+                  showConfirmButton: false,
+                  timer: 3500,
+                });
                 setSubmitting(false);
                 // Put a sweeet alert that an Email has been sent
+                resetForm({ values: "" });
               })
               .catch((err) => {
                 console.log(err.message);
                 setErrorMessage(err.message);
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  footer: "Something went wrong! please try again",
+                  text: errorMessage
+                    .split(" ")
+                    .map(
+                      (w) => w[0].toUpperCase() + w.substring(1).toLowerCase()
+                    )
+                    .join(" "),
+                  timer: 3500,
+                });
                 setSubmitting(false);
               });
           }}
@@ -93,6 +107,7 @@ const ForgotPasswordForm = () => {
             handleChange,
             handleBlur,
             handleSubmit,
+            resetForm,
             touched,
             isSubmitting,
           }) => (

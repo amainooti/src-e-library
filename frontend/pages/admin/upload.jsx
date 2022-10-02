@@ -6,6 +6,8 @@ import { Formik } from "formik";
 import { useRouter } from "next/router";
 import UploadIcon from "@mui/icons-material/Upload";
 import MainLayout from "../../components/Layouts/MainLayout";
+import Swal from "sweetalert2";
+
 import {
   FormControl,
   OutlinedInput,
@@ -140,14 +142,6 @@ export default function Upload() {
   return (
     <MainLayout>
       <Container maxWidth="md">
-        <Snackbar
-          open={errorMessage ? true : false}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          onClose={() => {
-            setErrorMessage();
-          }}
-          message={errorMessage}
-        />
         <Box sx={{ my: 2 }}>
           <Box display="flex" justifyContent="space-between">
             <Box display="flex" alignItems="center" gap={1} mb={3}>
@@ -199,8 +193,14 @@ export default function Upload() {
               await axiosPrivate
                 .post("/api/upload", formData)
                 .then((res) => {
-                  setSubmitting(false);
+                  console.log(res.status);
+                  Swal.fire({
+                    icon: "success",
+                    title: `${values.title} uploaded Successfully`,
+                    timer: 2500,
+                  });
                   resetForm({ values: "" });
+                  setSubmitting(false);
                 })
                 .catch((err) => {
                   setErrorMessage(
@@ -208,6 +208,11 @@ export default function Upload() {
                       ? err.response.data.error
                       : "An error occured! Try again later."
                   );
+                  Swal.fire({
+                    icon: "error",
+                    title: errorMessage,
+                    timer: 3500,
+                  });
                   setSubmitting(false);
                 });
             }}
@@ -426,6 +431,10 @@ export default function Upload() {
                         <Button
                           variant="outlined"
                           onClick={() => resetForm({ values: "" })}
+                          sx={{
+                            color: "#fff",
+                            borderColor: "#fff",
+                          }}
                         >
                           Cancel
                         </Button>

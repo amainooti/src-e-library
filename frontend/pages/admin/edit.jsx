@@ -6,6 +6,8 @@ import { Formik } from "formik";
 import { useRouter } from "next/router";
 import UploadIcon from "@mui/icons-material/Upload";
 import MainLayout from "../../components/Layouts/MainLayout";
+import Swal from "sweetalert2";
+
 import {
   FormControl,
   OutlinedInput,
@@ -155,6 +157,11 @@ export default function EditBook({ selectedBook }) {
                 .put(`/api/document/${router.query?.book}`, values)
                 .then((res) => {
                   setAlertMessage(`Book Updated Successfully!`);
+                  Swal.fire({
+                    icon: "success",
+                    title: alertMessage,
+                    timer: 2500,
+                  });
                 })
                 .catch((err) => {
                   setAlertMessage(
@@ -162,6 +169,11 @@ export default function EditBook({ selectedBook }) {
                       ? err.response.data.error
                       : "An error occurred! Try again later."
                   );
+                  Swal.fire({
+                    icon: "error",
+                    title: alertMessage,
+                    timer: 3500,
+                  });
                 });
             }}
           >

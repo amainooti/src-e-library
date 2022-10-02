@@ -87,10 +87,10 @@ const BookTable = () => {
     { field: "author", headerName: "Author", width: 150 },
     {
       field: "updatedAt",
-      headderName: "Updated At",
+      headerName: "Last Updated",
       width: 200,
       renderCell: (params) => (
-        <>{moment(params.row.updatedAt).format("MMMM Do YYYY")}</>
+        <>{moment(params.row.updatedAt).format("MMMM Do, YYYY")}</>
       ),
     },
     {

@@ -106,6 +106,12 @@ const RegisterForm = () => {
                     ? err.response.data.error
                     : "An error occurred! Try again later."
                 );
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: errorMessage,
+                  timer: 3500,
+                });
               });
           }}
         >
