@@ -13,9 +13,10 @@ body {
   background-color: rgb(11, 111, 206);
   /* background-size: cover; */
   background-attachment: fixed;
+  z-index: 100000;
 }
 
-body::before{
+body::backdrop{
   content: '';
   position: absolute;
   top: 0;

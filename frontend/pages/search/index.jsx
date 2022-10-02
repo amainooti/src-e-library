@@ -63,15 +63,21 @@ const Search = () => {
             Search Results for &quot;{searchBook}&quot;...
           </Typography>
         </Box>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center">
           {searchDocuments.length ? (
             searchDocuments?.map((document, index) => (
-              <Grid item xs={12} key={index}>
-                <HorizontalBookCard {...document} />
-              </Grid>
+              <>
+                <Grid item xs={12} key={index}>
+                  <HorizontalBookCard {...document} />
+                </Grid>
+              </>
             ))
           ) : (
-            <Box sx={{ textAlign: "center" }}>
+            <Box
+              sx={{ alignItems: "center" }}
+              display="flex"
+              flexDirection="column"
+            >
               <Image
                 src="/assets/puzzle-21.png"
                 alt=""
@@ -88,27 +94,7 @@ const Search = () => {
               >
                 No results found
               </Typography>
-              <Typography
-                variant="paragraph"
-                my={2}
-                sx={{
-                  fontFamily: "inherit",
-                }}
-              >
-                We are sorry, but we don&apos;t have this book in our library.
-                You can{" "}
-                <span
-                  style={{
-                    color: "#fff",
-                    cursor: "pointer",
-                    fontWeight: "bold",
-                  }}
-                  onClick={handleOpen}
-                >
-                  request it
-                </span>{" "}
-                and we will try to add it as soon as possible.
-              </Typography>
+
               <Modal
                 open={open}
                 onClose={handleClose}
@@ -119,6 +105,36 @@ const Search = () => {
               </Modal>
             </Box>
           )}
+          <Box sx={{ textAlign: "center" }} my={4}>
+            <Typography
+              variant="paragraph"
+              my={2}
+              sx={{
+                fontFamily: "inherit",
+              }}
+            >
+              If you can&apos;t find the book you are looking for, you can{" "}
+              <span
+                style={{
+                  color: "#fff",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+                onClick={handleOpen}
+              >
+                request the book
+              </span>{" "}
+              and we will try to add it as soon as possible.
+            </Typography>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <SuggestBook />
+            </Modal>
+          </Box>
         </Grid>
       </Container>
     </MainLayout>
