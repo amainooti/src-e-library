@@ -44,7 +44,7 @@ function ResetPassword(props) {
   const [errorMessage, setErrorMessage] = React.useState();
   const [googleLoading, setGoogleLoading] = React.useState(false);
   const router = useRouter();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState([false, false]);
 
   return (
     <>
@@ -128,7 +128,7 @@ function ResetPassword(props) {
               <InputContainer>
                 <FormControl fullWidth>
                   <OutlinedInput
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword[0] ? "text" : "password"}
                     name="password"
                     placeholder="New Password"
                     onChange={handleChange}
@@ -145,9 +145,11 @@ function ResetPassword(props) {
                         <IconButton
                           edge="end"
                           size="small"
-                          onClick={() => setShowPassword((prev) => !prev)}
+                          onClick={() =>
+                            setShowPassword((prev) => [!prev[0], prev[1]])
+                          }
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword[0] ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -162,7 +164,7 @@ function ResetPassword(props) {
               <InputContainer>
                 <FormControl fullWidth>
                   <OutlinedInput
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword[1] ? "text" : "password"}
                     name="confirmPassword"
                     placeholder="Confirm Password"
                     onChange={handleChange}
@@ -179,9 +181,11 @@ function ResetPassword(props) {
                         <IconButton
                           edge="end"
                           size="small"
-                          onClick={() => setShowPassword((prev) => !prev)}
+                          onClick={() =>
+                            setShowPassword((prev) => [prev[0], !prev[1]])
+                          }
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword[1] ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     }

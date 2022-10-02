@@ -11,7 +11,6 @@ const ChangePassword = () => {
       <Head>
         <title>Change Password | SRC E-LIBRARY</title>
       </Head>
-
       <ChangePasswordForm />
     </AuthLayout>
   );

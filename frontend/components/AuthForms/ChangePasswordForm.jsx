@@ -45,7 +45,8 @@ function ChangePasswordForm(props) {
   const [user, setUser] = useRecoilState(userState);
   const [errorMessage, setErrorMessage] = React.useState();
   const router = useRouter();
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState([false, false, false]);
+  // console.log(showPassword[0], showPassword[1], showPassword[2]);
 
   return (
     <>
@@ -129,7 +130,7 @@ function ChangePasswordForm(props) {
               <InputContainer>
                 <FormControl fullWidth>
                   <OutlinedInput
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword[0] ? "text" : "password"}
                     name="oldPassword"
                     placeholder="Current Password"
                     onChange={handleChange}
@@ -146,9 +147,15 @@ function ChangePasswordForm(props) {
                         <IconButton
                           edge="end"
                           size="small"
-                          onClick={() => setShowPassword((prev) => !prev)}
+                          onClick={() =>
+                            setShowPassword((prev) => [
+                              !prev[0],
+                              prev[1],
+                              prev[2],
+                            ])
+                          }
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword[0] ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -169,7 +176,7 @@ function ChangePasswordForm(props) {
               <InputContainer>
                 <FormControl fullWidth>
                   <OutlinedInput
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword[1] ? "text" : "password"}
                     name="password"
                     placeholder="New Password"
                     onChange={handleChange}
@@ -186,9 +193,15 @@ function ChangePasswordForm(props) {
                         <IconButton
                           edge="end"
                           size="small"
-                          onClick={() => setShowPassword((prev) => !prev)}
+                          onClick={() =>
+                            setShowPassword((prev) => [
+                              prev[0],
+                              !prev[1],
+                              prev[2],
+                            ])
+                          }
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword[1] ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -203,7 +216,7 @@ function ChangePasswordForm(props) {
               <InputContainer>
                 <FormControl fullWidth>
                   <OutlinedInput
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword[2] ? "text" : "password"}
                     name="confirmPassword"
                     placeholder="Confirm Password"
                     onChange={handleChange}
@@ -220,9 +233,15 @@ function ChangePasswordForm(props) {
                         <IconButton
                           edge="end"
                           size="small"
-                          onClick={() => setShowPassword((prev) => !prev)}
+                          onClick={() =>
+                            setShowPassword((prev) => [
+                              prev[0],
+                              prev[1],
+                              !prev[2],
+                            ])
+                          }
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                          {showPassword[2] ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     }
