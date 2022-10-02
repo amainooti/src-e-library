@@ -86,7 +86,7 @@ const Profile = () => {
 
           <MenuItem
             onClick={() => (
-              router.push("/resetpassword"), setShowProfile(false)
+              router.push("/changepassword"), setShowProfile(false)
             )}
           >
             <ListItemIcon>

@@ -31,6 +31,7 @@ import Head from "next/head";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
+  marginTop: "12px",
   "& small": {
     display: "block",
     marginBottom: "8px",
@@ -160,7 +161,14 @@ export default function Upload() {
                 Upload New Book
               </h2>
             </Box>
-            <Button variant="contained" onClick={() => router.back()}>
+            <Button
+              variant="outlined"
+              onClick={() => router.back()}
+              sx={{
+                color: "#fff",
+                borderColor: "#fff",
+              }}
+            >
               Back
             </Button>
           </Box>
@@ -179,7 +187,7 @@ export default function Upload() {
               title: Yup.string().required("A Title is required"),
               author: Yup.string().required("An Author Name is required!"),
               pageCount: Yup.number().required("Page Count is required!"),
-              bookDesc: Yup.string().required("Description is required!"),
+              bookDesc: Yup.string().required("Book Description is required"),
               tags: Yup.array()
                 .min(1, "You can't leave this blank.")
                 .required("You can't leave this blank.")
@@ -203,6 +211,7 @@ export default function Upload() {
                   setSubmitting(false);
                 })
                 .catch((err) => {
+                  console.log(err);
                   setErrorMessage(
                     err.response
                       ? err.response.data.error
@@ -210,8 +219,8 @@ export default function Upload() {
                   );
                   Swal.fire({
                     icon: "error",
-                    title: errorMessage,
-                    timer: 3500,
+                    title: "Ooops...",
+                    text: errorMessage,
                   });
                   setSubmitting(false);
                 });
@@ -298,7 +307,7 @@ export default function Upload() {
                         alt="Book Cover Image"
                         width={200}
                         height={200}
-                        responsive="true"
+                        responsive
                       />
                       <InputContainer>
                         <small>Title</small>

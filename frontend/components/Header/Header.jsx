@@ -29,23 +29,38 @@ export default function Header(props) {
     <React.Fragment>
       <AppBar>
         <Toolbar>
-          <Link
-            href="/"
-            style={{
-              marginRight: "auto",
-            }}
-          >
+          <Link href="/">
             <a>
-              <Image
-                src="/assets/src-cropped-removebg-preview.png"
-                alt="SRC LOGO"
-                width={60}
-                height={60}
-                responsive={true}
-              />
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <Box
+                  sx={{
+                    height: "60px",
+                    width: "60px",
+                    alignItems: "center",
+                    paddingRight: "5px",
+                    justifyContent: "center",
+                    display: "flex",
+                  }}
+                >
+                  <Image
+                    src="/assets/src-cropped-removebg-preview.png"
+                    alt="SRC LOGO"
+                    width={60}
+                    height={60}
+                    // layout="responsive"
+                  />
+                </Box>
+                <Typography
+                  ml={1}
+                  variant="h6"
+                  display={{ xs: "none", lg: "block" }}
+                >
+                  ABUAD SRC E-LIBRARY
+                </Typography>
+              </Box>
             </a>
           </Link>
-          <Box sx={{ flexGrow: { xs: 1 } }} />
+          <Box sx={{ flexGrow: { xs: 1, md: 0.5 } }} />
           <SearchBar />
           <Box sx={{ flexGrow: { xs: 1 } }} />
 

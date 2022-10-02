@@ -1,3 +1,10 @@
+// import { useEffect } from "react";
+
+// useEffect(() => {
+//   // Perform localStorage action
+//   const item = localStorage.getItem("key");
+// }, []);
+
 export const addToLocalStorage = (key, value) => {
   if (typeof value !== "string") value = JSON.stringify(value);
   try {

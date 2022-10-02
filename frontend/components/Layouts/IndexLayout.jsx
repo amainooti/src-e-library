@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import {
   AppBar,
   Box,
@@ -37,9 +36,9 @@ function Header(props) {
     <React.Fragment>
       <AppBar
         sx={{
-          background: "transparent",
-          color: "secondary.main",
+          background: "rgb(11, 111, 206)",
         }}
+        elevation={0}
       >
         <Toolbar
           sx={{
@@ -48,20 +47,33 @@ function Header(props) {
         >
           <Link href="/">
             <a>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ display: "flex" }}
-              >
-                <Image
-                  src="/assets/src-cropped-removebg-preview.png"
-                  alt="SRC LOGO"
-                  width={60}
-                  height={60}
-                  responsive={true}
-                />
-              </Typography>
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <Box
+                  sx={{
+                    height: "60px",
+                    width: "60px",
+                    alignItems: "center",
+                    paddingRight: "5px",
+                    justifyContent: "center",
+                    display: "flex",
+                  }}
+                >
+                  <Image
+                    src="/assets/src-cropped-removebg-preview.png"
+                    alt="SRC LOGO"
+                    width={60}
+                    height={60}
+                    // layout="responsive"
+                  />
+                </Box>
+                <Typography
+                  ml={1}
+                  variant="h6"
+                  display={{ xs: "none", md: "block" }}
+                >
+                  ABUAD SRC E-LIBRARY
+                </Typography>
+              </Box>
             </a>
           </Link>
 

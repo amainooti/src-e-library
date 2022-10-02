@@ -73,15 +73,25 @@ function SearchBar({ size }) {
     const searchData = data.get("search");
     console.log(searchData);
     const result = resultOptions.filter((item) => item.title === searchData);
-    if (result.length > 0) {
+
+    if (searchValue.length > 0) {
       router.push({
         pathname: "/search",
-        query: { book: result[0].title },
+        query: { book: searchValue },
       });
     } else {
       console.log(searchData);
       console.log("Sorry book does not exist");
     }
+    // if (result.length > 0) {
+    //   router.push({
+    //     pathname: "/search",
+    //     query: { book: result[0].title },
+    //   });
+    // } else {
+    //   console.log(searchData);
+    //   console.log("Sorry book does not exist");
+    // }
   };
 
   const searchResults = async (str) => {
@@ -109,7 +119,13 @@ function SearchBar({ size }) {
         </SearchIconWrapper>
         <Autocomplete
           freeSolo
-          getOptionLabel={(option) => option.title}
+          // getOptionLabel={(option) => option.title}
+          getOptionLabel={(option) => {
+            if (option.hasOwnProperty("title")) {
+              return option.title;
+            }
+            return option;
+          }}
           size={size || "small"}
           id="book-search-bar"
           disableClearable
@@ -144,7 +160,9 @@ function SearchBar({ size }) {
                 {...params.InputProps}
                 {...rest}
                 name="search"
-                onChange={(e) => onChangeQuery(e)}
+                onChange={(e) => (
+                  onChangeQuery(e), setSearchValue(e.target.value)
+                )}
                 placeholder="Searching for..."
                 // inputProps={{ "aria-label": "search" }}
                 sx={{
@@ -153,7 +171,6 @@ function SearchBar({ size }) {
               />
             );
           }}
-          noOptionsText={"No results found for your search"}
         />
       </form>
     </Search>

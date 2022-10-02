@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Paper,
   Typography,
@@ -12,6 +13,7 @@ import {
   FormHelperText,
   CircularProgress,
   IconButton,
+  Divider,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -38,11 +40,10 @@ const InputContainer = styled(Box)(() => ({
   },
 }));
 
-function ResetPassword(props) {
+function ChangePasswordForm(props) {
   const theme = useTheme();
   const [user, setUser] = useRecoilState(userState);
   const [errorMessage, setErrorMessage] = React.useState();
-  const [googleLoading, setGoogleLoading] = React.useState(false);
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -59,6 +60,10 @@ function ResetPassword(props) {
         <Formik
           initialValues={{ password: "", confirmpassword: "", submit: null }}
           validationSchema={Yup.object().shape({
+            oldPassword: Yup.string()
+              .min(8)
+              .max(244)
+              .required("Current Password is required!"),
             password: Yup.string()
               .min(8)
               .max(244)
@@ -83,19 +88,16 @@ function ResetPassword(props) {
                   timer: 2500,
                 });
                 resetForm({ values: "" });
-                router.push("/login");
-                // Create A Sweet alert here that Password has been updated successfully
-                // Then redirect to login Page for user to login
+                router.push("/");
               })
               .catch((err) => {
-                console.log(err.message);
                 setErrorMessage(err.message);
                 Swal.fire({
                   icon: "error",
                   title: "Oops...",
                   text: "Something went wrong! Please try again",
                   timer: 3500,
-                  footer: err.message,
+                  footer: errorMessage,
                 });
               });
             setSubmitting(false);
@@ -122,8 +124,47 @@ function ResetPassword(props) {
                   marginBottom: "36px",
                 }}
               >
-                Reset Password
+                Change Password
               </small>
+              <InputContainer>
+                <FormControl fullWidth>
+                  <OutlinedInput
+                    type={showPassword ? "text" : "password"}
+                    name="oldPassword"
+                    placeholder="Current Password"
+                    onChange={handleChange}
+                    value={values.oldPassword}
+                    onBlur={handleBlur}
+                    size="small"
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <LockTwoToneIcon />
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          edge="end"
+                          size="small"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                  {touched.oldPassword && errors.oldPassword && (
+                    <FormHelperText error id="helper-text-password-login">
+                      {errors.oldPassword}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              </InputContainer>
+              <Divider
+                sx={{
+                  marginBottom: "8px",
+                }}
+              />
 
               <InputContainer>
                 <FormControl fullWidth>
@@ -199,14 +240,24 @@ function ResetPassword(props) {
                 fullWidth
                 disabled={isSubmitting}
               >
-                {isSubmitting || googleLoading ? <CircularProgress /> : "Reset"}
+                {isSubmitting ? <CircularProgress /> : "Change Password"}
               </Button>
             </form>
           )}
         </Formik>
+        <Button
+          variant="outlined"
+          fullWidth
+          sx={{
+            marginTop: "8px",
+          }}
+          onClick={() => router.back()}
+        >
+          Cancel
+        </Button>
       </Paper>
     </>
   );
 }
 
-export default ResetPassword;
+export default ChangePasswordForm;
