@@ -28,6 +28,7 @@ import { addToLocalStorage } from "../../utils/browserStorage";
 import { convertRoles } from "../../utils/helper";
 import userState from "../../atoms/userAtom";
 import axiosInstance from "../../pages/api/axiosInstance";
+import Swal from "sweetalert2";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -83,12 +84,28 @@ function ResetPassword(props) {
               })
               .then((res) => {
                 console.log(res.data);
+                Swal.fire({
+                  position: "top-end",
+                  icon: "success",
+                  title:
+                    "Password has been updated successfully, you'd be redirected to login page",
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+                router.push("/login");
                 // Create A Sweet alert here that Password has been updated successfully
                 // Then redirect to login Page for user to login
               })
               .catch((err) => {
                 console.log(err.message);
-                setErrorMessage(err.messsage);
+                setErrorMessage(err.message);
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong! Please try again",
+                  timer: 2500,
+                  footer: err.message,
+                });
               });
             setSubmitting(false);
           }}

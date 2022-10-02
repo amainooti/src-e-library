@@ -62,7 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function SearchBar({ size }) {
   const theme = useTheme();
   const router = useRouter();
-  const [searchValue, setSearchValue] = React.useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [resultOptions, setResultOptions] = useState([]);
 
   // const [searchResults, setSearchResults] = useState([]);
@@ -118,7 +118,10 @@ function SearchBar({ size }) {
             <Box
               key={option._id}
               component="li"
-              sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+              sx={{
+                "& > img": { mr: 2, flexShrink: 0 },
+                "& > div": { flexGrow: 1 },
+              }}
               {...props}
             >
               <Image
@@ -150,8 +153,9 @@ function SearchBar({ size }) {
               />
             );
           }}
-          noOptionsText={"empty array"}
+          noOptionsText={"No results found for your search"}
         />
+        {console.log(resultOptions)}
       </form>
     </Search>
   );
