@@ -30,6 +30,7 @@ import { convertRoles } from "../../utils/helper";
 import userState from "../../atoms/userAtom";
 import axiosInstance from "../../pages/api/axiosInstance";
 import Swal from "sweetalert2";
+import usePrivateAxios from "../../hooks/usePrivateAxios";
 
 const InputContainer = styled(Box)(() => ({
   marginBottom: "12px",
@@ -42,6 +43,7 @@ const InputContainer = styled(Box)(() => ({
 
 function ChangePasswordForm(props) {
   const theme = useTheme();
+  const axiosPrivate = usePrivateAxios();
   const [user, setUser] = useRecoilState(userState);
   const [errorMessage, setErrorMessage] = React.useState();
   const router = useRouter();
@@ -59,7 +61,12 @@ function ChangePasswordForm(props) {
         }}
       >
         <Formik
-          initialValues={{ password: "", confirmpassword: "", submit: null }}
+          initialValues={{
+            oldPassword: "",
+            password: "",
+            confirmpassword: "",
+            submit: null,
+          }}
           validationSchema={Yup.object().shape({
             oldPassword: Yup.string()
               .min(8)
@@ -74,15 +81,12 @@ function ChangePasswordForm(props) {
               .required("Please confirm your password"),
           })}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
-            await axiosInstance
-              .post("/api/users/resetPassword", {
+            await axiosPrivate
+              .post("/api/users/changepassword", {
                 ...values,
-                ...props,
               })
               .then((res) => {
-                console.log(res.data);
                 Swal.fire({
-                  position: "top-end",
                   icon: "success",
                   title:
                     "Password has been updated successfully, you'd be redirected to login page",
@@ -92,11 +96,12 @@ function ChangePasswordForm(props) {
                 router.push("/");
               })
               .catch((err) => {
-                setErrorMessage(err.message);
                 Swal.fire({
                   icon: "error",
                   title: "Oops...",
-                  text: "Something went wrong! Please try again",
+                  text: err?.response?.data
+                    ? err.response.data?.error
+                    : `Something went wrong! Please try again`,
                   timer: 3500,
                   footer: errorMessage,
                 });

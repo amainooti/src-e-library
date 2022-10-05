@@ -191,10 +191,39 @@ const generateToken = (id) => {
   });
 };
 
+const changePasswordController = async (req, res) => {
+  try {
+    const { oldPassword, password } = req.body;
+    const user = await User.findById(req.user.id);
+    if (user && (await bcrypt.compare(oldPassword, user.password))) {
+      if (oldPassword === password) {
+        return res.status(400).json({
+          error: "You can't use your old password as your new password",
+        });
+      }
+      if (password.length < 8) {
+        return res
+          .status(400)
+          .json({ error: "Password must be greater than 8 Characters" });
+      }
+      const salt = await bcrypt.genSalt(10);
+      const hashpasword = await bcrypt.hash(password, salt);
+      user.password = hashpasword;
+      user.save();
+      return res.status(200).json("Password Changed Successfully");
+    }
+    res.status(400).json({ error: "Password does match with old password" });
+  } catch (err) {
+    console.log(err.message);
+    res.status(400).json({ error: err.message });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   getUser,
   resetPasswordController,
   resetPasswordRequestContoller,
+  changePasswordController,
 };
