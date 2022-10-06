@@ -48,6 +48,7 @@ const Profile = () => {
               variant="paragraph"
               sx={{
                 fontWeight: "bold",
+                overflowWrap: "anywhere",
               }}
             >
               {user.data?.name}
@@ -55,8 +56,16 @@ const Profile = () => {
             <Typography variant="paragraph" color="GrayText">
               ({user?.data?.roles?.includes("Admin") ? "Admin" : "Student"})
             </Typography>
-            <Typography variant="paragraph" color="GrayText">
-              {user.data?.email}
+            <Typography
+              variant="paragraph"
+              color="GrayText"
+              sx={{ overflowWrap: "anywhere" }}
+            >
+              {user.data?.email?.length > 20
+                ? `${user.data?.email.substr(0, 7)}...${user.data?.email.substr(
+                    -10
+                  )}`
+                : user.data?.email}
             </Typography>
           </Box>
         </Box>
