@@ -27,7 +27,8 @@ const corOptions = {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed CORS"));
+      // callback(new Error("Not allowed CORS"));
+      callback(null, true);
     }
   },
   optionsSuccessStatus: 200,
