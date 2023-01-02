@@ -2,7 +2,6 @@ import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, alpha } from "@mui/material/styles";
 import { useRouter } from "next/router";
-import axios from "axios";
 import { axiosInstance } from "../../pages/api/axiosInstance";
 
 import {
@@ -73,7 +72,7 @@ function SearchBar({ size }) {
     const data = new FormData(e.target);
     const searchData = data.get("search");
     console.log(searchData);
-    const result = resultOptions.filter((item) => item.title === searchData);
+    const result = resultOptions?.filter((item) => item.title === searchData);
 
     if (searchValue.length > 0) {
       router.push({
