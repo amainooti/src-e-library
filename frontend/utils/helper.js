@@ -13,3 +13,5 @@ export const convertRoles = (values) => {
   }
   return newRole;
 };
+
+export const convertCloudinaryToPng = (url) => {};

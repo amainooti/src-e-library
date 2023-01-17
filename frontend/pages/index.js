@@ -1,10 +1,20 @@
 import Head from "next/head";
 import Image from "next/image";
-import { Box, Card, Container, Grid, Modal, Typography } from "@mui/material";
+import Link from "next/link";
+import UpdateIcon from "@mui/icons-material/Update";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  Modal,
+  Typography,
+  TablePagination,
+  usePagination,
+} from "@mui/material";
 
 import SearchBar from "../components/Common/Search";
 import { BookCard } from "../components/Common/BookCard";
-import UpdateIcon from "@mui/icons-material/Update";
 import IndexLayout from "../components/Layouts/IndexLayout";
 import React, { useState } from "react";
 import LoginForm from "../components/AuthForms/LoginForm";
@@ -13,10 +23,31 @@ import { axiosInstance } from "./api/axiosInstance";
 import { loginModalState } from "../atoms/profileAtom";
 
 export default function Home() {
-  const [modal, setModal] = useRecoilState(loginModalState);
-
+  let [page, setPage] = React.useState(1);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [documents, setDocuments] = React.useState([]);
+  const [modal, setModal] = useRecoilState(loginModalState);
+  const indexOfLastPdf = page * rowsPerPage;
+  const indexOfFirstPdf = indexOfLastPdf - rowsPerPage;
+  const [currentPaginationData, setCurrentPaginationData] = React.useState([]);
+  const count = React.useMemo(
+    () => Math.ceil(documents.length / rowsPerPage),
+    [documents.length, rowsPerPage]
+  );
 
+  React.useEffect(() => {
+    const data = documents.slice(indexOfFirstPdf, indexOfLastPdf);
+    setCurrentPaginationData(data);
+  }, [documents, indexOfFirstPdf, indexOfLastPdf]);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   React.useEffect(() => {
     const getDocuments = async () => {
       await axiosInstance
@@ -118,6 +149,17 @@ export default function Home() {
               Recently Added Books:
             </h2>
           </Box>
+          <Box sx={{ mb: 2 }}>
+            <Link
+              href="https://drive.google.com/drive/folders/1--34bdDu4apLX300sj16oLv5TsKtcdoz"
+              target="_blank"
+              passHref
+            >
+              <Button variant="contained" color="primary" target="_blank">
+                View More Books
+              </Button>
+            </Link>
+          </Box>
           <Modal
             open={modal}
             onClose={() => {
@@ -150,12 +192,22 @@ export default function Home() {
                   <BookCard />
                 </Grid>
               ))} */}
-            {documents.map((document, index) => (
+            {currentPaginationData.map((document, index) => (
               <Grid item lg={2} md={3} sm={4} xs={6} key={index}>
                 <BookCard {...document} />
               </Grid>
             ))}
           </Grid>
+          <Box sx={{ mt: 2 }}>
+            <TablePagination
+              component="div"
+              page={page}
+              count={count}
+              rowsPerPage={rowsPerPage}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Box>
         </Box>
       </Container>
     </IndexLayout>
