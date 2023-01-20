@@ -23,44 +23,48 @@ import { axiosInstance } from "./api/axiosInstance";
 import { loginModalState } from "../atoms/profileAtom";
 
 export default function Home() {
-  let [page, setPage] = React.useState(1);
+  let [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [currentPaginationData, setCurrentPaginationData] = React.useState([]);
   const [documents, setDocuments] = React.useState([]);
   const [modal, setModal] = useRecoilState(loginModalState);
   // const indexOfLastPdf = page * rowsPerPage;
   // const indexOfFirstPdf = indexOfLastPdf - rowsPerPage;
-  // const [currentPaginationData, setCurrentPaginationData] = React.useState([]);
+  const indexOfFirstPdf = page * rowsPerPage;
+  const indexOfLastPdf = indexOfFirstPdf + rowsPerPage;
   // const count = React.useMemo(
   //   () => Math.ceil(documents.length / rowsPerPage),
   //   [documents.length, rowsPerPage]
   // );
 
-  // React.useEffect(() => {
-  //   const data = documents.slice(indexOfFirstPdf, indexOfLastPdf);
-  //   setCurrentPaginationData(data);
-  // }, [documents, indexOfFirstPdf, indexOfLastPdf]);
+  React.useEffect(() => {
+    if (documents.length > 0) {
+      const data = documents.slice(indexOfFirstPdf, indexOfLastPdf);
+      setCurrentPaginationData(data);
+    }
+  }, [documents, indexOfFirstPdf, indexOfLastPdf]);
 
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
 
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-  // React.useEffect(() => {
-  //   const getDocuments = async () => {
-  //     await axiosInstance
-  //       .get("/api/document")
-  //       .then((res) => {
-  //         setDocuments(res.data);
-  //       })
-  //       .catch((err) => {
-  //         console.log(err?.response);
-  //       });
-  //   };
-  //   getDocuments();
-  // }, []);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    // setPage(0);
+  };
+  React.useEffect(() => {
+    const getDocuments = async () => {
+      await axiosInstance
+        .get("/api/document")
+        .then((res) => {
+          setDocuments(res.data);
+        })
+        .catch((err) => {
+          console.log(err?.response);
+        });
+    };
+    getDocuments();
+  }, []);
 
   return (
     <IndexLayout>
@@ -192,7 +196,7 @@ export default function Home() {
                   <BookCard />
                 </Grid>
               ))} */}
-            {documents.map((document, index) => (
+            {currentPaginationData.map((document, index) => (
               <Grid item lg={2} md={3} sm={4} xs={6} key={index}>
                 <BookCard {...document} />
               </Grid>
@@ -203,16 +207,16 @@ export default function Home() {
               </Grid>
             ))} */}
           </Grid>
-          {/* <Box sx={{ mt: 2 }}>
+          <Box sx={{ mt: 2 }}>
             <TablePagination
               component="div"
               page={page}
-              count={count}
+              count={documents.length}
               rowsPerPage={rowsPerPage}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-          </Box> */}
+          </Box>
         </Box>
       </Container>
     </IndexLayout>

@@ -95,6 +95,10 @@ const loginUser = async (req, res) => {
 };
 
 const getUser = async (req, res) => {
+	if (!req.user) {
+		console.log("No user!")
+		return res.status(400).json({error: "No user"})
+	}
   const { firstname, lastname, email, department, level, roles } =
     await User.findById(req.user.id);
 
