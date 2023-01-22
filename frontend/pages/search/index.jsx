@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Box, Typography, Modal } from "@mui/material";
+import { Container, Grid, Box, Typography, Modal, Button } from "@mui/material";
 import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import { axiosInstance } from "../api/axiosInstance";
@@ -7,6 +7,7 @@ import Image from "next/image";
 import SuggestBook from "../../components/Common/SuggestBook";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
 
 const Search = () => {
   const [searchDocuments, setSearchDocuments] = React.useState([]);
@@ -113,10 +114,18 @@ const Search = () => {
                 fontFamily: "inherit",
               }}
             >
-              If you can&apos;t find the book you are looking for, you can{" "}
-              <span
+              If you can&apos;t find the book you are looking for, you can check
+              out our{" "}
+              <Link
+                href="https://drive.google.com/drive/folders/1fNxBsj1EwlDs2MLrQwYKlDpjAc5iKfyf?usp=share_link"
+                target="_blank"
+              >
+                <Button variant="contained" target="_blank">
+                  Past Question
+                </Button>
+              </Link>
+              {/* <span
                 style={{
-                  color: "#fff",
                   cursor: "pointer",
                   fontWeight: "bold",
                 }}
@@ -124,7 +133,7 @@ const Search = () => {
               >
                 request the book
               </span>{" "}
-              and we will try to add it as soon as possible.
+              and we will try to add it as soon as possible. */}
             </Typography>
             <Modal
               open={open}
