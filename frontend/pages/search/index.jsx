@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Box, Typography, Modal, Button } from "@mui/material";
+import { Container, Grid, Box, Typography, Modal } from "@mui/material";
 import { HorizontalBookCard } from "../../components/Common/BookCard";
 import MainLayout from "../../components/Layouts/MainLayout";
 import { axiosInstance } from "../api/axiosInstance";
@@ -7,7 +7,6 @@ import Image from "next/image";
 import SuggestBook from "../../components/Common/SuggestBook";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import Link from "next/link";
 
 const Search = () => {
   const [searchDocuments, setSearchDocuments] = React.useState([]);
@@ -114,7 +113,7 @@ const Search = () => {
                 fontFamily: "inherit",
               }}
             >
-              If you can&apos;t find the book you are looking for
+              If you can&apos;t find the book you are looking for{" "}
               <span
                 style={{
                   cursor: "pointer",

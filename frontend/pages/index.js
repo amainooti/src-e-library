@@ -8,9 +8,7 @@ import {
   Container,
   Grid,
   Modal,
-  Typography,
   TablePagination,
-  usePagination,
 } from "@mui/material";
 
 import SearchBar from "../components/Common/Search";
