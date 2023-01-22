@@ -114,17 +114,8 @@ const Search = () => {
                 fontFamily: "inherit",
               }}
             >
-              If you can&apos;t find the book you are looking for, you can check
-              out our{" "}
-              <Link
-                href="https://drive.google.com/drive/folders/1fNxBsj1EwlDs2MLrQwYKlDpjAc5iKfyf?usp=share_link"
-                target="_blank"
-              >
-                <Button variant="contained" target="_blank">
-                  Past Question
-                </Button>
-              </Link>
-              {/* <span
+              If you can&apos;t find the book you are looking for
+              <span
                 style={{
                   cursor: "pointer",
                   fontWeight: "bold",
@@ -133,7 +124,7 @@ const Search = () => {
               >
                 request the book
               </span>{" "}
-              and we will try to add it as soon as possible. */}
+              and we will try to add it as soon as possible.
             </Typography>
             <Modal
               open={open}

@@ -153,14 +153,29 @@ export default function Home() {
               Recently Added Books:
             </h2>
           </Box>
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ mb: 2, display: "flex", gap: 2, alignItems: "center" }}>
             <Link
               href="https://drive.google.com/drive/folders/1--34bdDu4apLX300sj16oLv5TsKtcdoz"
               target="_blank"
               passHref
             >
-              <Button variant="contained" color="primary" target="_blank">
+              <Button
+                variant="contained"
+                color="primary"
+                target="_blank"
+                sx={{ mr: 1 }}
+              >
                 View More Books
+              </Button>
+            </Link>
+
+            <Link
+              href="https://drive.google.com/drive/folders/1fNxBsj1EwlDs2MLrQwYKlDpjAc5iKfyf?usp=share_link"
+              target="_blank"
+              passHref
+            >
+              <Button variant="contained" target="_blank" color="primary">
+                Past Question
               </Button>
             </Link>
           </Box>
