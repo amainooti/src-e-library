@@ -25,7 +25,7 @@
     "react-pdf": "^5.7.2",
     "react-web-share": "^2.0.0",
     "recoil": "^0.7.5",
-    "sharp": "^0.31.0",
+    "sharp": "^0.32.0",
     "sweetalert2": "^11.4.36",
     "yup": "^0.32.11"
   },
